@@ -7,12 +7,15 @@ import com.greenbeansapps.myschooltransportation.domain.exeptions.PasswordIsNotV
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateConductorUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.helpers.CryptoHelper;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
 public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
     private final ConductorRepository conductorRepo;
     private final CryptoHelper crypto;
