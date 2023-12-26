@@ -7,7 +7,6 @@ import com.greenbeansapps.myschooltransportation.domain.exeptions.PasswordIsNotV
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateConductorUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.helpers.CryptoHelper;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
