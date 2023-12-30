@@ -33,10 +33,10 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
         Optional<Responsible> responsibleExist = this.responsibleRepo.findById(responsibleId);
         Optional<Address> addressExist = this.addressRepo.findById(addressId);
 
-        if (!responsibleExist.isPresent()) {
+        if (responsibleExist.isEmpty()) {
             throw new InvalidResponsibleException();
         }
-        if (!addressExist.isPresent()) {
+        if (addressExist.isEmpty()) {
             throw new InvalidAddressException();
         }
 
