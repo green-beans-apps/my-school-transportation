@@ -5,9 +5,11 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidAddressException;
+import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidConductorException;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidResponsibleException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateStudentUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
+import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 
@@ -18,29 +20,35 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
     private final StudentRepository studentRepo;
     private final ResponsibleRepository responsibleRepo;
     private final AddressRepository addressRepo;
+    private final ConductorRepository conductorRepo;
 
-    public CreateStudentUseCaseImpl(StudentRepository studentRepo, ResponsibleRepository responsibleRepo, AddressRepository addressRepo) {
+    public CreateStudentUseCaseImpl(StudentRepository studentRepo, ResponsibleRepository responsibleRepo, AddressRepository addressRepo, ConductorRepository conductorRepo) {
         this.studentRepo = studentRepo;
         this.responsibleRepo = responsibleRepo;
         this.addressRepo = addressRepo;
+        this.conductorRepo = conductorRepo;
     }
 
     @Override
-    public Student execute(String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, UUID responsibleId, UUID addressId) {
+    public Student execute(String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, String conductorId, UUID responsibleId, UUID addressId) {
         // conductor virá junto com a autenticação
         // responsible e address será pego pela consulta no banco depois de ser criado.
 
-        Optional<Responsible> responsibleExist = this.responsibleRepo.findById(responsibleId);
-        Optional<Address> addressExist = this.addressRepo.findById(addressId);
+        Optional<Responsible> responsible = this.responsibleRepo.findById(responsibleId);
+        Optional<Address> address = this.addressRepo.findById(addressId);
+        Optional<Conductor> conductor = this.conductorRepo.findById(conductorId);
 
-        if (responsibleExist.isEmpty()) {
+        if (responsible.isEmpty()) {
             throw new InvalidResponsibleException();
         }
-        if (addressExist.isEmpty()) {
+        if (address.isEmpty()) {
             throw new InvalidAddressException();
         }
+        if (conductor.isEmpty()) {
+            throw new InvalidConductorException();
+        }
 
-        var newStudent = new Student(UUID.randomUUID(), name, school, grade, monthlyPayment, monthlyPaymentExpiration, conductor, responsibleExist.get(), addressExist.get());
+        var newStudent = new Student(UUID.randomUUID(), name, school, grade, monthlyPayment, monthlyPaymentExpiration, conductor.get(), responsible.get(), address.get());
         this.studentRepo.create(newStudent);
         return newStudent;
     }
