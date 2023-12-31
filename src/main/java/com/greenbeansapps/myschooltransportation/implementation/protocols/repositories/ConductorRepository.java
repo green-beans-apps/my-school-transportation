@@ -8,4 +8,5 @@ public interface ConductorRepository {
     public Conductor create(Conductor conductor);
     public Optional<Conductor> findByCpf(String cpf);
     public Optional<Conductor> findByEmail(String email);
+    public Optional<Conductor> findById(String email);
 }
