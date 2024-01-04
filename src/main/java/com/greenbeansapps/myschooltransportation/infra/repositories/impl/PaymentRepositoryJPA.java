@@ -6,10 +6,12 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.reposi
 import com.greenbeansapps.myschooltransportation.infra.repositories.IPaymentRepositoryJPA;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.PaymentSchema;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class PaymentRepositoryJPA implements PaymentRepository {
 
     private final IPaymentRepositoryJPA paymentRepo;
