@@ -24,7 +24,7 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
 
   @Override
   public Payment execute(UUID studentId, Months paymentMonth) {
-    Optional<Student> student = this.studentRepo.findOneById(studentId);
+    Optional<Student> student = this.studentRepo.findById(studentId);
     if(student.isEmpty()) {
       throw new StudentNotFoundException();
     }
