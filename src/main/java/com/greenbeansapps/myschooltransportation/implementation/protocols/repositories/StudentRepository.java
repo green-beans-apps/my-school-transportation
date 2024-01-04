@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface StudentRepository {
     public Student create(Student student);
-    public List<Student> findAllByConductorId(String conductorId);
-    public Optional<Student> findOneById(UUID studentId);
+    public List<Student> findAllByConductorId(UUID conductorId);
+    public Optional<Student> findById(UUID studentId);
 }
