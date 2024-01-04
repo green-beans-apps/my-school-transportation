@@ -20,19 +20,16 @@ public class AddressSchema implements Serializable {
 
   @Id
   private UUID id;
-  @Column()
+  @Column(nullable = false)
   private String city;
-  @Column()
+  @Column(nullable = false)
   private String district;
-
-  @Column()
+  @Column(nullable = false)
   private String street;
-
-  @Column()
+  @Column(nullable = false)
   private Integer houseNumber;
 
   public AddressSchema() {
-
   }
 
   public UUID getId() {
