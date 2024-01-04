@@ -18,7 +18,7 @@ public class GetStudentByIdUseCaseImpl implements GetStudentByIdUseCase {
 
   @Override
   public Student execute(UUID studentId) {
-    Optional<Student> student = this.studentRepo.findOneById(studentId);
+    Optional<Student> student = this.studentRepo.findById(studentId);
     if(student.isEmpty()) {
       throw new StudentNotFoundException();
     }
