@@ -30,7 +30,7 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
     }
 
     @Override
-    public Student execute(String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, String conductorId, UUID responsibleId, UUID addressId) {
+    public Student execute(String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId, UUID responsibleId, UUID addressId) {
         // conductor virá junto com a autenticação
         // responsible e address será pego pela consulta no banco depois de ser criado.
 
