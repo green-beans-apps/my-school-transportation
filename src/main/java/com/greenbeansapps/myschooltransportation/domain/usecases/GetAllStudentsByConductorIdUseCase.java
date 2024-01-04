@@ -4,7 +4,8 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidConductorException;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface GetAllStudentsByConductorIdUseCase {
-    List<Student> execute(String conductorId);
+    List<Student> execute(UUID conductorId);
 }
