@@ -9,6 +9,7 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.reposi
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class GetAllStudentsByConductorIdUseCaseImpl implements GetAllStudentsByConductorIdUseCase {
 
@@ -22,7 +23,7 @@ public class GetAllStudentsByConductorIdUseCaseImpl implements GetAllStudentsByC
     }
 
     @Override
-    public List<Student> execute(String conductorId) {
+    public List<Student> execute(UUID conductorId) {
         Optional<Conductor> conductor = this.conductorRepo.findById(conductorId);
         if (conductor.isEmpty()) {
             throw new InvalidConductorException();
