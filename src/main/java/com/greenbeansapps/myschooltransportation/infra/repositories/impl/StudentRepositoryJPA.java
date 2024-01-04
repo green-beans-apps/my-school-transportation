@@ -5,12 +5,14 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.reposi
 import com.greenbeansapps.myschooltransportation.infra.repositories.IStudentRepositoryJPA;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.StudentSchema;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class StudentRepositoryJPA implements StudentRepository {
 
     private final IStudentRepositoryJPA studentRepo;
