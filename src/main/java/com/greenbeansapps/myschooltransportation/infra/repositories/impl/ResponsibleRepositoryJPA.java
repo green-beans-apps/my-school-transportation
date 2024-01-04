@@ -5,10 +5,12 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.reposi
 import com.greenbeansapps.myschooltransportation.infra.repositories.IResponsibleRepositoryJPA;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ResponsibleSchema;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class ResponsibleRepositoryJPA implements ResponsibleRepository {
 
     private final IResponsibleRepositoryJPA responsibleRepo;
