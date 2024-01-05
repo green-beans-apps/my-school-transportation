@@ -1,6 +1,7 @@
 package com.greenbeansapps.myschooltransportation.infra.repositories.impl;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
+import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IPaymentRepositoryJPA;
@@ -34,6 +35,9 @@ public class PaymentRepositoryJPA implements PaymentRepository {
         if (paymentSchema.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new Payment(paymentSchema.get().getId(), paymentSchema.get().getPaymentDate(), paymentSchema.get().getPaymentMonth(), paymentSchema.get().getStudent()));
+        Student newStudent = new Student();
+        BeanUtils.copyProperties(paymentSchema.get().getStudent(), newStudent);
+
+        return Optional.of(new Payment(paymentSchema.get().getId(), paymentSchema.get().getPaymentDate(), paymentSchema.get().getPaymentMonth(), newStudent));
     }
 }
