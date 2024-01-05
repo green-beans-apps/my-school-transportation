@@ -11,6 +11,9 @@ public class Payment {
     private Months paymentMonth;
     private Student student;
 
+    public Payment() {
+    }
+
     public Payment(UUID id, Date paymentDate, Months paymentMonth, Student student) {
         this.id = id;
         this.paymentDate = paymentDate;

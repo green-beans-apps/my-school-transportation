@@ -9,6 +9,9 @@ public class Conductor {
     private String cpf;
     private String password;
 
+    public Conductor() {
+    }
+
     public Conductor(UUID id, String name, String email, String cpf, String password) {
         this.id = id;
         this.name = name;

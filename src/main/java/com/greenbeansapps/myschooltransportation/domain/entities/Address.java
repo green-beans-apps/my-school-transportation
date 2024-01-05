@@ -9,6 +9,9 @@ public class Address {
     private String street;
     private Integer houseNumber;
 
+    public Address() {
+    }
+
     public Address(UUID id, String city, String district, String street, Integer houseNumber) {
         this.id = id;
         this.city = city;

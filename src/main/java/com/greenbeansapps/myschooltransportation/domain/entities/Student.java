@@ -13,6 +13,9 @@ public class Student {
     private Responsible responsible;
     private Address address;
 
+    public Student() {
+    }
+
     public Student(UUID id, String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, Responsible responsible, Address address) {
         this.id = id;
         this.name = name;
