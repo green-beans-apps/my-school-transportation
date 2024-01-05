@@ -23,10 +23,9 @@ public class PaymentSchema implements Serializable {
     @Column(nullable = false)
     private Months paymentMonth;
 
-    @Column(nullable = false)
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @JoinColumn(name = "student_id", nullable = false)
+    private StudentSchema student;
 
     public PaymentSchema() {}
 
@@ -54,11 +53,11 @@ public class PaymentSchema implements Serializable {
         this.paymentMonth = paymentMonth;
     }
 
-    public Student getStudent() {
+    public StudentSchema getStudent() {
         return student;
     }
 
-    public void setStudent(Student student) {
+    public void setStudent(StudentSchema student) {
         this.student = student;
     }
 }

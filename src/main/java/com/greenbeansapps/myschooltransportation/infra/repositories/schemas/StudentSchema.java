@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.infra.repositories.schemas;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
+import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import jakarta.persistence.*;
 
@@ -29,20 +30,17 @@ public class StudentSchema implements Serializable {
     @Column(nullable = false)
     private String monthlyPaymentExpiration;
 
-    @Column(nullable = false)
     @ManyToOne
-    @JoinColumn(name = "conductor_id")
-    private Conductor conductor;
+    @JoinColumn(name = "conductor_id", nullable = false)
+    private ConductorSchema conductor;
 
-    @Column(nullable = false)
     @ManyToOne
-    @JoinColumn(name = "responsible_id")
-    private Responsible responsible;
+    @JoinColumn(name = "responsible_id", nullable = false)
+    private ResponsibleSchema responsible;
 
-    @Column(nullable = false)
     @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @JoinColumn(name = "address_id", nullable = false)
+    private AddressSchema address;
 
     public StudentSchema() {
     }
@@ -95,27 +93,27 @@ public class StudentSchema implements Serializable {
         this.monthlyPaymentExpiration = monthlyPaymentExpiration;
     }
 
-    public Conductor getConductor() {
+    public ConductorSchema getConductor() {
         return conductor;
     }
 
-    public void setConductor(Conductor conductor) {
+    public void setConductor(ConductorSchema conductor) {
         this.conductor = conductor;
     }
 
-    public Responsible getResponsible() {
+    public ResponsibleSchema getResponsible() {
         return responsible;
     }
 
-    public void setResponsible(Responsible responsible) {
+    public void setResponsible(ResponsibleSchema responsible) {
         this.responsible = responsible;
     }
 
-    public Address getAddress() {
+    public AddressSchema getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressSchema address) {
         this.address = address;
     }
 }
