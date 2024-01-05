@@ -1,5 +1,8 @@
 package com.greenbeansapps.myschooltransportation.infra.repositories.impl;
 
+import com.greenbeansapps.myschooltransportation.domain.entities.Address;
+import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
+import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IStudentRepositoryJPA;
@@ -37,9 +40,17 @@ public class StudentRepositoryJPA implements StudentRepository {
         }
         List<Student> students = new ArrayList<>();
         for (StudentSchema studentSchema : studentsSchema) {
+            var newConductor = new Conductor();
+            var newResponsible = new Responsible();
+            var newAddress = new Address();
+
+            BeanUtils.copyProperties(studentSchema.getConductor(), newConductor);
+            BeanUtils.copyProperties(studentSchema.getResponsible(), newResponsible);
+            BeanUtils.copyProperties(studentSchema.getAddress(), newAddress);
+
             students.add(new Student(studentSchema.getId(), studentSchema.getName(), studentSchema.getSchool(),
                     studentSchema.getGrade(), studentSchema.getMonthlyPayment(), studentSchema.getMonthlyPaymentExpiration(),
-                    studentSchema.getConductor(), studentSchema.getResponsible(), studentSchema.getAddress()));
+                    newConductor, newResponsible, newAddress));
         }
         return students;
     }
@@ -50,8 +61,17 @@ public class StudentRepositoryJPA implements StudentRepository {
         if (studentSchema.isEmpty()) {
             return Optional.empty();
         }
+
+        var newConductor = new Conductor();
+        var newResponsible = new Responsible();
+        var newAddress = new Address();
+
+        BeanUtils.copyProperties(studentSchema.get().getConductor(), newConductor);
+        BeanUtils.copyProperties(studentSchema.get().getResponsible(), newResponsible);
+        BeanUtils.copyProperties(studentSchema.get().getAddress(), newAddress);
+
         return Optional.of(new Student(studentSchema.get().getId(), studentSchema.get().getName(), studentSchema.get().getSchool(),
                 studentSchema.get().getGrade(), studentSchema.get().getMonthlyPayment(), studentSchema.get().getMonthlyPaymentExpiration(),
-                studentSchema.get().getConductor(), studentSchema.get().getResponsible(), studentSchema.get().getAddress()));
+                newConductor, newResponsible, newAddress));
     }
 }
