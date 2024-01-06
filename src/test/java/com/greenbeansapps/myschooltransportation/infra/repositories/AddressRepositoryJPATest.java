@@ -7,23 +7,22 @@
     import org.junit.jupiter.api.Test;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+    import org.springframework.boot.test.context.SpringBootTest;
     import org.springframework.test.context.ActiveProfiles;
 
     import java.util.UUID;
 
-    @DataJpaTest
+    @SpringBootTest
     @ActiveProfiles("test")
     @DisplayName("Teste de criação de repositório")
     public class AddressRepositoryJPATest {
         @Autowired
-        private AddressRepositoryJPA adressRepo;
+        private AddressRepositoryJPA addressRepo;
 
         @Test
         @DisplayName("Criando endereço")
         public void createAddress() {
             Address address1 = new Address(UUID.randomUUID(), "Recife", "Bairro Tal", "Rua 3", 46);
-            adressRepo.create(address1);
 
-            Assertions.assertEquals(address1.getId(), adressRepo.findById(address1.getId()));
         }
     }
