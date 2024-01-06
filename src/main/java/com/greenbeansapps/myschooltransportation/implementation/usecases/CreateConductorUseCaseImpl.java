@@ -9,6 +9,7 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.helper
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -25,7 +26,7 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
     }
 
     @Override
-    public Conductor execute(String name, String email, String password, String cpf) {
+    public Conductor execute(String name, String email, String password, String cpf) throws NoSuchAlgorithmException {
 
         String regexPassword = "^(?=.*[!@#$%^&*(),.?\":{}|<>])(?=.*[a-zA-Z0-9]).{6,}$";
         // Compila a expressão
