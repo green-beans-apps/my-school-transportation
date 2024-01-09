@@ -4,95 +4,144 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidAddressException;
+import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidConductorException;
+import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidResponsibleException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.helpers.CryptoHelper;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import com.greenbeansapps.myschooltransportation.infra.helpers.CryptoHelperImpl;
+import jakarta.inject.Inject;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
+import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@ExtendWith(MockitoExtension.class)
 public class CreateStudentUseCaseImplTest {
+
+    @Mock
+    StudentRepository studentRepo;
+    @Mock
+    ResponsibleRepository responsibleRepo;
+    @Mock
+    AddressRepository addressRepo;
+    @Mock
+    ConductorRepository conductorRepo;
+    @InjectMocks
+    CreateStudentUseCaseImpl createStudentUseCase;
+
+    Conductor mockConductor;
+    Address mockAddress;
+    Responsible mockResponsible;
+    Student mockStudent;
+
+    @BeforeEach
+    void setup() {
+        mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;
+        mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", 123);
+        mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
+        mockStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", 140,
+                "04", mockConductor, mockResponsible, mockAddress);
+    }
+
     @Test
-    @DisplayName("Criar novo estudante")
-    void testExecute() throws NoSuchAlgorithmException {
-        StudentRepository studentRepoMock = Mockito.mock(StudentRepository.class);
-        ResponsibleRepository responsibleRepoMock = Mockito.mock(ResponsibleRepository.class);
-        AddressRepository addressRepoMock = Mockito.mock(AddressRepository.class);
-        ConductorRepository conductorRepoMock = Mockito.mock(ConductorRepository.class);
+    @DisplayName("Nao deve ser possivel criar um estudante com o endereço invalido.")
+    void case1() {
+        // arrange
+        Mockito.when(responsibleRepo.findById(mockResponsible.getId())).thenReturn(Optional.of(mockResponsible));
+        Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
+        Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.empty());
 
-        //Criando ambiente de teste para responsável
-        CreateResponsibleUseCaseImpl createResponsibleUseCase = new CreateResponsibleUseCaseImpl(responsibleRepoMock);
+        // Act e Assert
+        assertThrows(InvalidAddressException.class, () -> {
+            createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getMonthlyPayment(),
+                    mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+        });
+    }
 
-        createResponsibleUseCase.execute("Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
+    @Test
+    @DisplayName("Nao deve ser possivel criar um estudante com o responsavel invalido.")
+    void case2() {
+        // arrange
+        Mockito.when(responsibleRepo.findById(mockResponsible.getId())).thenReturn(Optional.empty());
+        Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
+        Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.of(mockAddress));
 
-        Mockito.verify(responsibleRepoMock, Mockito.times(1)).create(Mockito.any(Responsible.class));
+        // Act e Assert
+        assertThrows(InvalidResponsibleException.class, () -> {
+            createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getMonthlyPayment(),
+                    mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+        });
+    }
 
-        ArgumentCaptor<Responsible> responsibleCaptor = ArgumentCaptor.forClass(Responsible.class);
-        Mockito.verify(responsibleRepoMock).create(responsibleCaptor.capture());
+    @Test
+    @DisplayName("Nao deve ser possivel criar um estudante com o condutor invalido.")
+    void case3() {
+        // arrange
+        Mockito.when(responsibleRepo.findById(mockResponsible.getId())).thenReturn(Optional.of(mockResponsible));
+        Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.empty());
+        Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.of(mockAddress));
 
-        Responsible responsibleCapture = responsibleCaptor.getValue();
+        // Act e Assert
+        assertThrows(InvalidConductorException.class, () -> {
+            createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getMonthlyPayment(),
+                    mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+        });
+    }
 
-        //Criando ambiente de teste para endereço
-        CreateAddressUseCaseImpl createAddressUseCase = new CreateAddressUseCaseImpl(addressRepoMock);
-
-        createAddressUseCase.execute("Recife", "Iputinga", "Rua José Trigueiro", 46);
-
-        Mockito.verify(addressRepoMock, Mockito.times(1)).create(Mockito.any(Address.class));
-
-        ArgumentCaptor<Address> addressCaptor = ArgumentCaptor.forClass(Address.class);
-        Mockito.verify(addressRepoMock).create(addressCaptor.capture());
-
-        Address addressCapture = addressCaptor.getValue();
-
-        //Criando ambiente de teste para condutor
-        CryptoHelper cryptoHelper = new CryptoHelperImpl();
-
-        CreateConductorUseCaseImpl createConductorUseCase = new CreateConductorUseCaseImpl(conductorRepoMock, cryptoHelper);
-        createConductorUseCase.execute("Danilo Pereira", "danilopereira@teste.com", "Davi@280411", "709.269.174-55");
-
-        Mockito.verify(conductorRepoMock, Mockito.times(1)).create(Mockito.any(Conductor.class));
-
-        ArgumentCaptor<Conductor> conductorCaptor = ArgumentCaptor.forClass(Conductor.class);
-        Mockito.verify(conductorRepoMock).create(conductorCaptor.capture());
-
-        Conductor conductorCapture = conductorCaptor.getValue();
-
-        //Criando ambiente de teste para estudante
-
-        //Definindo o retorno dos métodos de estudante para verificar se condutor, responsável e endereço existem
-        Mockito.when(conductorRepoMock.findById(conductorCapture.getId())).thenReturn(Optional.of(conductorCapture));
-        Mockito.when(responsibleRepoMock.findById(responsibleCapture.getId())).thenReturn(Optional.of(responsibleCapture));
-        Mockito.when(addressRepoMock.findById(addressCapture.getId())).thenReturn(Optional.of(addressCapture));
-
-        CreateStudentUseCaseImpl createStudentUseCase = new CreateStudentUseCaseImpl(studentRepoMock, responsibleRepoMock, addressRepoMock, conductorRepoMock);
-
-        createStudentUseCase.execute("Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", 140,
-                "04", conductorCapture.getId(), responsibleCapture.getId(), addressCapture.getId());
-
-        Mockito.verify(studentRepoMock, Mockito.times(1)).create(Mockito.any(Student.class));
-
+    @Test
+    @DisplayName("Deve ser possivel criar um estudante com todos os dados válidos.")
+    void case4() {
+        // arrange
         ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
-        Mockito.verify(studentRepoMock).create(studentCaptor.capture());
 
+        Mockito.when(responsibleRepo.findById(mockResponsible.getId())).thenReturn(Optional.of(mockResponsible));
+        Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
+        Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.of(mockAddress));
+        Mockito.when(studentRepo.create(studentCaptor.capture())).thenReturn(mockStudent);
+
+        // Act
+        var newStudent = createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getMonthlyPayment(),
+                mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+
+        // Assert
+        // checando retornos
+        assertEquals(mockStudent.getName(), newStudent.getName());
+        assertEquals(mockStudent.getSchool(), newStudent.getSchool());
+        assertEquals(mockStudent.getGrade(), newStudent.getGrade());
+        assertEquals(mockStudent.getMonthlyPayment(), newStudent.getMonthlyPayment());
+        assertEquals(mockStudent.getMonthlyPaymentExpiration(), newStudent.getMonthlyPaymentExpiration());
+        assertEquals(mockStudent.getConductor(), newStudent.getConductor());
+        assertEquals(mockStudent.getResponsible(), newStudent.getResponsible());
+        assertEquals(mockStudent.getAddress(), newStudent.getAddress());
+
+        //checando parâmetros passados para o repositório
         Student studentCapture = studentCaptor.getValue();
+        assertEquals(mockStudent.getName(), studentCapture.getName());
+        assertEquals(mockStudent.getSchool(), studentCapture.getSchool());
+        assertEquals(mockStudent.getGrade(), studentCapture.getGrade());
+        assertEquals(mockStudent.getMonthlyPayment(), studentCapture.getMonthlyPayment());
+        assertEquals(mockStudent.getMonthlyPaymentExpiration(), studentCapture.getMonthlyPaymentExpiration());
+        assertEquals(mockStudent.getConductor(), studentCapture.getConductor());
+        assertEquals(mockStudent.getResponsible(), studentCapture.getResponsible());
+        assertEquals(mockStudent.getAddress(), studentCapture.getAddress());
 
-        //Testes
-        Assertions.assertEquals("Danilo Pereira Pessoa", studentCapture.getName());
-        Assertions.assertEquals("Colégio de São José", studentCapture.getSchool());
-        Assertions.assertEquals("3° Ano (Médio)", studentCapture.getGrade());
-        Assertions.assertEquals(140, studentCapture.getMonthlyPayment());
-        Assertions.assertEquals("04", studentCapture.getMonthlyPaymentExpiration());
-        Assertions.assertEquals(conductorCapture, studentCapture.getConductor());
-        Assertions.assertEquals(responsibleCapture, studentCapture.getResponsible());
-        Assertions.assertEquals(addressCapture, studentCapture.getAddress());
     }
 }
