@@ -30,8 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateStudentUseCaseImplTest {
@@ -131,6 +130,7 @@ public class CreateStudentUseCaseImplTest {
         assertEquals(mockStudent.getConductor(), newStudent.getConductor());
         assertEquals(mockStudent.getResponsible(), newStudent.getResponsible());
         assertEquals(mockStudent.getAddress(), newStudent.getAddress());
+        assertDoesNotThrow(() -> UUID.fromString(newStudent.getId().toString()));
 
         //checando parâmetros passados para o repositório
         Student studentCapture = studentCaptor.getValue();
@@ -142,6 +142,6 @@ public class CreateStudentUseCaseImplTest {
         assertEquals(mockStudent.getConductor(), studentCapture.getConductor());
         assertEquals(mockStudent.getResponsible(), studentCapture.getResponsible());
         assertEquals(mockStudent.getAddress(), studentCapture.getAddress());
-
+        assertDoesNotThrow(() -> UUID.fromString(studentCapture.getId().toString()));
     }
 }
