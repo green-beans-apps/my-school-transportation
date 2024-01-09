@@ -5,33 +5,46 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.reposi
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(MockitoExtension.class)
 class CreateAddressUseCaseImplTest {
+  @InjectMocks
+  CreateAddressUseCaseImpl createAddressUseCase;
+
+  @Mock
+  AddressRepository addressRepo;
+
   @Test
-  @DisplayName("Criar novo endereço")
-  void testExecute() {
-    // Criação do mock a ser testado
-    AddressRepository addressRepoMock = Mockito.mock(AddressRepository.class);
-
-    //Passando para classe de implementação o mock
-    CreateAddressUseCaseImpl createAddressUseCase = new CreateAddressUseCaseImpl(addressRepoMock);
-
-    //Chamando o método que será testado
-    createAddressUseCase.execute("Recife", "Iputinga", "Rua José Trigueiro", 46);
-
-    //Servirá para assegurar que o método só foi chamado 1 vez com qualquer instância de Address como argumento
-    Mockito.verify(addressRepoMock, Mockito.times(1)).create(Mockito.any(Address.class));
-
-    //Irá capturar os argumento passados para o método create. Permitem ser acessados depois
+  @DisplayName("Deve cadastrar um novo endereço com sucesso.")
+  void case1() {
     ArgumentCaptor<Address> addressCaptor = ArgumentCaptor.forClass(Address.class);
-    Mockito.verify(addressRepoMock).create(addressCaptor.capture());
 
-    //Verificação dos parâmetros
-    Address addressCapture = addressCaptor.getValue();
-    Assertions.assertEquals("Recife", addressCapture.getCity());
-    Assertions.assertEquals("Iputinga", addressCapture.getDistrict());
-    Assertions.assertEquals("Rua José Trigueiro", addressCapture.getStreet());
-    Assertions.assertEquals(46, addressCapture.getHouseNumber());
+    var mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", 123);
+    Mockito.when(addressRepo.create(addressCaptor.capture())).thenReturn(mockAddress);
+
+    var newAddress = createAddressUseCase.execute("Olinda", "Pernambuco", "Rua São José", 123);
+
+    //Checando o retorno do método
+    assertEquals(mockAddress.getCity(), newAddress.getCity());
+    assertEquals(mockAddress.getDistrict(), newAddress.getDistrict());
+    assertEquals(mockAddress.getStreet(), newAddress.getStreet());
+    assertEquals(mockAddress.getHouseNumber(), newAddress.getHouseNumber());
+    assertDoesNotThrow(() -> UUID.fromString(newAddress.getId().toString()));
+
+    //Checando os dados passados para o address repository
+    Address capturedArgument = addressCaptor.getValue();
+    assertEquals(mockAddress.getCity(), capturedArgument.getCity());
+    assertEquals(mockAddress.getDistrict(), capturedArgument.getDistrict());
+    assertEquals(mockAddress.getStreet(), capturedArgument.getStreet());
+    assertEquals(mockAddress.getHouseNumber(), capturedArgument.getHouseNumber());
+    assertDoesNotThrow(() -> UUID.fromString(capturedArgument.getId().toString()));
   }
 }
