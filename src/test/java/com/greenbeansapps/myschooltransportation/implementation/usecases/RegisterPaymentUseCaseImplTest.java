@@ -35,12 +35,12 @@ class RegisterPaymentUseCaseImplTest {
   @InjectMocks
   RegisterPaymentUseCaseImpl registerPaymentUseCase;
 
-  Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;
-  Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "São José", 123);;
-  Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício", "mauricio@teste.com", "(81)97314-8001");;
+  Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");
+  Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "São José", 123);
+  Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício", "mauricio@teste.com", "(81)97314-8001");
   Student mockStudent = new Student(UUID.randomUUID(), "Danilo", "Colégio São José", "3° Ano", 140,
-          "04", mockConductor, mockResponsible, mockAddress);;
-  Payment mockPayment = new Payment(UUID.randomUUID(), new Date(), Months.JANEIRO, mockStudent );;
+          "04", mockConductor, mockResponsible, mockAddress);
+  Payment mockPayment = new Payment(UUID.randomUUID(), new Date(), Months.JANEIRO, mockStudent );
 
   @Test
   @DisplayName("Nao deve ser possivel registrar pagamento de um estudante invalido")
@@ -56,7 +56,7 @@ class RegisterPaymentUseCaseImplTest {
   @DisplayName("Nao deve ser possivel registrar pagamento duas vezes em um mesmo mes.")
   void case2() {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
-    Mockito.when(paymentRepo.findPaymentPerMonth(Mockito.any(), Mockito.any())).thenReturn(Optional.of(mockPayment));
+    Mockito.when(paymentRepo.findPaymentPerMonth(mockStudent.getId(),mockPayment.getPaymentMonth())).thenReturn(Optional.of(mockPayment));
 
     assertThrows(ExistingPaymentException.class, () -> {
       registerPaymentUseCase.execute(mockStudent.getId(), mockPayment.getPaymentMonth());
