@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.exeptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,8 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GetStudentByIdUseCaseImplTest {
@@ -27,19 +27,11 @@ public class GetStudentByIdUseCaseImplTest {
     @InjectMocks
     GetStudentByIdUseCaseImpl getStudentByIdUseCase;
 
-    Conductor mockConductor;
-    Address mockAddress;
-    Responsible mockResponsible;
-    Student mockStudent;
-
-    @BeforeEach
-    void setup() {
-        mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;
-        mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", 123);
-        mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
-        mockStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", 140,
-                "04", mockConductor, mockResponsible, mockAddress);
-    }
+    Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
+    Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", 123);;
+    Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
+    Student mockStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", 140,
+            "04", mockConductor, mockResponsible, mockAddress);
 
     @Test
     @DisplayName("Deve retornar um estudante por id")
@@ -61,5 +53,17 @@ public class GetStudentByIdUseCaseImplTest {
         assertEquals(mockStudent.getResponsible(), returnStudent.getResponsible());
         assertEquals(mockStudent.getAddress(), returnStudent.getAddress());
         assertDoesNotThrow(() -> UUID.fromString(returnStudent.getId().toString()));
+    }
+
+    @Test
+    @DisplayName("Não deve retornar um estudante com id inválido")
+    void case2() {
+        //Arrange
+        Mockito.when(studentRepo.findById(mockStudent.getId())).thenReturn(Optional.empty());
+
+        //Act and Assert
+        assertThrows(StudentNotFoundException.class, () -> {
+           getStudentByIdUseCase.execute(mockStudent.getId());
+        });
     }
 }
