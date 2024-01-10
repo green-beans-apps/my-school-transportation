@@ -7,16 +7,10 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidAddressException;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidConductorException;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidResponsibleException;
-import com.greenbeansapps.myschooltransportation.implementation.protocols.helpers.CryptoHelper;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
-import com.greenbeansapps.myschooltransportation.infra.helpers.CryptoHelperImpl;
-import jakarta.inject.Inject;
-import org.checkerframework.checker.units.qual.C;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,19 +39,11 @@ public class CreateStudentUseCaseImplTest {
     @InjectMocks
     CreateStudentUseCaseImpl createStudentUseCase;
 
-    Conductor mockConductor;
-    Address mockAddress;
-    Responsible mockResponsible;
-    Student mockStudent;
-
-    @BeforeEach
-    void setup() {
-        mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;
-        mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", 123);
-        mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
-        mockStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", 140,
-                "04", mockConductor, mockResponsible, mockAddress);
-    }
+    Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
+    Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", 123);;
+    Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
+    Student mockStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", 140,
+            "04", mockConductor, mockResponsible, mockAddress);
 
     @Test
     @DisplayName("Nao deve ser possivel criar um estudante com o endereço invalido.")
