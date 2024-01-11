@@ -22,7 +22,7 @@
         @Test
         @DisplayName("Criando endereço")
         public void createAddress() {
-            Address address1 = new Address(UUID.randomUUID(), "Recife", "Bairro Tal", "Rua 3", 46);
+            Address address1 = new Address(UUID.randomUUID(), "Recife", "Bairro Tal", "Rua 3", "Próximo ao mercado X", 46);
 
         }
     }

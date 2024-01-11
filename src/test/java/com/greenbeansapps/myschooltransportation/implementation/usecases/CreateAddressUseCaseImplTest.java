@@ -27,15 +27,16 @@ class CreateAddressUseCaseImplTest {
   void case1() {
     ArgumentCaptor<Address> addressCaptor = ArgumentCaptor.forClass(Address.class);
 
-    var mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", 123);
+    Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
     Mockito.when(addressRepo.create(addressCaptor.capture())).thenReturn(mockAddress);
 
-    var newAddress = createAddressUseCase.execute("Olinda", "Pernambuco", "Rua São José", 123);
+    var newAddress = createAddressUseCase.execute("Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
 
     //Checando o retorno do método
     assertEquals(mockAddress.getCity(), newAddress.getCity());
     assertEquals(mockAddress.getDistrict(), newAddress.getDistrict());
     assertEquals(mockAddress.getStreet(), newAddress.getStreet());
+    assertEquals(mockAddress.getReferencePoint(), newAddress.getReferencePoint());
     assertEquals(mockAddress.getHouseNumber(), newAddress.getHouseNumber());
     assertDoesNotThrow(() -> UUID.fromString(newAddress.getId().toString()));
 
@@ -44,6 +45,7 @@ class CreateAddressUseCaseImplTest {
     assertEquals(mockAddress.getCity(), capturedArgument.getCity());
     assertEquals(mockAddress.getDistrict(), capturedArgument.getDistrict());
     assertEquals(mockAddress.getStreet(), capturedArgument.getStreet());
+    assertEquals(mockAddress.getReferencePoint(), capturedArgument.getReferencePoint());
     assertEquals(mockAddress.getHouseNumber(), capturedArgument.getHouseNumber());
     assertDoesNotThrow(() -> UUID.fromString(capturedArgument.getId().toString()));
   }

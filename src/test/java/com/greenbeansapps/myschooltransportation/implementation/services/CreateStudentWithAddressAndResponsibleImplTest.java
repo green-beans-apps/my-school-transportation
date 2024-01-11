@@ -35,26 +35,26 @@ class CreateStudentWithAddressAndResponsibleImplTest {
     CreateStudentWithAddressAndResponsibleImpl createStudentWithAddressAndResponsible;
 
     Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");
-    Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "São José", 123);
+    Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
     Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício", "mauricio@teste.com", "(81)97314-8001");
     Student mockStudent = new Student(UUID.randomUUID(), "Danilo", "Colégio São José", "3° Ano", 140,
             "04", mockConductor, mockResponsible, mockAddress);
 
     CreateStudentWithAddressAndResponsible.StudentData mockStudentData = new CreateStudentWithAddressAndResponsible.StudentData(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(),  mockStudent.getMonthlyPayment(), mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId());
     CreateStudentWithAddressAndResponsible.ResponsibleData mockResponsibleData = new CreateStudentWithAddressAndResponsible.ResponsibleData(mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
-    CreateStudentWithAddressAndResponsible.AddressData mockAddressData = new CreateStudentWithAddressAndResponsible.AddressData(mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getHouseNumber());
+    CreateStudentWithAddressAndResponsible.AddressData mockAddressData = new CreateStudentWithAddressAndResponsible.AddressData(mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getReferencePoint(), mockAddress.getHouseNumber());
     CreateStudentWithAddressAndResponsible.Request mockRequest = new CreateStudentWithAddressAndResponsible.Request(mockStudentData, mockResponsibleData, mockAddressData);
 
     @Test
-    @DisplayName("deve ser possivel criar um estudante com endereco e responsavel.")
+    @DisplayName("Deve ser possivel criar um estudante com endereco e responsavel.")
     void case1() {
-        Mockito.when(createAddressUseCase.execute(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockAddress);
+        Mockito.when(createAddressUseCase.execute(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockAddress);
         Mockito.when(createResponsibleUseCase.execute(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockResponsible);
         Mockito.when(createStudentUseCase.execute(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockStudent);
 
         Student createdStudent = createStudentWithAddressAndResponsible.execute(mockRequest);
 
-        Mockito.verify(createAddressUseCase).execute(mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getHouseNumber());
+        Mockito.verify(createAddressUseCase).execute(mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getReferencePoint(), mockAddress.getHouseNumber());
         Mockito.verify(createResponsibleUseCase).execute(mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
         Mockito.verify(createStudentUseCase).execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getMonthlyPayment(), mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
 
