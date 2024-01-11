@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.services.CreateStudentWithAddressAndResponsible;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateAddressUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateResponsibleUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateStudentUseCase;
@@ -39,10 +40,25 @@ class CreateStudentWithAddressAndResponsibleImplTest {
     Student mockStudent = new Student(UUID.randomUUID(), "Danilo", "Colégio São José", "3° Ano", 140,
             "04", mockConductor, mockResponsible, mockAddress);
 
+    CreateStudentWithAddressAndResponsible.StudentData mockStudentData = new CreateStudentWithAddressAndResponsible.StudentData(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(),  mockStudent.getMonthlyPayment(), mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId());
+    CreateStudentWithAddressAndResponsible.ResponsibleData mockResponsibleData = new CreateStudentWithAddressAndResponsible.ResponsibleData(mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
+    CreateStudentWithAddressAndResponsible.AddressData mockAddressData = new CreateStudentWithAddressAndResponsible.AddressData(mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getHouseNumber());
+    CreateStudentWithAddressAndResponsible.Request mockRequest = new CreateStudentWithAddressAndResponsible.Request(mockStudentData, mockResponsibleData, mockAddressData);
+
     @Test
     @DisplayName("deve ser possivel criar um estudante com endereco e responsavel.")
     void case1() {
+        Mockito.when(createAddressUseCase.execute(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockAddress);
+        Mockito.when(createResponsibleUseCase.execute(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockResponsible);
+        Mockito.when(createStudentUseCase.execute(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockStudent);
 
+        Student createdStudent = createStudentWithAddressAndResponsible.execute(mockRequest);
+
+        Mockito.verify(createAddressUseCase).execute(mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getHouseNumber());
+        Mockito.verify(createResponsibleUseCase).execute(mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
+        Mockito.verify(createStudentUseCase).execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getMonthlyPayment(), mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+
+        assertEquals(mockStudent, createdStudent);
     }
 
 }
