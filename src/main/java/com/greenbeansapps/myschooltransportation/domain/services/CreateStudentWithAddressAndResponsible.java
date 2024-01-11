@@ -17,6 +17,6 @@ public interface CreateStudentWithAddressAndResponsible {
 
   public record ResponsibleData(String responsibleName, String email, String phoneNumber) { }
 
-  public record AddressData(String city, String district, String street, Integer houseNumber) { }
+  public record AddressData(String city, String district, String street, String referencePoint, Integer houseNumber) { }
 
 }

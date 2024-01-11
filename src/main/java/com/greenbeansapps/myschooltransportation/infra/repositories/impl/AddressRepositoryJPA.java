@@ -33,6 +33,6 @@ public class AddressRepositoryJPA implements AddressRepository {
     if(addressSchema.isEmpty()) {
       return Optional.empty();
     }
-    return Optional.of(new Address(addressSchema.get().getId(), addressSchema.get().getCity(), addressSchema.get().getDistrict(), addressSchema.get().getStreet(), addressSchema.get().getHouseNumber()));
+    return Optional.of(new Address(addressSchema.get().getId(), addressSchema.get().getCity(), addressSchema.get().getDistrict(), addressSchema.get().getStreet(), addressSchema.get().getReferencePoint(), addressSchema.get().getHouseNumber()));
   }
 }

@@ -7,16 +7,18 @@ public class Address {
     private String city;
     private String district;
     private String street;
+    private String referencePoint;
     private Integer houseNumber;
 
     public Address() {
     }
 
-    public Address(UUID id, String city, String district, String street, Integer houseNumber) {
+    public Address(UUID id, String city, String district, String street, String referencePoint, Integer houseNumber) {
         this.id = id;
         this.city = city;
         this.district = district;
         this.street = street;
+        this.referencePoint = referencePoint;
         this.houseNumber = houseNumber;
     }
 
@@ -50,6 +52,14 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getReferencePoint() {
+        return referencePoint;
+    }
+
+    public void setReferencePoint(String referencePoint) {
+        this.referencePoint = referencePoint;
     }
 
     public Integer getHouseNumber() {
