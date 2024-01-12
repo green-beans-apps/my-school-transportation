@@ -5,6 +5,7 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.reposi
 import com.greenbeansapps.myschooltransportation.infra.repositories.IConductorRepositoryJPA;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ConductorSchema;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -53,5 +54,9 @@ public class ConductorRepositoryJPA implements ConductorRepository {
         }
         return Optional.of(new Conductor(conductorSchema.get().getId(), conductorSchema.get().getName(), conductorSchema.get().getEmail(), conductorSchema.get().getCpf(), conductorSchema.get().getPassword()));
 
+    }
+
+    public UserDetails findBycpfUserDetails(String cpf) {
+        return this.conductorRepo.findBycpf(cpf);
     }
 }
