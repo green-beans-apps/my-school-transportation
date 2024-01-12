@@ -26,7 +26,7 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
     }
 
     @Override
-    public Conductor execute(String name, String email, String password, String cpf) throws NoSuchAlgorithmException {
+    public Conductor execute(String name, String email, String password, String cpf) {
 
         String regexPassword = "^(?=.*[!@#$%^&*(),.?\":{}|<>])(?=.*[a-zA-Z0-9]).{6,}$";
         // Compila a expressão
