@@ -3,5 +3,5 @@ package com.greenbeansapps.myschooltransportation.implementation.protocols.helpe
 import java.security.NoSuchAlgorithmException;
 
 public interface CryptoHelper {
-    public String generateRash(String data) throws NoSuchAlgorithmException;
+    public String generateRash(String data);
 }
