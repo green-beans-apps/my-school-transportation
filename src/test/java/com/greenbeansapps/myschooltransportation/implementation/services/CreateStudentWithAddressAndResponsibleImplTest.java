@@ -43,7 +43,7 @@ class CreateStudentWithAddressAndResponsibleImplTest {
     CreateStudentWithAddressAndResponsible.StudentData mockStudentData = new CreateStudentWithAddressAndResponsible.StudentData(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(),  mockStudent.getMonthlyPayment(), mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId());
     CreateStudentWithAddressAndResponsible.ResponsibleData mockResponsibleData = new CreateStudentWithAddressAndResponsible.ResponsibleData(mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
     CreateStudentWithAddressAndResponsible.AddressData mockAddressData = new CreateStudentWithAddressAndResponsible.AddressData(mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getReferencePoint(), mockAddress.getHouseNumber());
-    CreateStudentWithAddressAndResponsible.Request mockRequest = new CreateStudentWithAddressAndResponsible.Request(mockStudentData, mockResponsibleData, mockAddressData);
+    CreateStudentWithAddressAndResponsible.CreateStudentWithAddressAndResponsibleRequest mockRequest = new CreateStudentWithAddressAndResponsible.CreateStudentWithAddressAndResponsibleRequest(mockStudentData, mockResponsibleData, mockAddressData);
 
     @Test
     @DisplayName("Deve ser possivel criar um estudante com endereco e responsavel.")
