@@ -3,10 +3,12 @@ package com.greenbeansapps.myschooltransportation.main.controllers;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.CpfAlreadyRegisteredException;
 import com.greenbeansapps.myschooltransportation.domain.services.CreateStudentWithAddressAndResponsible;
 import com.greenbeansapps.myschooltransportation.implementation.services.CreateStudentWithAddressAndResponsibleImpl;
+import com.greenbeansapps.myschooltransportation.main.constraints.ValidUUID;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,14 +40,8 @@ public class CreateStudentController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    try {
-      this.createStudentUseCase.execute(this.convertToRequest(data));
-      return ResponseEntity.status(HttpStatus.CREATED).build();
-    } catch (CpfAlreadyRegisteredException cpfAlreadyRegisteredException) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cpfAlreadyRegisteredException.getMessage());
-    } catch (Error err) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err.getMessage());
-    }
+    this.createStudentUseCase.execute(this.convertToRequest(data));
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   private CreateStudentWithAddressAndResponsible.CreateStudentWithAddressAndResponsibleRequest convertToRequest(CreateStudentDto data) {
@@ -55,7 +51,7 @@ public class CreateStudentController {
             data.student().grade(),
             data.student().monthlyPayment(),
             data.student().monthlyPaymentExpiration(),
-            data.student().conductorId()
+            UUID.fromString(data.student().conductorId())
     );
     var responsibleData = new CreateStudentWithAddressAndResponsible.ResponsibleData(
             data.responsible().responsibleName(),
@@ -72,11 +68,33 @@ public class CreateStudentController {
     return new CreateStudentWithAddressAndResponsible.CreateStudentWithAddressAndResponsibleRequest(studentData, responsibleData, addressData);
   }
 
-  public record CreateStudentDto(@Valid StudentDataDto student,@Valid ResponsibleDataDto responsible,@Valid AddressDataDto address) { }
+  public record CreateStudentDto(
+          @Valid StudentDataDto student,
+          @Valid ResponsibleDataDto responsible,
+          @Valid AddressDataDto address
+  ) { }
 
-  public record StudentDataDto( @NotBlank String studentName, @NotBlank String school, @NotBlank String grade, @NotNull  Integer monthlyPayment, @NotBlank String monthlyPaymentExpiration, @NotNull UUID conductorId) { }
+  public record StudentDataDto(
+          @NotBlank String studentName,
+          @NotBlank String school,
+          @NotBlank String grade,
+          @NotNull Integer monthlyPayment,
+          @NotBlank String monthlyPaymentExpiration,
+          @ValidUUID
+          String conductorId
+  ) { }
 
-  public record ResponsibleDataDto( @NotBlank String responsibleName, @NotBlank String email, @NotBlank String phoneNumber) { }
+  public record ResponsibleDataDto(
+          @NotBlank String responsibleName,
+          @NotBlank String email,
+          @NotBlank String phoneNumber
+  ) { }
 
-  public record AddressDataDto( @NotBlank String city, @NotBlank String district, @NotBlank String street, @NotBlank String referencePoint, @NotNull Integer houseNumber) { }
+  public record AddressDataDto(
+          @NotBlank String city,
+          @NotBlank String district,
+          @NotBlank String street,
+          @NotBlank String referencePoint,
+          @NotNull Integer houseNumber
+  ) { }
 }
