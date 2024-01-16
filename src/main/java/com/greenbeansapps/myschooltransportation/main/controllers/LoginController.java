@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController()
 @RequestMapping("/auth")
 public class LoginController {
@@ -42,8 +44,9 @@ public class LoginController {
     try {
       var userNamePassword = new UsernamePasswordAuthenticationToken(data.getLogin(), data.getPassword());
       var auth = this.authenticationManager.authenticate(userNamePassword);
-      var token = this.tokenService.generateToken((ConductorSchema) auth.getPrincipal());
-      return ResponseEntity.ok(new LoginResponseDto(token));
+      var conductorSchema = (ConductorSchema) auth.getPrincipal();
+      var token = this.tokenService.generateToken(conductorSchema);
+      return ResponseEntity.ok(new LoginResponseDto(token, conductorSchema.getId()));
     } catch (RuntimeException err) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body("error: Invalid username or password");
     }
@@ -58,6 +61,6 @@ public class LoginController {
     private String password;
   }
 
-  public record LoginResponseDto(String token) {
+  public record LoginResponseDto(String token, UUID conductorId) {
   }
 }
