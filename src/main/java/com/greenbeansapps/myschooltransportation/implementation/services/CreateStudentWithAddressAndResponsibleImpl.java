@@ -7,9 +7,11 @@ import com.greenbeansapps.myschooltransportation.domain.services.CreateStudentWi
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateAddressUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateResponsibleUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateStudentUseCase;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class CreateStudentWithAddressAndResponsibleImpl implements CreateStudentWithAddressAndResponsible {
 
     private final CreateAddressUseCase createAddressUseCase;
@@ -23,7 +25,7 @@ public class CreateStudentWithAddressAndResponsibleImpl implements CreateStudent
     }
 
     @Override
-    public Student execute(Request request) {
+    public Student execute(CreateStudentWithAddressAndResponsibleRequest request) {
         Address newAddress = this.createAddressUseCase.execute(request.address().city(), request.address().district(), request.address().street(), request.address().referencePoint(), request.address().houseNumber());
         Responsible newResponsible = this.createResponsibleUseCase.execute(request.responsible().responsibleName(), request.responsible().email(), request.responsible().phoneNumber());
         return this.createStudentUseCase.execute(request.student().studentName(), request.student().school(), request.student().grade(), request.student().monthlyPayment(), request.student().monthlyPaymentExpiration(), request.student().conductorId(), newResponsible.getId(), newAddress.getId());
