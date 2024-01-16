@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.ExistingPaymentException;
+import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidMonthException;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.RegisterPaymentUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
@@ -11,6 +12,7 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.reposi
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +33,9 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
       throw new StudentNotFoundException();
     }
 
+    //Verifica se o valor inserido é válido
+    validateMonth(paymentMonth);
+
     Optional<Payment> paymentExists = this.paymentRepo.findPaymentPerMonth(studentId, paymentMonth);
     if(paymentExists.isPresent()) {
       throw new ExistingPaymentException();
@@ -38,5 +43,13 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
 
     Payment newPayment = new Payment(UUID.randomUUID(), new Date(), paymentMonth, student.get());
     return this.paymentRepo.register(newPayment);
+  }
+
+  private void validateMonth(Months paymentMonth) {
+    try {
+      Months.valueOf(paymentMonth.name());
+    } catch (IllegalArgumentException e) {
+      throw new InvalidMonthException();
+    }
   }
 }
