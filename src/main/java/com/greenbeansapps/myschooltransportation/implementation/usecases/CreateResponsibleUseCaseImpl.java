@@ -3,9 +3,11 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateResponsibleUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class CreateResponsibleUseCaseImpl implements CreateResponsibleUseCase {
     private final ResponsibleRepository responsibleRepo;
 
