@@ -8,11 +8,13 @@ import com.greenbeansapps.myschooltransportation.domain.exeptions.StudentNotFoun
 import com.greenbeansapps.myschooltransportation.domain.usecases.RegisterPaymentUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
   private final PaymentRepository paymentRepo;
   private final StudentRepository studentRepo;

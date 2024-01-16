@@ -4,10 +4,12 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exeptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.GetStudentByIdUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class GetStudentByIdUseCaseImpl implements GetStudentByIdUseCase {
 
   private final StudentRepository studentRepo;

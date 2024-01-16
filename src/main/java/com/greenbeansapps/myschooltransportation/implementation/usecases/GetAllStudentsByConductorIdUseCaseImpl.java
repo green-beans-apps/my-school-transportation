@@ -6,11 +6,13 @@ import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidConduct
 import com.greenbeansapps.myschooltransportation.domain.usecases.GetAllStudentsByConductorIdUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class GetAllStudentsByConductorIdUseCaseImpl implements GetAllStudentsByConductorIdUseCase {
 
     private final StudentRepository studentRepo;
