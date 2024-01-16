@@ -12,7 +12,7 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name= "address_schema")
+@Table(name= "address")
 public class AddressSchema implements Serializable {
 
   @Serial

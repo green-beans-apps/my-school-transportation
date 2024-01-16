@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "payment_schema")
+@Table(name = "payment")
 public class PaymentSchema implements Serializable {
 
     @Serial

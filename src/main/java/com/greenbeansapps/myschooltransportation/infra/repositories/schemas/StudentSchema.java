@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "student_schema")
+@Table(name = "student")
 public class StudentSchema implements Serializable {
 
     @Serial

@@ -16,7 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "conductor_schema")
+@Table(name = "conductor")
 public class ConductorSchema implements Serializable, UserDetails {
 
     @Serial

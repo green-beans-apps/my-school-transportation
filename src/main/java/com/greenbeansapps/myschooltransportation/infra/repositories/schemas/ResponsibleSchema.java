@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "responsible_schema")
+@Table(name = "responsible")
 public class ResponsibleSchema implements Serializable {
 
     @Serial
