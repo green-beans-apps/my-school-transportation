@@ -5,9 +5,9 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import java.util.UUID;
 
 public interface CreateStudentWithAddressAndResponsible {
-    public Student execute(Request request);
+    public Student execute(CreateStudentWithAddressAndResponsibleRequest request);
 
-  public record Request(
+  public record CreateStudentWithAddressAndResponsibleRequest(
           StudentData student,
           ResponsibleData responsible,
           AddressData address
