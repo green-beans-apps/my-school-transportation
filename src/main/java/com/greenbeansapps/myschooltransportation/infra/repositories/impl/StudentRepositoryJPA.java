@@ -6,6 +6,9 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IStudentRepositoryJPA;
+import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.AddressSchema;
+import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ConductorSchema;
+import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ResponsibleSchema;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.StudentSchema;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
@@ -28,6 +31,20 @@ public class StudentRepositoryJPA implements StudentRepository {
     public Student create(Student student) {
         var newStudent = new StudentSchema();
         BeanUtils.copyProperties(student, newStudent);
+
+        var newConductor = new ConductorSchema();
+        BeanUtils.copyProperties(student.getConductor(), newConductor);
+        newStudent.setConductor(newConductor);
+
+        var newResponsible = new ResponsibleSchema();
+        BeanUtils.copyProperties(student.getResponsible(), newResponsible);
+        newStudent.setResponsible(newResponsible);
+
+        var newAddress = new AddressSchema();
+        BeanUtils.copyProperties(student.getAddress(), newAddress);
+        newStudent.setAddress(newAddress);
+
+        System.out.println(newStudent.getAddress());
         this.studentRepo.save(newStudent);
         return student;
     }
