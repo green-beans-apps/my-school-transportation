@@ -26,6 +26,11 @@ public class HandleExceptionController extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
   }
 
+  @ExceptionHandler(InvalidMonthException.class)
+  private ResponseEntity<String> invalidMonthExceptionHandler(InvalidMonthException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+  }
+
   @ExceptionHandler(InvalidAddressException.class)
   private ResponseEntity<String> invalidAddressExceptionHandler(InvalidAddressException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
