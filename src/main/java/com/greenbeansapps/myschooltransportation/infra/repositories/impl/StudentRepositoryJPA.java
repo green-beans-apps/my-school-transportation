@@ -44,7 +44,6 @@ public class StudentRepositoryJPA implements StudentRepository {
         BeanUtils.copyProperties(student.getAddress(), newAddress);
         newStudent.setAddress(newAddress);
 
-        System.out.println(newStudent.getAddress());
         this.studentRepo.save(newStudent);
         return student;
     }
@@ -90,5 +89,16 @@ public class StudentRepositoryJPA implements StudentRepository {
         return Optional.of(new Student(studentSchema.get().getId(), studentSchema.get().getName(), studentSchema.get().getSchool(),
                 studentSchema.get().getGrade(), studentSchema.get().getMonthlyPayment(), studentSchema.get().getMonthlyPaymentExpiration(),
                 newConductor, newResponsible, newAddress));
+    }
+
+    @Override
+    public Boolean deleteStudent(UUID studentId) {
+        Optional<StudentSchema> studentSchema = this.studentRepo.findById(studentId);
+        if (studentSchema.isEmpty()) {
+            return false;
+        }
+
+        studentRepo.delete(studentSchema.get());
+        return true;
     }
 }

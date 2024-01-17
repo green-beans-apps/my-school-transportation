@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.implementation.protocols.repositories;
 
+import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface StudentRepository {
     public Student create(Student student);
     public List<Student> findAllByConductorId(UUID conductorId);
     public Optional<Student> findById(UUID studentId);
+    public Boolean deleteStudent(UUID studentId);
 }
