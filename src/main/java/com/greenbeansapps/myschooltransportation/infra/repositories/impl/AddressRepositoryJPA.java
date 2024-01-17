@@ -35,4 +35,21 @@ public class AddressRepositoryJPA implements AddressRepository {
     }
     return Optional.of(new Address(addressSchema.get().getId(), addressSchema.get().getCity(), addressSchema.get().getDistrict(), addressSchema.get().getStreet(), addressSchema.get().getReferencePoint(), addressSchema.get().getHouseNumber()));
   }
+
+  @Override
+  public Optional<Address> updateAddress(Address address) {
+    Optional<AddressSchema> addressSchema = this.addressRepo.findById(address.getId());
+    if(addressSchema.isEmpty()) {
+      return Optional.empty();
+    }
+
+    addressSchema.get().setCity(address.getCity());
+    addressSchema.get().setDistrict(address.getDistrict());
+    addressSchema.get().setStreet(address.getStreet());
+    addressSchema.get().setReferencePoint(address.getReferencePoint());
+    addressSchema.get().setHouseNumber(address.getHouseNumber());
+
+    this.addressRepo.save(addressSchema.get());
+    return Optional.of(new Address(addressSchema.get().getId(), addressSchema.get().getCity(), addressSchema.get().getDistrict(), addressSchema.get().getStreet(), addressSchema.get().getReferencePoint(), addressSchema.get().getHouseNumber()));
+  }
 }
