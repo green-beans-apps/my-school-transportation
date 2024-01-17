@@ -24,17 +24,11 @@ public class GetStudentByIdController {
 
     @GetMapping("/{studentId}")
     public ResponseEntity getStudentById(@PathVariable("studentId") UUID studentId) {
-        try {
-            var newStudent = this.getStudentByIdUseCase.execute(studentId);
-            var studentResponseDto = new StudentResponseDto(newStudent.getId(), newStudent.getName(), newStudent.getSchool(), newStudent.getGrade(),
-                    newStudent.getMonthlyPayment(), newStudent.getMonthlyPaymentExpiration(), newStudent.getConductor(), newStudent.getResponsible(),
-                    newStudent.getAddress());
-            return ResponseEntity.status(HttpStatus.OK).body(studentResponseDto);
-        } catch (StudentNotFoundException studentNotFoundException) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(studentNotFoundException.getMessage());
-        } catch (Error err) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err.getMessage());
-        }
+        var newStudent = this.getStudentByIdUseCase.execute(studentId);
+        var studentResponseDto = new StudentResponseDto(newStudent.getId(), newStudent.getName(), newStudent.getSchool(), newStudent.getGrade(),
+                newStudent.getMonthlyPayment(), newStudent.getMonthlyPaymentExpiration(), newStudent.getConductor(), newStudent.getResponsible(),
+                newStudent.getAddress());
+        return ResponseEntity.status(HttpStatus.OK).body(studentResponseDto);
     }
 
     public record StudentResponseDto(UUID id, String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, Responsible responsible, Address address) { }

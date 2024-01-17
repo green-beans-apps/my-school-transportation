@@ -36,18 +36,8 @@ public class RegisterPaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        try {
-            this.registerPaymentUseCase.execute(registerPaymentDto.studentId, registerPaymentDto.month);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (StudentNotFoundException studentNotFoundException) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(studentNotFoundException.getMessage());
-        } catch (InvalidMonthException invalidMonthException) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(invalidMonthException.getMessage());
-        } catch (ExistingPaymentException existingPaymentException) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(existingPaymentException.getMessage());
-        } catch (Error err) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err.getMessage());
-        }
+        this.registerPaymentUseCase.execute(registerPaymentDto.studentId, registerPaymentDto.month);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     public record RegisterPaymentDto(@NotNull UUID studentId, @NotBlank String month) {}
