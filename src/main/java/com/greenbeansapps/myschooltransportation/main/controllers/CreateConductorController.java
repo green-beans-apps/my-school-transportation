@@ -36,14 +36,8 @@ public class CreateConductorController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    try {
-      this.createConductorUseCase.execute(data.getName(), data.getEmail(), data.getPassword(), data.getCpf());
-      return ResponseEntity.status(HttpStatus.CREATED).build();
-    } catch (CpfAlreadyRegisteredException cpfAlreadyRegisteredException) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cpfAlreadyRegisteredException.getMessage());
-    } catch (Error err) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err.getMessage());
-    }
+    this.createConductorUseCase.execute(data.getName(), data.getEmail(), data.getPassword(), data.getCpf());
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
   @Data
   public static class CreateConductorDto {
