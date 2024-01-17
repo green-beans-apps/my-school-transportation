@@ -27,27 +27,27 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
   }
 
   @Override
-  public Payment execute(UUID studentId, Months paymentMonth) {
+  public Payment execute(UUID studentId, String paymentMonth) {
     Optional<Student> student = this.studentRepo.findById(studentId);
     if(student.isEmpty()) {
       throw new StudentNotFoundException();
     }
 
     //Verifica se o valor inserido é válido
-    validateMonth(paymentMonth);
+    Months month = validateMonth(paymentMonth);
 
-    Optional<Payment> paymentExists = this.paymentRepo.findPaymentPerMonth(studentId, paymentMonth);
+    Optional<Payment> paymentExists = this.paymentRepo.findPaymentPerMonth(studentId, month);
     if(paymentExists.isPresent()) {
       throw new ExistingPaymentException();
     }
 
-    Payment newPayment = new Payment(UUID.randomUUID(), new Date(), paymentMonth, student.get());
+    Payment newPayment = new Payment(UUID.randomUUID(), new Date(), month, student.get());
     return this.paymentRepo.register(newPayment);
   }
 
-  private void validateMonth(Months paymentMonth) {
+  private Months validateMonth(String paymentMonth) {
     try {
-      Months.valueOf(paymentMonth.name());
+      return Months.valueOf(paymentMonth.toUpperCase());
     } catch (IllegalArgumentException e) {
       throw new InvalidMonthException();
     }
