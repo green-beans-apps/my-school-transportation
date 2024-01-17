@@ -37,17 +37,16 @@ public class RegisterPaymentController {
         }
 
         try {
-            Months monthEnum = Months.valueOf(registerPaymentDto.month.toUpperCase());
-            this.registerPaymentUseCase.execute(registerPaymentDto.studentId, monthEnum);
+            this.registerPaymentUseCase.execute(registerPaymentDto.studentId, registerPaymentDto.month);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (StudentNotFoundException studentNotFoundException) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(studentNotFoundException.getMessage());
         } catch (InvalidMonthException invalidMonthException) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(invalidMonthException);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(invalidMonthException.getMessage());
         } catch (ExistingPaymentException existingPaymentException) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(existingPaymentException);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(existingPaymentException.getMessage());
         } catch (Error err) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err.getMessage());
         }
     }
 
