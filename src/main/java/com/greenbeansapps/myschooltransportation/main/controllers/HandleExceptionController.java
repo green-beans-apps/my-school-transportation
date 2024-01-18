@@ -65,4 +65,9 @@ public class HandleExceptionController extends ResponseEntityExceptionHandler {
   private ResponseEntity<String> nullPointerExceptionHandler(NullPointerException exception) {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
   }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  private ResponseEntity<String> illegalArgumentExceptionHandler(IllegalArgumentException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+  }
 }
