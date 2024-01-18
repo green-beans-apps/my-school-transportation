@@ -11,4 +11,5 @@ public interface ResponsibleRepository {
     public Optional<Responsible> findByEmail(String email);
     public Optional<Responsible> findByPhoneNumber(String phoneNumber);
     public Optional<Responsible> updateResponsible(Responsible responsible);
+    public Boolean deleteResponsible(UUID responsibleId);
 }

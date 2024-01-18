@@ -70,4 +70,15 @@ public class ResponsibleRepositoryJPA implements ResponsibleRepository {
         this.responsibleRepo.save(responsibleSchema.get());
         return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getPhoneNumber()));
     }
+
+    @Override
+    public Boolean deleteResponsible(UUID responsibleId) {
+        Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findById(responsibleId);
+        if (responsibleSchema.isEmpty()) {
+            return false;
+        }
+
+        responsibleRepo.delete(responsibleSchema.get());
+        return true;
+    }
 }
