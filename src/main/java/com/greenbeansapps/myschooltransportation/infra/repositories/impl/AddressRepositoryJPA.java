@@ -52,4 +52,15 @@ public class AddressRepositoryJPA implements AddressRepository {
     this.addressRepo.save(addressSchema.get());
     return Optional.of(new Address(addressSchema.get().getId(), addressSchema.get().getCity(), addressSchema.get().getDistrict(), addressSchema.get().getStreet(), addressSchema.get().getReferencePoint(), addressSchema.get().getHouseNumber()));
   }
+
+  @Override
+  public Boolean deleteAddress(UUID addressId) {
+    Optional<AddressSchema> addressSchema = this.addressRepo.findById(addressId);
+    if (addressSchema.isEmpty()) {
+      return false;
+    }
+
+    addressRepo.delete(addressSchema.get());
+    return true;
+  }
 }

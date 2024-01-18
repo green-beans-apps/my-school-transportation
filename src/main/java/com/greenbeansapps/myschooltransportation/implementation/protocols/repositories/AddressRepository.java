@@ -9,4 +9,5 @@ public interface AddressRepository {
     public Address create(Address address);
     public Optional<Address> findById(UUID addressId);
     public Optional<Address> updateAddress(Address address);
+    public Boolean deleteAddress(UUID addressId);
 }
