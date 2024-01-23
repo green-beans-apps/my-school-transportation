@@ -57,18 +57,15 @@ public class ResponsibleRepositoryJPA implements ResponsibleRepository {
     }
 
     @Override
-    public Optional<Responsible> updateResponsible(Responsible responsible) {
+    public Responsible updateResponsible(Responsible responsible) {
         Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findById(responsible.getId());
-        if(responsibleSchema.isEmpty()) {
-            return Optional.empty();
-        }
 
         responsibleSchema.get().setName(responsible.getName());
         responsibleSchema.get().setEmail(responsible.getEmail());
         responsibleSchema.get().setPhoneNumber(responsible.getPhoneNumber());
 
         this.responsibleRepo.save(responsibleSchema.get());
-        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getPhoneNumber()));
+        return responsible;
     }
 
     @Override
