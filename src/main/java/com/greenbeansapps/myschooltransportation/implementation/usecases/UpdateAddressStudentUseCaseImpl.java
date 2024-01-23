@@ -37,7 +37,6 @@ public class UpdateAddressStudentUseCaseImpl implements UpdateAddressStudentUseC
         getAddress.get().setReferencePoint(referencePoint);
         getAddress.get().setHouseNumber(houseNumber);
 
-        addressRepo.updateAddress(getAddress.get());
-        return getAddress.get();
+        return addressRepo.updateAddress(getAddress.get());
     }
 }
