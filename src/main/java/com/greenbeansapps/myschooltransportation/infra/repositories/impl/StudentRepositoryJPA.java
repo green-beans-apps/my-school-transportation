@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IStudentRepositoryJPA;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.AddressSchema;
@@ -100,5 +101,24 @@ public class StudentRepositoryJPA implements StudentRepository {
 
         studentRepo.delete(studentSchema.get());
         return true;
+    }
+
+    @Override
+    public Student updateStudent(Student student) {
+        Optional<StudentSchema> studentSchema = this.studentRepo.findById(student.getId());
+
+        if (studentSchema.isEmpty()) {
+            throw new StudentNotFoundException();
+        }
+
+        studentSchema.get().setName(student.getName());
+        studentSchema.get().setSchool(student.getSchool());
+        studentSchema.get().setGrade(student.getGrade());
+        studentSchema.get().setMonthlyPayment(student.getMonthlyPayment());
+        studentSchema.get().setMonthlyPaymentExpiration(student.getMonthlyPaymentExpiration());
+
+        this.studentRepo.save(studentSchema.get());
+
+        return student;
     }
 }
