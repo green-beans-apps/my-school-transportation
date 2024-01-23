@@ -12,4 +12,5 @@ public interface StudentRepository {
     public List<Student> findAllByConductorId(UUID conductorId);
     public Optional<Student> findById(UUID studentId);
     public Boolean deleteStudent(UUID studentId);
+    public Student updateStudent(Student student);
 }
