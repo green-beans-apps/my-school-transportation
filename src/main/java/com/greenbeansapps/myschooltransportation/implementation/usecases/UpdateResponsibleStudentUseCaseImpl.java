@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidResponsibleException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.UpdateResponsibleStudentUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
@@ -35,7 +36,6 @@ public class UpdateResponsibleStudentUseCaseImpl implements UpdateResponsibleStu
         getResponsible.get().setEmail(email);
         getResponsible.get().setPhoneNumber(phoneNumber);
 
-        responsibleRepo.updateResponsible(getResponsible.get());
-        return getResponsible.get();
+        return responsibleRepo.updateResponsible(getResponsible.get());
     }
 }
