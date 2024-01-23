@@ -15,10 +15,10 @@ public class Payment {
     }
 
     public Payment(UUID id, Date paymentDate, Months paymentMonth, Student student) {
-        this.id = id;
-        this.paymentDate = paymentDate;
-        this.paymentMonth = paymentMonth;
-        this.student = student;
+        setId(id);
+        setPaymentDate(paymentDate);
+        setPaymentMonth(paymentMonth);
+        setStudent(student);
     }
 
     public UUID getId() {
@@ -26,6 +26,9 @@ public class Payment {
     }
 
     public void setId(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         this.id = id;
     }
 
@@ -34,6 +37,9 @@ public class Payment {
     }
 
     public void setPaymentDate(Date paymentDate) {
+        if (paymentDate == null) {
+            throw new IllegalArgumentException("Payment date cannot be null");
+        }
         this.paymentDate = paymentDate;
     }
 
@@ -42,6 +48,19 @@ public class Payment {
     }
 
     public void setPaymentMonth(Months paymentMonth) {
+        if (paymentMonth == null) {
+            throw new IllegalArgumentException("Payment month cannot be null");
+        }
+        boolean isValidMonth = false;
+        for (Months month : Months.values()) {
+            if (month == paymentMonth) {
+                isValidMonth = true;
+                break;
+            }
+        }
+        if (!isValidMonth) {
+            throw new IllegalArgumentException("Payment month must be a valid month");
+        }
         this.paymentMonth = paymentMonth;
     }
 
@@ -50,6 +69,9 @@ public class Payment {
     }
 
     public void setStudent(Student student) {
+        if (student == null) {
+            throw new IllegalArgumentException("Student cannot be null");
+        }
         this.student = student;
     }
 }
