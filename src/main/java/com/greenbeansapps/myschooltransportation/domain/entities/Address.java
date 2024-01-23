@@ -14,12 +14,12 @@ public class Address {
     }
 
     public Address(UUID id, String city, String district, String street, String referencePoint, Integer houseNumber) {
-        this.id = id;
-        this.city = city;
-        this.district = district;
-        this.street = street;
-        this.referencePoint = referencePoint;
-        this.houseNumber = houseNumber;
+        setId(id);
+        setCity(city);
+        setDistrict(district);
+        setStreet(street);
+        setReferencePoint(referencePoint);
+        setHouseNumber(houseNumber);
     }
 
     public UUID getId() {
@@ -27,6 +27,9 @@ public class Address {
     }
 
     public void setId(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         this.id = id;
     }
 
@@ -35,6 +38,9 @@ public class Address {
     }
 
     public void setCity(String city) {
+        if (city == null || city.isEmpty()) {
+            throw new IllegalArgumentException("City cannot be null or empty");
+        }
         this.city = city;
     }
 
@@ -43,6 +49,9 @@ public class Address {
     }
 
     public void setDistrict(String district) {
+        if (district == null || district.isEmpty()) {
+            throw new IllegalArgumentException("District cannot be null or empty");
+        }
         this.district = district;
     }
 
@@ -51,6 +60,9 @@ public class Address {
     }
 
     public void setStreet(String street) {
+        if (street == null || street.isEmpty()) {
+            throw new IllegalArgumentException("Street cannot be null or empty");
+        }
         this.street = street;
     }
 
@@ -59,6 +71,9 @@ public class Address {
     }
 
     public void setReferencePoint(String referencePoint) {
+        if (referencePoint == null || referencePoint.isEmpty()) {
+            throw new IllegalArgumentException("Reference point cannot be null or empty");
+        }
         this.referencePoint = referencePoint;
     }
 
@@ -67,6 +82,9 @@ public class Address {
     }
 
     public void setHouseNumber(Integer houseNumber) {
+        if (houseNumber == null) {
+            throw new IllegalArgumentException("House number cannot be null");
+        }
         this.houseNumber = houseNumber;
     }
 }
