@@ -37,11 +37,8 @@ public class AddressRepositoryJPA implements AddressRepository {
   }
 
   @Override
-  public Optional<Address> updateAddress(Address address) {
+  public Address updateAddress(Address address) {
     Optional<AddressSchema> addressSchema = this.addressRepo.findById(address.getId());
-    if(addressSchema.isEmpty()) {
-      return Optional.empty();
-    }
 
     addressSchema.get().setCity(address.getCity());
     addressSchema.get().setDistrict(address.getDistrict());
@@ -50,7 +47,7 @@ public class AddressRepositoryJPA implements AddressRepository {
     addressSchema.get().setHouseNumber(address.getHouseNumber());
 
     this.addressRepo.save(addressSchema.get());
-    return Optional.of(new Address(addressSchema.get().getId(), addressSchema.get().getCity(), addressSchema.get().getDistrict(), addressSchema.get().getStreet(), addressSchema.get().getReferencePoint(), addressSchema.get().getHouseNumber()));
+    return address;
   }
 
   @Override
