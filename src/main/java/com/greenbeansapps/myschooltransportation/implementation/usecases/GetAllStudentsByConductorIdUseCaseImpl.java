@@ -2,7 +2,7 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidConductorException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidConductorException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.GetAllStudentsByConductorIdUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;

@@ -1,4 +1,4 @@
-package com.greenbeansapps.myschooltransportation.domain.exeptions;
+package com.greenbeansapps.myschooltransportation.domain.exceptions;
 
 public class ExistingPaymentException extends RuntimeException {
   public ExistingPaymentException() {

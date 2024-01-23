@@ -1,7 +1,7 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.StudentNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.DeleteStudentUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;

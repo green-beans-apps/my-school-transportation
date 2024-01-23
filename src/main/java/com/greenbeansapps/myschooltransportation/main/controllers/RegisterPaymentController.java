@@ -1,15 +1,10 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
-import com.greenbeansapps.myschooltransportation.domain.enums.Months;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.ExistingPaymentException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidMonthException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.RegisterPaymentUseCaseImpl;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

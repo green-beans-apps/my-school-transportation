@@ -1,15 +1,14 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.CpfAlreadyRegisteredException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.EmailAlreadyRegisteredException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.PasswordIsNotValidException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.CpfAlreadyRegisteredException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.EmailAlreadyRegisteredException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.PasswordIsNotValidException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateConductorUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.helpers.CryptoHelper;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package com.greenbeansapps.myschooltransportation.domain.exeptions;
+package com.greenbeansapps.myschooltransportation.domain.exceptions;
 
 public class CpfIsNotValidException extends RuntimeException {
   public CpfIsNotValidException() {

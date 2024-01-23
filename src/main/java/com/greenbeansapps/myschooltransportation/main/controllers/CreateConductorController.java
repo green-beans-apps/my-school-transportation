@@ -1,6 +1,5 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
-import com.greenbeansapps.myschooltransportation.domain.exeptions.CpfAlreadyRegisteredException;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.CreateConductorUseCaseImpl;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;

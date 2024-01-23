@@ -3,16 +3,15 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.ExistingPaymentException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidMonthException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.StudentNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.ExistingPaymentException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.RegisterPaymentUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.Optional;
 import java.util.UUID;
 

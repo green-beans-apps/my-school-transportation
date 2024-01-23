@@ -1,6 +1,6 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
-import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidEmailException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidEmailException;
 import com.greenbeansapps.myschooltransportation.domain.utils.EmailValidator;
 
 import java.util.UUID;

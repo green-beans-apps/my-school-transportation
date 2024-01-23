@@ -1,15 +1,11 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
-import com.greenbeansapps.myschooltransportation.domain.exeptions.CpfIsNotValidException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidEmailException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.PasswordIsNotValidException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.CpfIsNotValidException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidEmailException;
 import com.greenbeansapps.myschooltransportation.domain.utils.CpfValidator;
 import com.greenbeansapps.myschooltransportation.domain.utils.EmailValidator;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Conductor {
     private UUID id;

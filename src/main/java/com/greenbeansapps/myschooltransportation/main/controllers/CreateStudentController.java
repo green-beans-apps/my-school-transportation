@@ -1,6 +1,5 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
-import com.greenbeansapps.myschooltransportation.domain.exeptions.CpfAlreadyRegisteredException;
 import com.greenbeansapps.myschooltransportation.domain.services.CreateStudentWithAddressAndResponsible;
 import com.greenbeansapps.myschooltransportation.implementation.services.CreateStudentWithAddressAndResponsibleImpl;
 import com.greenbeansapps.myschooltransportation.main.constraints.ValidUUID;
@@ -8,8 +7,6 @@ import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorRes
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

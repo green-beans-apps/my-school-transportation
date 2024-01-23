@@ -2,10 +2,9 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.*;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.ExistingPaymentException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidAddressException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.InvalidMonthException;
-import com.greenbeansapps.myschooltransportation.domain.exeptions.StudentNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.ExistingPaymentException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.junit.jupiter.api.*;
