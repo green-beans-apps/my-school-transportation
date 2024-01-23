@@ -24,7 +24,7 @@ public class DeleteStudentUseCaseImpl implements DeleteStudentUseCase {
     }
 
     @Override
-    public void execute(UUID studentId) {
+    public Boolean execute(UUID studentId) {
         Optional<Student> getStudent = studentRepo.findById(studentId);
         if (getStudent.isEmpty()) {
             throw new StudentNotFoundException();
@@ -33,5 +33,6 @@ public class DeleteStudentUseCaseImpl implements DeleteStudentUseCase {
         studentRepo.deleteStudent(getStudent.get().getId());
         addressRepo.deleteAddress(getStudent.get().getAddress().getId());
         responsibleRepo.deleteResponsible(getStudent.get().getResponsible().getId());
+        return true;
     }
 }
