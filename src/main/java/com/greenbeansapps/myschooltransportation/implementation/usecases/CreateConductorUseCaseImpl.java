@@ -28,15 +28,6 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
     @Override
     public Conductor execute(String name, String email, String password, String cpf) {
 
-        String regexPassword = "^(?=.*[!@#$%^&*(),.?\":{}|<>])(?=.*[a-zA-Z0-9]).{6,}$";
-        // Compila a expressão
-        Pattern patternRegexPassword = Pattern.compile(regexPassword);
-        // Cria um objeto Matcher
-        Matcher matcherPassword = patternRegexPassword.matcher(password);
-        if(!matcherPassword.matches()) {
-            throw new PasswordIsNotValidException();
-        }
-
         Optional<Conductor> cpfIsRegistered = this.conductorRepo.findByCpf(cpf);
         Optional<Conductor> emailIsRegistered = this.conductorRepo.findByEmail(email);
         if(cpfIsRegistered.isPresent()) {
@@ -44,6 +35,13 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
         }
         if(emailIsRegistered.isPresent()){
             throw new EmailAlreadyRegisteredException();
+        }
+
+        String regexPassword = "^(?=.*[!@#$%^&*(),.?\":{}|<>])(?=.*[a-zA-Z0-9]).{6,}$";
+        Pattern patternRegexPassword = Pattern.compile(regexPassword);
+        Matcher matcherPassword = patternRegexPassword.matcher(password);
+        if(!matcherPassword.matches()) {
+            throw new PasswordIsNotValidException();
         }
 
         var newConductor = new Conductor(UUID.randomUUID(), name, email, cpf, this.crypto.generateRash(password));
