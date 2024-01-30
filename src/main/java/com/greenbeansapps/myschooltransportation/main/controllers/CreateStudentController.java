@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
+import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.services.CreateStudentWithAddressAndResponsible;
 import com.greenbeansapps.myschooltransportation.implementation.services.CreateStudentWithAddressAndResponsibleImpl;
 import com.greenbeansapps.myschooltransportation.main.constraints.ValidUUID;
@@ -46,6 +47,7 @@ public class CreateStudentController {
             data.student().studentName(),
             data.student().school(),
             data.student().grade(),
+            data.student.transportationType(),
             data.student().monthlyPayment(),
             data.student().monthlyPaymentExpiration(),
             UUID.fromString(data.student().conductorId())
@@ -75,6 +77,7 @@ public class CreateStudentController {
           @NotBlank String studentName,
           @NotBlank String school,
           @NotBlank String grade,
+          @NotBlank String transportationType,
           @NotNull Integer monthlyPayment,
           @NotBlank String monthlyPaymentExpiration,
           @ValidUUID
