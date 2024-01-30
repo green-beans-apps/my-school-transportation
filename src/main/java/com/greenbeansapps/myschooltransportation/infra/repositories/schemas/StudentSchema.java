@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
+import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -25,6 +26,8 @@ public class StudentSchema implements Serializable {
     private String school;
     @Column(nullable = false)
     private String grade;
+    @Column(nullable = false)
+    private TransportationType transportationType;
     @Column(nullable = false)
     private Integer monthlyPayment;
     @Column(nullable = false)
@@ -75,6 +78,14 @@ public class StudentSchema implements Serializable {
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    public TransportationType getTransportationType() {
+        return transportationType;
+    }
+
+    public void setTransportationType(TransportationType transportationType) {
+        this.transportationType = transportationType;
     }
 
     public Integer getMonthlyPayment() {

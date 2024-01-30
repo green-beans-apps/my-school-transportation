@@ -1,5 +1,7 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
+import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
+
 import java.util.UUID;
 
 public class Student {
@@ -7,6 +9,7 @@ public class Student {
     private String name;
     private String school;
     private String grade;
+    private TransportationType transportationType;
     private Integer monthlyPayment;
     private String monthlyPaymentExpiration;
     private Conductor conductor;
@@ -16,11 +19,12 @@ public class Student {
     public Student() {
     }
 
-    public Student(UUID id, String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, Responsible responsible, Address address) {
+    public Student(UUID id, String name, String school, String grade, TransportationType transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, Responsible responsible, Address address) {
         setId(id);
         setName(name);
         setSchool(school);
         setGrade(grade);
+        setTransportationType(transportationType);
         setMonthlyPayment(monthlyPayment);
         setMonthlyPaymentExpiration(monthlyPaymentExpiration);
         setConductor(conductor);
@@ -73,6 +77,17 @@ public class Student {
             throw new IllegalArgumentException("Grade cannot be null or empty");
         }
         this.grade = grade;
+    }
+
+    public TransportationType getTransportationType() {
+        return transportationType;
+    }
+
+    public void setTransportationType(TransportationType transportationType) {
+        if (transportationType == null) {
+            throw new IllegalArgumentException("Transportation Type cannot be null");
+        }
+        this.transportationType = transportationType;
     }
 
     public Integer getMonthlyPayment() {
