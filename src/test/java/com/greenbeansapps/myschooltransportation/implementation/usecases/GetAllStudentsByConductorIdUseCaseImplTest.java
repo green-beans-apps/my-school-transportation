@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidConductorException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
@@ -34,9 +35,9 @@ public class GetAllStudentsByConductorIdUseCaseImplTest {
     Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
     Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
     Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
-    Student mockFirstStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", 140,
+    Student mockFirstStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, 140,
             "04", mockConductor, mockResponsible, mockAddress);
-    Student mockSecondStudent = new Student(UUID.randomUUID(), "Ueslei Nogueira", "Colégio ETE Porto Digital", "3° Ano (Médio)", 140,
+    Student mockSecondStudent = new Student(UUID.randomUUID(), "Ueslei Nogueira", "Colégio ETE Porto Digital", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, 140,
             "02", mockConductor, mockResponsible, mockAddress);
 
     @Test
@@ -55,6 +56,7 @@ public class GetAllStudentsByConductorIdUseCaseImplTest {
         assertEquals(mockFirstStudent.getName(), firstStudent.getName());
         assertEquals(mockFirstStudent.getSchool(), firstStudent.getSchool());
         assertEquals(mockFirstStudent.getGrade(), firstStudent.getGrade());
+        assertEquals(mockFirstStudent.getTransportationType(), firstStudent.getTransportationType());
         assertEquals(mockFirstStudent.getMonthlyPayment(), firstStudent.getMonthlyPayment());
         assertEquals(mockFirstStudent.getMonthlyPaymentExpiration(), firstStudent.getMonthlyPaymentExpiration());
         assertEquals(mockFirstStudent.getConductor(), firstStudent.getConductor());
@@ -66,6 +68,7 @@ public class GetAllStudentsByConductorIdUseCaseImplTest {
         assertEquals(mockSecondStudent.getName(), secondStudent.getName());
         assertEquals(mockSecondStudent.getSchool(), secondStudent.getSchool());
         assertEquals(mockSecondStudent.getGrade(), secondStudent.getGrade());
+        assertEquals(mockSecondStudent.getTransportationType(), secondStudent.getTransportationType());
         assertEquals(mockSecondStudent.getMonthlyPayment(), secondStudent.getMonthlyPayment());
         assertEquals(mockSecondStudent.getMonthlyPaymentExpiration(), secondStudent.getMonthlyPaymentExpiration());
         assertEquals(mockSecondStudent.getConductor(), secondStudent.getConductor());

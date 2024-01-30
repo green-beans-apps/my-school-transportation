@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.ExistingPaymentException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
@@ -33,10 +34,10 @@ class UpdateStudentUseCaseImplTest {
   Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");
   Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
   Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício", "mauricio@teste.com", "(81)97314-8001");
-  Student mockStudent = new Student(UUID.randomUUID(), "Danilo", "Colégio São José", "3° Ano", 140,
+  Student mockStudent = new Student(UUID.randomUUID(), "Danilo", "Colégio São José", "3° Ano", TransportationType.IDA_E_VOLTA, 140,
           "04", mockConductor, mockResponsible, mockAddress);
 
-  Student mockUpdatedStudent = new Student(UUID.randomUUID(), "Danilo pessoa", "Colégio segura na mao de deus", "69° Ano", 190,
+  Student mockUpdatedStudent = new Student(UUID.randomUUID(), "Danilo pessoa", "Colégio segura na mao de deus", "6° Ano", TransportationType.IDA_E_VOLTA, 190,
           "09", mockConductor, mockResponsible, mockAddress);
 
   @Test
@@ -62,6 +63,7 @@ class UpdateStudentUseCaseImplTest {
     assertEquals(mockUpdatedStudent.getName(), updatedStudent.getName());
     assertEquals(mockUpdatedStudent.getSchool(), updatedStudent.getSchool());
     assertEquals(mockUpdatedStudent.getGrade(), updatedStudent.getGrade());
+    assertEquals(mockUpdatedStudent.getTransportationType(), updatedStudent.getTransportationType());
     assertEquals(mockUpdatedStudent.getMonthlyPayment(), updatedStudent.getMonthlyPayment());
     assertEquals(mockUpdatedStudent.getMonthlyPaymentExpiration(), updatedStudent.getMonthlyPaymentExpiration());
     assertEquals(mockUpdatedStudent.getConductor(), updatedStudent.getConductor());
@@ -73,6 +75,7 @@ class UpdateStudentUseCaseImplTest {
     assertEquals(mockUpdatedStudent.getName(), studentCapture.getName());
     assertEquals(mockUpdatedStudent.getSchool(), studentCapture.getSchool());
     assertEquals(mockUpdatedStudent.getGrade(), studentCapture.getGrade());
+    assertEquals(mockUpdatedStudent.getTransportationType(), studentCapture.getTransportationType());
     assertEquals(mockUpdatedStudent.getMonthlyPayment(), studentCapture.getMonthlyPayment());
     assertEquals(mockUpdatedStudent.getMonthlyPaymentExpiration(), studentCapture.getMonthlyPaymentExpiration());
     assertEquals(mockUpdatedStudent.getConductor(), studentCapture.getConductor());
