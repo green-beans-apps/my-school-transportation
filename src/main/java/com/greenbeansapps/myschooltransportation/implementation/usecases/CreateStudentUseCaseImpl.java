@@ -4,9 +4,11 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidAddressException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidConductorException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidResponsibleException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidTransportationTypeException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateStudentUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
@@ -32,7 +34,7 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
     }
 
     @Override
-    public Student execute(String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId, UUID responsibleId, UUID addressId) {
+    public Student execute(String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId, UUID responsibleId, UUID addressId) {
         // conductor virá junto com a autenticação
         // responsible e address será pego pela consulta no banco depois de ser criado.
 
@@ -50,8 +52,26 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
             throw new InvalidConductorException();
         }
 
-        var newStudent = new Student(UUID.randomUUID(), name, school, grade, monthlyPayment, monthlyPaymentExpiration, conductor.get(), responsible.get(), address.get());
+        //Verifica se o valor inserido é válido
+        TransportationType validateTransportationType = validateTransportationType(transportationType);
+
+        var newStudent = new Student(UUID.randomUUID(), name, school, grade, validateTransportationType, monthlyPayment, monthlyPaymentExpiration, conductor.get(), responsible.get(), address.get());
         this.studentRepo.create(newStudent);
         return newStudent;
+    }
+
+    public TransportationType validateTransportationType(String transportationType) {
+        // a condição ou auxilia a ter teste mais eficientes.
+        if (transportationType.equalsIgnoreCase("IDA E VOLTA") || transportationType.equals("IDA_E_VOLTA")) {
+            return TransportationType.IDA_E_VOLTA;
+        }
+        if (transportationType.equalsIgnoreCase("IDA") || transportationType.equals("IDA")) {
+            return TransportationType.IDA;
+        }
+        if (transportationType.equalsIgnoreCase("VOLTA") || transportationType.equals("VOLTA")) {
+            return TransportationType.VOLTA;
+        }
+
+        throw new InvalidTransportationTypeException();
     }
 }
