@@ -36,12 +36,12 @@ public class UpdateResponsibleStudentController {
         }
 
         var updateResponsible = this.updateResponsibleStudentUseCase.execute(updateResponsibleStudentDto.studentId, updateResponsibleStudentDto.name,
-                updateResponsibleStudentDto.email, updateResponsibleStudentDto.phoneNumber);
+                updateResponsibleStudentDto.email, updateResponsibleStudentDto.phone);
         var newResponsible = new UpdateResponsibleStudentResponsiveDto(updateResponsible.getId(), updateResponsible.getName(), updateResponsible.getEmail(),
-                updateResponsible.getPhoneNumber());
+                updateResponsible.getphone());
         return ResponseEntity.status(HttpStatus.OK).body(newResponsible);
     }
 
-    public record UpdateResponsibleStudentDto(@NotNull UUID studentId, @NotBlank String name, @Email String email, @NotBlank String phoneNumber) { }
-    public record UpdateResponsibleStudentResponsiveDto(UUID responsibleId, String name, String email, String phoneNumber) { }
+    public record UpdateResponsibleStudentDto(@NotNull UUID studentId, @NotBlank String name, @Email String email, @NotBlank String phone) { }
+    public record UpdateResponsibleStudentResponsiveDto(UUID responsibleId, String name, String email, String phone) { }
 }

@@ -23,7 +23,7 @@ public class ResponsibleSchema implements Serializable {
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
-    private String phoneNumber;
+    private String phone;
 
     public ResponsibleSchema() {
     }
@@ -52,11 +52,11 @@ public class ResponsibleSchema implements Serializable {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getphone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setphone(String phone) {
+        this.phone = phone;
     }
 }

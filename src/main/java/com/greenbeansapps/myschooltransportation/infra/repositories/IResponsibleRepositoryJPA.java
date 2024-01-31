@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface IResponsibleRepositoryJPA extends JpaRepository<ResponsibleSchema, UUID> {
     Optional<ResponsibleSchema> findByEmail(String email);
-    Optional<ResponsibleSchema> findByPhoneNumber(String phoneNumber);
+    Optional<ResponsibleSchema> findByphone(String phone);
 }

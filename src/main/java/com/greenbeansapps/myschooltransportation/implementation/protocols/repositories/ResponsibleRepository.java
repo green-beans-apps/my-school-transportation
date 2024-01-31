@@ -9,7 +9,7 @@ public interface ResponsibleRepository {
     public Responsible create(Responsible responsible);
     public Optional<Responsible> findById(UUID responsibleId);
     public Optional<Responsible> findByEmail(String email);
-    public Optional<Responsible> findByPhoneNumber(String phoneNumber);
+    public Optional<Responsible> findByphone(String phone);
     public Responsible updateResponsible(Responsible responsible);
     public Boolean deleteResponsible(UUID responsibleId);
 }

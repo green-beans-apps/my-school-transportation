@@ -9,16 +9,16 @@ public class Responsible {
     private UUID id;
     private String name;
     private String email;
-    private String phoneNumber;
+    private String phone;
 
     public Responsible() {
     }
 
-    public Responsible(UUID id, String name, String email, String phoneNumber) {
+    public Responsible(UUID id, String name, String email, String phone) {
         setId(id);
         setName(name);
         setEmail(email);
-        setPhoneNumber(phoneNumber);
+        setphone(phone);
     }
 
     public UUID getId() {
@@ -61,21 +61,21 @@ public class Responsible {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getphone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        if (phoneNumber == null || phoneNumber.isEmpty()) {
+    public void setphone(String phone) {
+        if (phone == null || phone.isEmpty()) {
             throw new IllegalArgumentException("Phone number cannot be null or empty");
         }
 
-        String cleanedPhoneNumber = phoneNumber.replaceAll("[^0-9]", "");
+        String cleanedphone = phone.replaceAll("[^0-9]", "");
 
-        if (cleanedPhoneNumber.length() < 10 || cleanedPhoneNumber.length() > 15) {
+        if (cleanedphone.length() < 10 || cleanedphone.length() > 15) {
             throw new IllegalArgumentException("Invalid phone number");
         }
 
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
     }
 }

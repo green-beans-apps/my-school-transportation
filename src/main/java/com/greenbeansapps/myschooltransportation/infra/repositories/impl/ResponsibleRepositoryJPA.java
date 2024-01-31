@@ -35,7 +35,7 @@ public class ResponsibleRepositoryJPA implements ResponsibleRepository {
         if (responsibleSchema.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getPhoneNumber()));
+        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getphone()));
     }
 
     @Override
@@ -44,16 +44,16 @@ public class ResponsibleRepositoryJPA implements ResponsibleRepository {
         if (responsibleSchema.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getPhoneNumber()));
+        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getphone()));
     }
 
     @Override
-    public Optional<Responsible> findByPhoneNumber(String phoneNumber) {
-        Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findByPhoneNumber(phoneNumber);
+    public Optional<Responsible> findByphone(String phone) {
+        Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findByphone(phone);
         if (responsibleSchema.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getPhoneNumber()));
+        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getphone()));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ResponsibleRepositoryJPA implements ResponsibleRepository {
 
         responsibleSchema.get().setName(responsible.getName());
         responsibleSchema.get().setEmail(responsible.getEmail());
-        responsibleSchema.get().setPhoneNumber(responsible.getPhoneNumber());
+        responsibleSchema.get().setphone(responsible.getphone());
 
         this.responsibleRepo.save(responsibleSchema.get());
         return responsible;

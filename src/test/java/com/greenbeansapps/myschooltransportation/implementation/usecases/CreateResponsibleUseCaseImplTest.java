@@ -39,7 +39,7 @@ public class CreateResponsibleUseCaseImplTest {
 
         Mockito.when(responsibleRepo.create(responsibleCaptor.capture())).thenReturn(mockResponsible);
 
-        var newResponsible = createResponsibleUseCase.execute(mockResponsible.getId(),mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
+        var newResponsible = createResponsibleUseCase.execute(mockResponsible.getId(),mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getphone());
 
         //chechando retorno do metodo
         assertThat(newResponsible)

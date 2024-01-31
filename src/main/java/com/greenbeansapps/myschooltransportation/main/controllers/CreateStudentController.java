@@ -57,7 +57,7 @@ public class CreateStudentController {
             data.responsible().id(),
             data.responsible().responsibleName(),
             data.responsible().email(),
-            data.responsible().phoneNumber()
+            data.responsible().phone()
     );
     var addressData = new CreateStudentWithAddressAndResponsible.AddressData(
             data.address().id(),
@@ -92,7 +92,7 @@ public class CreateStudentController {
           UUID id,
           @NotBlank String responsibleName,
           @NotBlank String email,
-          @NotBlank String phoneNumber
+          @NotBlank String phone
   ) { }
 
   public record AddressDataDto(

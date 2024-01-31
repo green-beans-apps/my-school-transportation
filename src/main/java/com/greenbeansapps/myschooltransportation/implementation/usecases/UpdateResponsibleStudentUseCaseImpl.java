@@ -24,7 +24,7 @@ public class UpdateResponsibleStudentUseCaseImpl implements UpdateResponsibleStu
     }
 
     @Override
-    public Responsible execute(UUID studentId, String name, String email, String phoneNumber) {
+    public Responsible execute(UUID studentId, String name, String email, String phone) {
         Optional<Student> getStudent = this.studentRepo.findById(studentId);
         if(getStudent.isEmpty()) {
             throw new StudentNotFoundException();
@@ -34,7 +34,7 @@ public class UpdateResponsibleStudentUseCaseImpl implements UpdateResponsibleStu
 
         getResponsible.get().setName(name);
         getResponsible.get().setEmail(email);
-        getResponsible.get().setPhoneNumber(phoneNumber);
+        getResponsible.get().setphone(phone);
 
         return responsibleRepo.updateResponsible(getResponsible.get());
     }

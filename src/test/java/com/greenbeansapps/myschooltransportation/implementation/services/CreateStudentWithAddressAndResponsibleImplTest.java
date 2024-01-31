@@ -41,7 +41,7 @@ class CreateStudentWithAddressAndResponsibleImplTest {
     Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
             "04", mockConductor, mockResponsible, mockAddress);
     CreateStudentWithAddressAndResponsible.StudentData mockStudentData = new CreateStudentWithAddressAndResponsible.StudentData(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(),  mockStudent.getMonthlyPayment(), mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId());
-    CreateStudentWithAddressAndResponsible.ResponsibleData mockResponsibleData = new CreateStudentWithAddressAndResponsible.ResponsibleData(mockResponsible.getId(), mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
+    CreateStudentWithAddressAndResponsible.ResponsibleData mockResponsibleData = new CreateStudentWithAddressAndResponsible.ResponsibleData(mockResponsible.getId(), mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getphone());
     CreateStudentWithAddressAndResponsible.AddressData mockAddressData = new CreateStudentWithAddressAndResponsible.AddressData(mockAddress.getId(), mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getReferencePoint(), mockAddress.getHouseNumber());
     CreateStudentWithAddressAndResponsible.CreateStudentWithAddressAndResponsibleRequest mockRequest = new CreateStudentWithAddressAndResponsible.CreateStudentWithAddressAndResponsibleRequest(mockStudentData, mockResponsibleData, mockAddressData);
 
@@ -55,7 +55,7 @@ class CreateStudentWithAddressAndResponsibleImplTest {
         Student createdStudent = createStudentWithAddressAndResponsible.execute(mockRequest);
 
         Mockito.verify(createAddressUseCase).execute(mockAddress.getId(), mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getReferencePoint(), mockAddress.getHouseNumber());
-        Mockito.verify(createResponsibleUseCase).execute(mockResponsible.getId(), mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
+        Mockito.verify(createResponsibleUseCase).execute(mockResponsible.getId(), mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getphone());
         Mockito.verify(createStudentUseCase).execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(), mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
 
         assertEquals(mockStudent, createdStudent);
