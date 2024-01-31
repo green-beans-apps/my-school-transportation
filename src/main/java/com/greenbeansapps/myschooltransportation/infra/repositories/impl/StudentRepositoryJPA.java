@@ -66,7 +66,7 @@ public class StudentRepositoryJPA implements StudentRepository {
             BeanUtils.copyProperties(studentSchema.getAddress(), newAddress);
 
             students.add(new Student(studentSchema.getId(), studentSchema.getName(), studentSchema.getSchool(),
-                    studentSchema.getGrade(), studentSchema.getTransportationType(), studentSchema.getMonthlyPayment(), studentSchema.getMonthlyPaymentExpiration(),
+                    studentSchema.getGrade(), studentSchema.getTransportationType().toString(), studentSchema.getMonthlyPayment(), studentSchema.getMonthlyPaymentExpiration(),
                     newConductor, newResponsible, newAddress));
         }
         return students;
@@ -88,7 +88,7 @@ public class StudentRepositoryJPA implements StudentRepository {
         BeanUtils.copyProperties(studentSchema.get().getAddress(), newAddress);
 
         return Optional.of(new Student(studentSchema.get().getId(), studentSchema.get().getName(), studentSchema.get().getSchool(),
-                studentSchema.get().getGrade(), studentSchema.get().getTransportationType(), studentSchema.get().getMonthlyPayment(), studentSchema.get().getMonthlyPaymentExpiration(),
+                studentSchema.get().getGrade(), studentSchema.get().getTransportationType().toString(), studentSchema.get().getMonthlyPayment(), studentSchema.get().getMonthlyPaymentExpiration(),
                 newConductor, newResponsible, newAddress));
     }
 
