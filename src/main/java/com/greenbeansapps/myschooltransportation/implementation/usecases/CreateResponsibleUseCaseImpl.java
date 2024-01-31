@@ -16,8 +16,8 @@ public class CreateResponsibleUseCaseImpl implements CreateResponsibleUseCase {
     }
 
     @Override
-    public Responsible execute(String name, String email, String phoneNumber) {
-        Responsible newResponsible = new Responsible(UUID.randomUUID(), name, email, phoneNumber);
+    public Responsible execute(UUID id,String name, String email, String phoneNumber) {
+        Responsible newResponsible = new Responsible(id, name, email, phoneNumber);
         this.responsibleRepo.create(newResponsible);
         return newResponsible;
     }
