@@ -14,10 +14,10 @@ public interface CreateStudentWithAddressAndResponsible {
           AddressData address
   ) { }
 
-  public record StudentData(String studentName, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId) { }
+  public record StudentData(UUID id, String studentName, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId) { }
 
-  public record ResponsibleData(String responsibleName, String email, String phoneNumber) { }
+  public record ResponsibleData(UUID id, String responsibleName, String email, String phoneNumber) { }
 
-  public record AddressData(String city, String district, String street, String referencePoint, Integer houseNumber) { }
+  public record AddressData(UUID id, String city, String district, String street, String referencePoint, Integer houseNumber) { }
 
 }
