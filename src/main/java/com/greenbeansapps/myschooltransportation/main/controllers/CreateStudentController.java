@@ -51,6 +51,7 @@ public class CreateStudentController {
             data.student.transportationType(),
             data.student().monthlyPayment(),
             data.student().monthlyPaymentExpiration(),
+            data.student().shift(),
             UUID.fromString(data.student().conductorId())
     );
     var responsibleData = new CreateStudentWithAddressAndResponsible.ResponsibleData(
@@ -84,6 +85,7 @@ public class CreateStudentController {
           @NotBlank String transportationType,
           @NotNull Integer monthlyPayment,
           @NotBlank String monthlyPaymentExpiration,
+          @NotBlank String shift,
           @ValidUUID
           String conductorId
   ) { }
