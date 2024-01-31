@@ -31,9 +31,13 @@ public class Conductor {
 
     public void setId(UUID id) {
         if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
+            this.id = UUID.randomUUID();
+        } else {
+            this.id = id;
         }
-        this.id = id;
+    }
+    public void setId() {
+        this.id = UUID.randomUUID();
     }
 
     public String getName() {
