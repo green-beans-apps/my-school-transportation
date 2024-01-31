@@ -18,7 +18,7 @@ public class Responsible {
         setId(id);
         setName(name);
         setEmail(email);
-        setphone(phone);
+        setPhone(phone);
     }
 
     public UUID getId() {
@@ -61,18 +61,18 @@ public class Responsible {
         this.email = email;
     }
 
-    public String getphone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setphone(String phone) {
+    public void setPhone(String phone) {
         if (phone == null || phone.isEmpty()) {
             throw new IllegalArgumentException("Phone number cannot be null or empty");
         }
 
-        String cleanedphone = phone.replaceAll("[^0-9]", "");
+        String cleanedPhone = phone.replaceAll("[^0-9]", "");
 
-        if (cleanedphone.length() < 10 || cleanedphone.length() > 15) {
+        if (cleanedPhone.length() < 10 || cleanedPhone.length() > 15) {
             throw new IllegalArgumentException("Invalid phone number");
         }
 

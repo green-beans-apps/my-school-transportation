@@ -38,7 +38,7 @@ public class UpdateResponsibleStudentController {
         var updateResponsible = this.updateResponsibleStudentUseCase.execute(updateResponsibleStudentDto.studentId, updateResponsibleStudentDto.name,
                 updateResponsibleStudentDto.email, updateResponsibleStudentDto.phone);
         var newResponsible = new UpdateResponsibleStudentResponsiveDto(updateResponsible.getId(), updateResponsible.getName(), updateResponsible.getEmail(),
-                updateResponsible.getphone());
+                updateResponsible.getPhone());
         return ResponseEntity.status(HttpStatus.OK).body(newResponsible);
     }
 

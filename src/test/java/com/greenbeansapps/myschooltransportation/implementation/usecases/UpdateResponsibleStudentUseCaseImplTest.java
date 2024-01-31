@@ -60,7 +60,7 @@ class UpdateResponsibleStudentUseCaseImplTest {
     ArgumentCaptor<Responsible> responsibleCaptor = ArgumentCaptor.forClass(Responsible.class);
     Mockito.when(responsibleRepo.updateResponsible(responsibleCaptor.capture())).thenReturn(mockResponsible);
 
-    var updatedResponsible = updateResponsibleStudentUseCase.execute(mockStudent.getId(), mockUpdatedResponsible.getName(), mockUpdatedResponsible.getEmail(), mockUpdatedResponsible.getphone());
+    var updatedResponsible = updateResponsibleStudentUseCase.execute(mockStudent.getId(), mockUpdatedResponsible.getName(), mockUpdatedResponsible.getEmail(), mockUpdatedResponsible.getPhone());
 
     assertThat(updatedResponsible)
             .usingRecursiveComparison()

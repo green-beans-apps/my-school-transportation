@@ -62,7 +62,7 @@ public class ResponsibleRepositoryJPA implements ResponsibleRepository {
 
         responsibleSchema.get().setName(responsible.getName());
         responsibleSchema.get().setEmail(responsible.getEmail());
-        responsibleSchema.get().setphone(responsible.getphone());
+        responsibleSchema.get().setphone(responsible.getPhone());
 
         this.responsibleRepo.save(responsibleSchema.get());
         return responsible;

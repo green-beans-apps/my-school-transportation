@@ -34,7 +34,7 @@ public class UpdateResponsibleStudentUseCaseImpl implements UpdateResponsibleStu
 
         getResponsible.get().setName(name);
         getResponsible.get().setEmail(email);
-        getResponsible.get().setphone(phone);
+        getResponsible.get().setPhone(phone);
 
         return responsibleRepo.updateResponsible(getResponsible.get());
     }
