@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController()
 @RequestMapping("/conductor")
 public class CreateConductorController {
@@ -35,11 +37,13 @@ public class CreateConductorController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    this.createConductorUseCase.execute(data.getName(), data.getEmail(), data.getPassword(), data.getCpf());
+    this.createConductorUseCase.execute(data.id, data.getName(), data.getEmail(), data.getPassword(), data.getCpf());
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
   @Data
   public static class CreateConductorDto {
+
+    private UUID id;
 
     @NotBlank
     private String name;
