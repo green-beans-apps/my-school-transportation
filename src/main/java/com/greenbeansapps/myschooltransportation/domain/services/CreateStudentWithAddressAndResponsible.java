@@ -14,7 +14,7 @@ public interface CreateStudentWithAddressAndResponsible {
           AddressData address
   ) { }
 
-  public record StudentData(UUID id, String studentName, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId) { }
+  public record StudentData(UUID id, String studentName, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration,  String shift, UUID conductorId) { }
 
   public record ResponsibleData(UUID id, String responsibleName, String email, String phone) { }
 
