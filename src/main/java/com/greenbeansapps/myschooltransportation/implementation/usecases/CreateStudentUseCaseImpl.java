@@ -34,7 +34,7 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
     }
 
     @Override
-    public Student execute(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId, UUID responsibleId, UUID addressId) {
+    public Student execute(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, String shift, UUID conductorId, UUID responsibleId, UUID addressId) {
 
         Optional<Responsible> responsible = this.responsibleRepo.findById(responsibleId);
         if (responsible.isEmpty()) {
@@ -51,7 +51,7 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
             throw new InvalidConductorException();
         }
 
-        var newStudent = new Student(id, name, school, grade, transportationType, monthlyPayment, monthlyPaymentExpiration, conductor.get(), responsible.get(), address.get());
+        var newStudent = new Student(id, name, school, grade, transportationType, monthlyPayment, monthlyPaymentExpiration, shift, conductor.get(), responsible.get(), address.get());
         this.studentRepo.create(newStudent);
         return newStudent;
     }
