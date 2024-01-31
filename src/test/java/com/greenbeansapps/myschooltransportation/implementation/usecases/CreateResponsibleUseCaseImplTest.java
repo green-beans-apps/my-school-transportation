@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
@@ -29,27 +30,26 @@ public class CreateResponsibleUseCaseImplTest {
     @Mock
     ResponsibleRepository responsibleRepo;
 
+    Responsible mockResponsible = new Responsible(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)94545-6666");
+
     @Test
     @DisplayName("Deve cadastrar um novo responsavel com sucesso.")
     void case1() {
         ArgumentCaptor<Responsible> responsibleCaptor = ArgumentCaptor.forClass(Responsible.class);
 
-        var mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)94545-6666");
         Mockito.when(responsibleRepo.create(responsibleCaptor.capture())).thenReturn(mockResponsible);
 
-        var newResponsible = createResponsibleUseCase.execute("Maurício Ferraz", "mauricioferraz@teste.com", "(81)94545-6666");
+        var newResponsible = createResponsibleUseCase.execute(mockResponsible.getId(),mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhoneNumber());
 
         //chechando retorno do metodo
-        assertEquals(mockResponsible.getName(), newResponsible.getName());
-        assertEquals(mockResponsible.getEmail(), newResponsible.getEmail());
-        assertEquals(mockResponsible.getPhoneNumber(), newResponsible.getPhoneNumber());
-        assertDoesNotThrow(() -> UUID.fromString( newResponsible.getId().toString()));
+        assertThat(newResponsible)
+                .usingRecursiveComparison()
+                .isEqualTo(mockResponsible);
 
         //Checando os dados passados para o conductor repository
         Responsible responsibleCapture = responsibleCaptor.getValue();
-        assertEquals(mockResponsible.getName(), responsibleCapture.getName());
-        assertEquals(mockResponsible.getEmail(), responsibleCapture.getEmail());
-        assertEquals(mockResponsible.getPhoneNumber(), responsibleCapture.getPhoneNumber());
-        assertDoesNotThrow(() -> UUID.fromString(responsibleCapture.getId().toString()));
+        assertThat(responsibleCapture)
+                .usingRecursiveComparison()
+                .isEqualTo(mockResponsible);
     }
 }
