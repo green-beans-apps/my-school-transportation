@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
+import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import jakarta.persistence.*;
 
@@ -28,6 +29,8 @@ public class StudentSchema implements Serializable {
     private String grade;
     @Column(nullable = false)
     private TransportationType transportationType;
+    @Column(nullable = false)
+    private Shift shift;
     @Column(nullable = false)
     private Integer monthlyPayment;
     @Column(nullable = false)
@@ -126,5 +129,13 @@ public class StudentSchema implements Serializable {
 
     public void setAddress(AddressSchema address) {
         this.address = address;
+    }
+
+    public Shift getShift() {
+        return shift;
+    }
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
     }
 }
