@@ -70,4 +70,9 @@ public class HandleExceptionController extends ResponseEntityExceptionHandler {
   private ResponseEntity<String> illegalArgumentExceptionHandler(IllegalArgumentException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
   }
+
+  @ExceptionHandler(InvalidTransportationTypeException.class)
+  private ResponseEntity<String> invalidTransportationTypeExceptionHandler(InvalidTransportationTypeException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+  }
 }
