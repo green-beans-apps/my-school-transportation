@@ -16,8 +16,8 @@ public class CreateAddressUseCaseImpl implements CreateAddressUseCase{
     }
 
     @Override
-    public Address execute(String city, String district, String street, String referencePoint, Integer houseNumber) {
-        var newAddress = new Address(UUID.randomUUID(), city, district, street, referencePoint, houseNumber);
+    public Address execute(UUID id, String city, String district, String street, String referencePoint, Integer houseNumber) {
+        var newAddress = new Address(id, city, district, street, referencePoint, houseNumber);
         return this.addressRepo.create(newAddress);
     }
 }
