@@ -25,7 +25,7 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
     }
 
     @Override
-    public Conductor execute(String name, String email, String password, String cpf) {
+    public Conductor execute(UUID id, String name, String email, String password, String cpf) {
 
         Optional<Conductor> cpfIsRegistered = this.conductorRepo.findByCpf(cpf);
         Optional<Conductor> emailIsRegistered = this.conductorRepo.findByEmail(email);
@@ -43,7 +43,7 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
             throw new PasswordIsNotValidException();
         }
 
-        var newConductor = new Conductor(UUID.randomUUID(), name, email, cpf, this.crypto.generateRash(password));
+        var newConductor = new Conductor(id, name, email, cpf, this.crypto.generateRash(password));
         this.conductorRepo.create(newConductor);
         return newConductor;
     }
