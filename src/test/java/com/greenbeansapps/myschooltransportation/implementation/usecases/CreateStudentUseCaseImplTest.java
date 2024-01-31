@@ -43,7 +43,7 @@ public class CreateStudentUseCaseImplTest {
     Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
     Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
     Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
-            "04", mockConductor, mockResponsible, mockAddress);
+            "04","manha", mockConductor, mockResponsible, mockAddress);
 
     @Test
     @DisplayName("Nao deve ser possivel criar um estudante com o endereço invalido.")
@@ -55,7 +55,7 @@ public class CreateStudentUseCaseImplTest {
         // Act e Assert
         assertThrows(InvalidAddressException.class, () -> {
             createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
-                    mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
 
@@ -68,7 +68,7 @@ public class CreateStudentUseCaseImplTest {
         // Act e Assert
         assertThrows(InvalidResponsibleException.class, () -> {
             createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
-                    mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
 
@@ -83,7 +83,7 @@ public class CreateStudentUseCaseImplTest {
         // Act e Assert
         assertThrows(InvalidConductorException.class, () -> {
             createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
-                    mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
 
@@ -100,7 +100,7 @@ public class CreateStudentUseCaseImplTest {
 
         // Act
         var newStudent = createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
-                mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+                mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
 
         // Assert
         // checando retornos
@@ -125,7 +125,7 @@ public class CreateStudentUseCaseImplTest {
 
         assertThrows(InvalidTransportationTypeException.class, () -> {
             createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), "volt", mockStudent.getMonthlyPayment(),
-                    mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
 }

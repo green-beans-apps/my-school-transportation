@@ -37,9 +37,9 @@ public class GetAllStudentsByConductorIdUseCaseImplTest {
     Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
     Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
     Student mockFirstStudent = new Student(UUID.fromString("296c5a89-5a29-4549-bb48-f57ff7f04619"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
-            "04", mockConductor, mockResponsible, mockAddress);
+            "04", "manha", mockConductor, mockResponsible, mockAddress);
     Student mockSecondStudent = new Student(UUID.fromString("296c5a89-5a29-4549-bb48-f57ff7f04619"), "Ueslei Nogueira", "Colégio ETE Porto Digital", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
-            "02", mockConductor, mockResponsible, mockAddress);
+            "02", "tarde", mockConductor, mockResponsible, mockAddress);
 
     @Test
     @DisplayName("Deve retornar todos os alunos vinculados ao id do condutor")
