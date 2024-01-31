@@ -1,6 +1,7 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidTransportationTypeException;
 
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(UUID id, String name, String school, String grade, TransportationType transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, Responsible responsible, Address address) {
+    public Student(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, Responsible responsible, Address address) {
         setId(id);
         setName(name);
         setSchool(school);
@@ -38,9 +39,10 @@ public class Student {
 
     public void setId(UUID id) {
         if (id == null) {
-            throw new IllegalArgumentException("ID cannot be null");
+            this.id = UUID.randomUUID();
+        } else {
+            this.id = id;
         }
-        this.id = id;
     }
 
     public String getName() {
@@ -83,11 +85,16 @@ public class Student {
         return transportationType;
     }
 
-    public void setTransportationType(TransportationType transportationType) {
-        if (transportationType == null) {
-            throw new IllegalArgumentException("Transportation Type cannot be null");
+    public void setTransportationType(String transportationType) {
+        if (transportationType.equalsIgnoreCase("IDA E VOLTA") || transportationType.equals("IDA_E_VOLTA")) {
+            this.transportationType = TransportationType.IDA_E_VOLTA;
+        } else if (transportationType.equalsIgnoreCase("IDA") || transportationType.equals("IDA")) {
+            this.transportationType = TransportationType.IDA;
+        } else if (transportationType.equalsIgnoreCase("VOLTA") || transportationType.equals("VOLTA")) {
+            this.transportationType = TransportationType.VOLTA;
+        } else {
+            throw new InvalidTransportationTypeException();
         }
-        this.transportationType = transportationType;
     }
 
     public Integer getMonthlyPayment() {
