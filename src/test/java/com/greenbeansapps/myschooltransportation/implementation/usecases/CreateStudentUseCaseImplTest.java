@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,10 +39,10 @@ public class CreateStudentUseCaseImplTest {
     @InjectMocks
     CreateStudentUseCaseImpl createStudentUseCase;
 
-    Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
-    Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
-    Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
-    Student mockStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, 140,
+    Conductor mockConductor = new Conductor(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
+    Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
+    Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
+    Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
             "04", mockConductor, mockResponsible, mockAddress);
 
     @Test
@@ -49,12 +50,11 @@ public class CreateStudentUseCaseImplTest {
     void case1() {
         // arrange
         Mockito.when(responsibleRepo.findById(mockResponsible.getId())).thenReturn(Optional.of(mockResponsible));
-        Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
-        Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.empty());
+        Mockito.when(addressRepo.findById(Mockito.any())).thenReturn(Optional.empty());
 
         // Act e Assert
         assertThrows(InvalidAddressException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
                     mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
@@ -64,12 +64,10 @@ public class CreateStudentUseCaseImplTest {
     void case2() {
         // arrange
         Mockito.when(responsibleRepo.findById(mockResponsible.getId())).thenReturn(Optional.empty());
-        Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
-        Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.of(mockAddress));
 
         // Act e Assert
         assertThrows(InvalidResponsibleException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
                     mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
@@ -84,7 +82,7 @@ public class CreateStudentUseCaseImplTest {
 
         // Act e Assert
         assertThrows(InvalidConductorException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
                     mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
@@ -101,34 +99,20 @@ public class CreateStudentUseCaseImplTest {
         Mockito.when(studentRepo.create(studentCaptor.capture())).thenReturn(mockStudent);
 
         // Act
-        var newStudent = createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+        var newStudent = createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
                 mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
 
         // Assert
         // checando retornos
-        assertEquals(mockStudent.getName(), newStudent.getName());
-        assertEquals(mockStudent.getSchool(), newStudent.getSchool());
-        assertEquals(mockStudent.getGrade(), newStudent.getGrade());
-        assertEquals(mockStudent.getTransportationType(), newStudent.getTransportationType());
-        assertEquals(mockStudent.getMonthlyPayment(), newStudent.getMonthlyPayment());
-        assertEquals(mockStudent.getMonthlyPaymentExpiration(), newStudent.getMonthlyPaymentExpiration());
-        assertEquals(mockStudent.getConductor(), newStudent.getConductor());
-        assertEquals(mockStudent.getResponsible(), newStudent.getResponsible());
-        assertEquals(mockStudent.getAddress(), newStudent.getAddress());
-        assertDoesNotThrow(() -> UUID.fromString(newStudent.getId().toString()));
+        assertThat(newStudent)
+                .usingRecursiveComparison()
+                .isEqualTo(mockStudent);
 
         //checando parâmetros passados para o repositório
         Student studentCapture = studentCaptor.getValue();
-        assertEquals(mockStudent.getName(), studentCapture.getName());
-        assertEquals(mockStudent.getSchool(), studentCapture.getSchool());
-        assertEquals(mockStudent.getGrade(), studentCapture.getGrade());
-        assertEquals(mockStudent.getTransportationType(), studentCapture.getTransportationType());
-        assertEquals(mockStudent.getMonthlyPayment(), studentCapture.getMonthlyPayment());
-        assertEquals(mockStudent.getMonthlyPaymentExpiration(), studentCapture.getMonthlyPaymentExpiration());
-        assertEquals(mockStudent.getConductor(), studentCapture.getConductor());
-        assertEquals(mockStudent.getResponsible(), studentCapture.getResponsible());
-        assertEquals(mockStudent.getAddress(), studentCapture.getAddress());
-        assertDoesNotThrow(() -> UUID.fromString(studentCapture.getId().toString()));
+        assertThat(studentCapture)
+                .usingRecursiveComparison()
+                .isEqualTo(mockStudent);
     }
 
     @Test
@@ -140,7 +124,7 @@ public class CreateStudentUseCaseImplTest {
         Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.of(mockAddress));
 
         assertThrows(InvalidTransportationTypeException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), "volt", mockStudent.getMonthlyPayment(),
+            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), "volt", mockStudent.getMonthlyPayment(),
                     mockStudent.getMonthlyPaymentExpiration(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
