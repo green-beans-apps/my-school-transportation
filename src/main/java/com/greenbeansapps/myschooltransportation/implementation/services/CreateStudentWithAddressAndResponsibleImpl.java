@@ -28,6 +28,6 @@ public class CreateStudentWithAddressAndResponsibleImpl implements CreateStudent
     public Student execute(CreateStudentWithAddressAndResponsibleRequest request) {
         Address newAddress = this.createAddressUseCase.execute(request.address().id(), request.address().city(), request.address().district(), request.address().street(), request.address().referencePoint(), request.address().houseNumber());
         Responsible newResponsible = this.createResponsibleUseCase.execute(request.responsible().id(), request.responsible().responsibleName(), request.responsible().email(), request.responsible().phone());
-        return this.createStudentUseCase.execute(request.student().id(), request.student().studentName(), request.student().school(), request.student().grade(), request.student().transportationType(), request.student().monthlyPayment(), request.student().monthlyPaymentExpiration(), request.student().conductorId(), newResponsible.getId(), newAddress.getId());
+        return this.createStudentUseCase.execute(request.student().id(), request.student().studentName(), request.student().school(), request.student().grade(), request.student().transportationType(), request.student().monthlyPayment(), request.student().monthlyPaymentExpiration(), request.student().shift(), request.student().conductorId(), newResponsible.getId(), newAddress.getId());
     }
 }
