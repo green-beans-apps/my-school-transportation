@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,13 +32,13 @@ class UpdateStudentUseCaseImplTest {
   @InjectMocks
   UpdateStudentUseCaseImpl updateStudentUseCase;
 
-  Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");
-  Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
-  Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício", "mauricio@teste.com", "(81)97314-8001");
-  Student mockStudent = new Student(UUID.randomUUID(), "Danilo", "Colégio São José", "3° Ano", TransportationType.IDA_E_VOLTA, 140,
+  Conductor mockConductor = new Conductor(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
+  Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
+  Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
+  Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
           "04", mockConductor, mockResponsible, mockAddress);
 
-  Student mockUpdatedStudent = new Student(UUID.randomUUID(), "Danilo pessoa", "Colégio segura na mao de deus", "6° Ano", TransportationType.IDA_E_VOLTA, 190,
+  Student mockUpdatedStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo pessoa", "Colégio segura na mao de deus", "6° Ano", TransportationType.IDA_E_VOLTA.toString(), 190,
           "09", mockConductor, mockResponsible, mockAddress);
 
   @Test
@@ -60,28 +61,14 @@ class UpdateStudentUseCaseImplTest {
 
     var updatedStudent = updateStudentUseCase.execute(mockStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration());
 
-    assertEquals(mockUpdatedStudent.getName(), updatedStudent.getName());
-    assertEquals(mockUpdatedStudent.getSchool(), updatedStudent.getSchool());
-    assertEquals(mockUpdatedStudent.getGrade(), updatedStudent.getGrade());
-    assertEquals(mockUpdatedStudent.getTransportationType(), updatedStudent.getTransportationType());
-    assertEquals(mockUpdatedStudent.getMonthlyPayment(), updatedStudent.getMonthlyPayment());
-    assertEquals(mockUpdatedStudent.getMonthlyPaymentExpiration(), updatedStudent.getMonthlyPaymentExpiration());
-    assertEquals(mockUpdatedStudent.getConductor(), updatedStudent.getConductor());
-    assertEquals(mockUpdatedStudent.getResponsible(), updatedStudent.getResponsible());
-    assertEquals(mockUpdatedStudent.getAddress(), updatedStudent.getAddress());
-    assertDoesNotThrow(() -> UUID.fromString(updatedStudent.getId().toString()));
+    assertThat(updatedStudent)
+            .usingRecursiveComparison()
+            .isEqualTo(mockUpdatedStudent);
 
     Student studentCapture = studentCaptor.getValue();
-    assertEquals(mockUpdatedStudent.getName(), studentCapture.getName());
-    assertEquals(mockUpdatedStudent.getSchool(), studentCapture.getSchool());
-    assertEquals(mockUpdatedStudent.getGrade(), studentCapture.getGrade());
-    assertEquals(mockUpdatedStudent.getTransportationType(), studentCapture.getTransportationType());
-    assertEquals(mockUpdatedStudent.getMonthlyPayment(), studentCapture.getMonthlyPayment());
-    assertEquals(mockUpdatedStudent.getMonthlyPaymentExpiration(), studentCapture.getMonthlyPaymentExpiration());
-    assertEquals(mockUpdatedStudent.getConductor(), studentCapture.getConductor());
-    assertEquals(mockUpdatedStudent.getResponsible(), studentCapture.getResponsible());
-    assertEquals(mockUpdatedStudent.getAddress(), studentCapture.getAddress());
-    assertDoesNotThrow(() -> UUID.fromString(studentCapture.getId().toString()));
+    assertThat(studentCapture)
+            .usingRecursiveComparison()
+            .isEqualTo(mockUpdatedStudent);
   }
 
 }
