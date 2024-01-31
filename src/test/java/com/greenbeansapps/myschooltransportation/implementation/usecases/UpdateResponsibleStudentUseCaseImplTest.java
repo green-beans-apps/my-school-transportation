@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,14 +34,12 @@ class UpdateResponsibleStudentUseCaseImplTest {
   @InjectMocks
   UpdateResponsibleStudentUseCaseImpl updateResponsibleStudentUseCase;
 
-  Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
-  Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
-  Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
-  Student mockStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, 140,
+  Conductor mockConductor = new Conductor(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
+  Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
+  Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
+  Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
           "04", mockConductor, mockResponsible, mockAddress);
-
-
-  Responsible mockUpdatedResponsible = new Responsible(UUID.randomUUID(), "Maurício O", "mauricio@teste.com", "(81)97310-8001");
+  Responsible mockUpdatedResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício O", "mauricio@teste.com", "(81)97310-8001");
 
   @Test
   @DisplayName("Nao deve atualizar o responsavel de um estudante inexistente")
@@ -63,14 +62,13 @@ class UpdateResponsibleStudentUseCaseImplTest {
 
     var updatedResponsible = updateResponsibleStudentUseCase.execute(mockStudent.getId(), mockUpdatedResponsible.getName(), mockUpdatedResponsible.getEmail(), mockUpdatedResponsible.getPhoneNumber());
 
-
-    assertEquals(mockUpdatedResponsible.getName(), updatedResponsible.getName());
-    assertEquals(mockUpdatedResponsible.getEmail(), updatedResponsible.getEmail());
-    assertEquals(mockUpdatedResponsible.getPhoneNumber(), updatedResponsible.getPhoneNumber());
+    assertThat(updatedResponsible)
+            .usingRecursiveComparison()
+            .isEqualTo(mockUpdatedResponsible);
 
     Responsible responsibleCapture = responsibleCaptor.getValue();
-    assertEquals(mockUpdatedResponsible.getName(), responsibleCapture.getName());
-    assertEquals(mockUpdatedResponsible.getEmail(), responsibleCapture.getEmail());
-    assertEquals(mockUpdatedResponsible.getPhoneNumber(), responsibleCapture.getPhoneNumber());
+    assertThat(responsibleCapture)
+            .usingRecursiveComparison()
+            .isEqualTo(mockUpdatedResponsible);
   }
 }
