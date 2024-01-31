@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
+import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidTransportationTypeException;
 
@@ -16,11 +17,12 @@ public class Student {
     private Conductor conductor;
     private Responsible responsible;
     private Address address;
+    private Shift shift;
 
     public Student() {
     }
 
-    public Student(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, Responsible responsible, Address address) {
+    public Student(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, String shift, Conductor conductor, Responsible responsible, Address address) {
         setId(id);
         setName(name);
         setSchool(school);
@@ -31,6 +33,7 @@ public class Student {
         setConductor(conductor);
         setResponsible(responsible);
         setAddress(address);
+        setShift(shift);
     }
 
     public UUID getId() {
@@ -150,5 +153,23 @@ public class Student {
             throw new IllegalArgumentException("Address cannot be null");
         }
         this.address = address;
+    }
+
+    public Shift getShift() {
+        return shift;
+    }
+
+    public void setShift(String shift) {
+        if (shift == null || shift.isEmpty()) {
+            throw new IllegalArgumentException("Shift cannot be null or empty");
+        }
+
+        if (shift.equalsIgnoreCase("MANHA") || transportationType.equals("MANHA")) {
+            this.shift = Shift.MANHA;
+        } else if (shift.equalsIgnoreCase("TARDE") || transportationType.equals("TARDE")) {
+            this.shift = Shift.TARDE;
+        }  else {
+            throw new InvalidTransportationTypeException();
+        }
     }
 }
