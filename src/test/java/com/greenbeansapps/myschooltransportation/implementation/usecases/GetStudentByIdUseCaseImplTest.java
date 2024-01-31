@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,10 +28,10 @@ public class GetStudentByIdUseCaseImplTest {
     @InjectMocks
     GetStudentByIdUseCaseImpl getStudentByIdUseCase;
 
-    Conductor mockConductor = new Conductor(UUID.randomUUID(), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
-    Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
-    Responsible mockResponsible = new Responsible(UUID.randomUUID(), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
-    Student mockStudent = new Student(UUID.randomUUID(), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, 140,
+    Conductor mockConductor = new Conductor(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"), "Danilo P", "danilo@teste.com", "522.151.300-59", "Davi@280411");;;
+    Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
+    Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
+    Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
             "04", mockConductor, mockResponsible, mockAddress);
 
     @Test
@@ -44,16 +45,9 @@ public class GetStudentByIdUseCaseImplTest {
 
         //Assertion
         // checando retornos da consulta realizada
-        assertEquals(mockStudent.getName(), returnStudent.getName());
-        assertEquals(mockStudent.getSchool(), returnStudent.getSchool());
-        assertEquals(mockStudent.getGrade(), returnStudent.getGrade());
-        assertEquals(mockStudent.getTransportationType(), returnStudent.getTransportationType());
-        assertEquals(mockStudent.getMonthlyPayment(), returnStudent.getMonthlyPayment());
-        assertEquals(mockStudent.getMonthlyPaymentExpiration(), returnStudent.getMonthlyPaymentExpiration());
-        assertEquals(mockStudent.getConductor(), returnStudent.getConductor());
-        assertEquals(mockStudent.getResponsible(), returnStudent.getResponsible());
-        assertEquals(mockStudent.getAddress(), returnStudent.getAddress());
-        assertDoesNotThrow(() -> UUID.fromString(returnStudent.getId().toString()));
+        assertThat(returnStudent)
+                .usingRecursiveComparison()
+                .isEqualTo(mockStudent);
     }
 
     @Test
