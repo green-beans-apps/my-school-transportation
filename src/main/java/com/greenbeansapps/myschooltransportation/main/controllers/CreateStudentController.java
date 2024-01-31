@@ -44,6 +44,7 @@ public class CreateStudentController {
 
   private CreateStudentWithAddressAndResponsible.CreateStudentWithAddressAndResponsibleRequest convertToRequest(CreateStudentDto data) {
     var studentData = new CreateStudentWithAddressAndResponsible.StudentData(
+            data.student().id(),
             data.student().studentName(),
             data.student().school(),
             data.student().grade(),
@@ -53,11 +54,13 @@ public class CreateStudentController {
             UUID.fromString(data.student().conductorId())
     );
     var responsibleData = new CreateStudentWithAddressAndResponsible.ResponsibleData(
+            data.responsible().id(),
             data.responsible().responsibleName(),
             data.responsible().email(),
             data.responsible().phoneNumber()
     );
     var addressData = new CreateStudentWithAddressAndResponsible.AddressData(
+            data.address().id(),
             data.address().city(),
             data.address().district(),
             data.address().street(),
@@ -74,6 +77,7 @@ public class CreateStudentController {
   ) { }
 
   public record StudentDataDto(
+          UUID id,
           @NotBlank String studentName,
           @NotBlank String school,
           @NotBlank String grade,
@@ -85,12 +89,14 @@ public class CreateStudentController {
   ) { }
 
   public record ResponsibleDataDto(
+          UUID id,
           @NotBlank String responsibleName,
           @NotBlank String email,
           @NotBlank String phoneNumber
   ) { }
 
   public record AddressDataDto(
+          UUID id,
           @NotBlank String city,
           @NotBlank String district,
           @NotBlank String street,
