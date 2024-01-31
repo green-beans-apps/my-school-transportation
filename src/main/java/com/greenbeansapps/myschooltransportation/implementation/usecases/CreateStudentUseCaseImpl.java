@@ -34,44 +34,26 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
     }
 
     @Override
-    public Student execute(String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId, UUID responsibleId, UUID addressId) {
-        // conductor virá junto com a autenticação
-        // responsible e address será pego pela consulta no banco depois de ser criado.
+    public Student execute(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, UUID conductorId, UUID responsibleId, UUID addressId) {
 
         Optional<Responsible> responsible = this.responsibleRepo.findById(responsibleId);
-        Optional<Address> address = this.addressRepo.findById(addressId);
-        Optional<Conductor> conductor = this.conductorRepo.findById(conductorId);
-
         if (responsible.isEmpty()) {
             throw new InvalidResponsibleException();
         }
+
+        Optional<Address> address = this.addressRepo.findById(addressId);
         if (address.isEmpty()) {
             throw new InvalidAddressException();
         }
+
+        Optional<Conductor> conductor = this.conductorRepo.findById(conductorId);
         if (conductor.isEmpty()) {
             throw new InvalidConductorException();
         }
 
-        //Verifica se o valor inserido é válido
-        TransportationType validateTransportationType = validateTransportationType(transportationType);
-
-        var newStudent = new Student(UUID.randomUUID(), name, school, grade, validateTransportationType, monthlyPayment, monthlyPaymentExpiration, conductor.get(), responsible.get(), address.get());
+        var newStudent = new Student(id, name, school, grade, transportationType, monthlyPayment, monthlyPaymentExpiration, conductor.get(), responsible.get(), address.get());
         this.studentRepo.create(newStudent);
         return newStudent;
     }
 
-    public TransportationType validateTransportationType(String transportationType) {
-        // a condição ou auxilia a ter teste mais eficientes.
-        if (transportationType.equalsIgnoreCase("IDA E VOLTA") || transportationType.equals("IDA_E_VOLTA")) {
-            return TransportationType.IDA_E_VOLTA;
-        }
-        if (transportationType.equalsIgnoreCase("IDA") || transportationType.equals("IDA")) {
-            return TransportationType.IDA;
-        }
-        if (transportationType.equalsIgnoreCase("VOLTA") || transportationType.equals("VOLTA")) {
-            return TransportationType.VOLTA;
-        }
-
-        throw new InvalidTransportationTypeException();
-    }
 }
