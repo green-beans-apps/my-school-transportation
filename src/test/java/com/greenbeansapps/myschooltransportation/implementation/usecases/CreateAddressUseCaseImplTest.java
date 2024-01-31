@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,31 +23,25 @@ class CreateAddressUseCaseImplTest {
   @Mock
   AddressRepository addressRepo;
 
+  Address mockAddress = new Address(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
+
   @Test
   @DisplayName("Deve cadastrar um novo endereço com sucesso.")
   void case1() {
     ArgumentCaptor<Address> addressCaptor = ArgumentCaptor.forClass(Address.class);
-
-    Address mockAddress = new Address(UUID.randomUUID(),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
     Mockito.when(addressRepo.create(addressCaptor.capture())).thenReturn(mockAddress);
 
-    var newAddress = createAddressUseCase.execute("Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
+    var newAddress = createAddressUseCase.execute(mockAddress.getId(),mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getReferencePoint(), mockAddress.getHouseNumber());
 
     //Checando o retorno do método
-    assertEquals(mockAddress.getCity(), newAddress.getCity());
-    assertEquals(mockAddress.getDistrict(), newAddress.getDistrict());
-    assertEquals(mockAddress.getStreet(), newAddress.getStreet());
-    assertEquals(mockAddress.getReferencePoint(), newAddress.getReferencePoint());
-    assertEquals(mockAddress.getHouseNumber(), newAddress.getHouseNumber());
-    assertDoesNotThrow(() -> UUID.fromString(newAddress.getId().toString()));
+    assertThat(newAddress)
+            .usingRecursiveComparison()
+            .isEqualTo(mockAddress);
 
     //Checando os dados passados para o address repository
     Address capturedArgument = addressCaptor.getValue();
-    assertEquals(mockAddress.getCity(), capturedArgument.getCity());
-    assertEquals(mockAddress.getDistrict(), capturedArgument.getDistrict());
-    assertEquals(mockAddress.getStreet(), capturedArgument.getStreet());
-    assertEquals(mockAddress.getReferencePoint(), capturedArgument.getReferencePoint());
-    assertEquals(mockAddress.getHouseNumber(), capturedArgument.getHouseNumber());
-    assertDoesNotThrow(() -> UUID.fromString(capturedArgument.getId().toString()));
+    assertThat(capturedArgument)
+            .usingRecursiveComparison()
+            .isEqualTo(mockAddress);
   }
 }
