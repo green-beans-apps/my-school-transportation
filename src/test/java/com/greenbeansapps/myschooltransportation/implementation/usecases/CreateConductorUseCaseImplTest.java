@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,31 +32,25 @@ public class CreateConductorUseCaseImplTest {
     @Mock
     CryptoHelper cryptoHelper;
 
+    Conductor mockConductor = new Conductor(UUID.fromString("69dd2075-3d7b-443c-a5b6-c68441d479e1"), "danilao",  "danilao@gmail.com", "52187952088", "123@mudar.");
     @Test
     @DisplayName("Deve cadastrar um novo condutor com sucesso.")
     void case1() throws NoSuchAlgorithmException {
         ArgumentCaptor<Conductor> conductorCaptor = ArgumentCaptor.forClass(Conductor.class);
 
-        var mockConductor = new Conductor(UUID.randomUUID(), "Danilo Pereira", "danilopereira@teste.com", "522.151.300-59", "Davi@280411");
-        String mockStringHash = "0aa1ea9a5a04b78d4581dd6d17742627";
-
         Mockito.when(conductorRepo.create(conductorCaptor.capture())).thenReturn(mockConductor);
-        Mockito.when(cryptoHelper.generateRash(Mockito.anyString())).thenReturn(mockStringHash);
+        Mockito.when(cryptoHelper.generateRash(Mockito.anyString())).thenReturn(mockConductor.getPassword());
 
-        var newConductor = createConductorUseCase.execute("Danilo Pereira", "danilopereira@teste.com", "Davi@280411", "522.151.300-59");
+        var newConductor = createConductorUseCase.execute(mockConductor.getId(),mockConductor.getName(), mockConductor.getEmail(), mockConductor.getPassword(), mockConductor.getCpf());
 
-        assertEquals(mockConductor.getName(), newConductor.getName());
-        assertEquals(mockConductor.getEmail(), newConductor.getEmail());
-        assertEquals(mockStringHash, newConductor.getPassword());
-        assertEquals(mockConductor.getCpf(), newConductor.getCpf());
-        assertDoesNotThrow(() -> UUID.fromString(newConductor.getId().toString()));
+        assertThat(newConductor)
+                .usingRecursiveComparison()
+                .isEqualTo(mockConductor);
 
-        //Checando os dados passados para o conductor repository
         Conductor conductorCapture = conductorCaptor.getValue();
-        assertEquals(mockConductor.getName(), conductorCapture.getName());
-        assertEquals(mockConductor.getEmail(), conductorCapture.getEmail());
-        assertEquals(mockStringHash, conductorCapture.getPassword());
-        assertEquals(mockConductor.getCpf(), conductorCapture.getCpf());
-        assertDoesNotThrow(() -> UUID.fromString(conductorCapture.getId().toString()));
+        org.assertj.core.api.Assertions.assertThat(conductorCapture)
+                .usingRecursiveComparison()
+                .isEqualTo(mockConductor);
+
     }
 }
