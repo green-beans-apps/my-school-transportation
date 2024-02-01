@@ -1,11 +1,13 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
+import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidConductorException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.GetAllStudentsByConductorIdUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
+import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class GetAllStudentsByConductorIdUseCaseImpl implements GetAllStudentsByC
     }
 
     @Override
-    public List<Student> execute(UUID conductorId) {
+    public List<StudentProjectionDto> execute(UUID conductorId) {
         Optional<Conductor> conductor = this.conductorRepo.findById(conductorId);
         if (conductor.isEmpty()) {
             throw new InvalidConductorException();
