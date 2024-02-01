@@ -7,6 +7,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IStudentRepositoryJPA;
+import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.AddressSchema;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ConductorSchema;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ResponsibleSchema;
@@ -50,26 +51,23 @@ public class StudentRepositoryJPA implements StudentRepository {
     }
 
     @Override
-    public List<Student> findAllByConductorId(UUID conductorId) {
-        List<StudentSchema> studentsSchema = this.studentRepo.findAllByConductorId(conductorId);
-        if (studentsSchema.isEmpty()) {
+    public List<StudentProjection> findAllByConductorId(UUID conductorId) {
+        List<StudentProjection> studentsProjection = this.studentRepo.findAllByConductorId(conductorId);
+        if (studentsProjection.isEmpty()) {
             return null;
         }
-        List<Student> students = new ArrayList<>();
-        for (StudentSchema studentSchema : studentsSchema) {
-            var newConductor = new Conductor();
-            var newResponsible = new Responsible();
-            var newAddress = new Address();
 
-            BeanUtils.copyProperties(studentSchema.getConductor(), newConductor);
-            BeanUtils.copyProperties(studentSchema.getResponsible(), newResponsible);
-            BeanUtils.copyProperties(studentSchema.getAddress(), newAddress);
+        return studentsProjection;
+    }
 
-            students.add(new Student(studentSchema.getId(), studentSchema.getName(), studentSchema.getSchool(),
-                    studentSchema.getGrade(), studentSchema.getTransportationType().toString(), studentSchema.getMonthlyPayment(), studentSchema.getMonthlyPaymentExpiration(), studentSchema.getShift().toString(),
-                    newConductor, newResponsible, newAddress));
+    @Override
+    public Optional<StudentProjection> findStudentByIdWithoutConductor(UUID studentId) {
+        Optional<StudentProjection> studentProjection = this.studentRepo.findStudentByIdWithoutConductor(studentId);
+        if (studentProjection.isEmpty()) {
+            return Optional.empty();
         }
-        return students;
+
+        return studentProjection;
     }
 
     @Override
