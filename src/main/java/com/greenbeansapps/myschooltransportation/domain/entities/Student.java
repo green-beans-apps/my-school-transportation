@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.domain.entities;
 
 import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidShiftException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidTransportationTypeException;
 
 import java.util.UUID;
@@ -159,17 +160,17 @@ public class Student {
         return shift;
     }
 
-    public void setShift(String shift) {
+    public void setShift(String shift){
         if (shift == null || shift.isEmpty()) {
             throw new IllegalArgumentException("Shift cannot be null or empty");
         }
 
-        if (shift.equalsIgnoreCase("MANHA") || transportationType.equals("MANHA")) {
+        if (shift.equalsIgnoreCase("MANHA") || shift.equals("MANHA")) {
             this.shift = Shift.MANHA;
-        } else if (shift.equalsIgnoreCase("TARDE") || transportationType.equals("TARDE")) {
+        } else if (shift.equalsIgnoreCase("TARDE") || shift.equals("TARDE")) {
             this.shift = Shift.TARDE;
         }  else {
-            throw new InvalidTransportationTypeException();
+            throw new InvalidShiftException();
         }
     }
 }
