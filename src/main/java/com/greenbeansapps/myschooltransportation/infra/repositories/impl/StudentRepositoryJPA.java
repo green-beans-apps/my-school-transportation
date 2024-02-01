@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.infra.repositories.impl;
 
+import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
@@ -51,23 +52,44 @@ public class StudentRepositoryJPA implements StudentRepository {
     }
 
     @Override
-    public List<StudentProjection> findAllByConductorId(UUID conductorId) {
+    public List<StudentProjectionDto> findAllByConductorId(UUID conductorId) {
         List<StudentProjection> studentsProjection = this.studentRepo.findAllByConductorId(conductorId);
         if (studentsProjection.isEmpty()) {
             return null;
         }
 
-        return studentsProjection;
+        List<StudentProjectionDto> students = new ArrayList<>();
+        for (StudentProjection studentProjection : studentsProjection) {
+            var newResponsible = new Responsible();
+            var newAddress = new Address();
+
+            BeanUtils.copyProperties(studentProjection.getResponsible(), newResponsible);
+            BeanUtils.copyProperties(studentProjection.getAddress(), newAddress);
+
+            students.add(new StudentProjectionDto(studentProjection.getId(), studentProjection.getName(), studentProjection.getSchool(),
+                    studentProjection.getGrade(), studentProjection.getTransportationType(), studentProjection.getShift(), studentProjection.getMonthlyPayment(), studentProjection.getMonthlyPaymentExpiration(),
+                    newResponsible, newAddress));
+        }
+
+        return students;
     }
 
     @Override
-    public Optional<StudentProjection> findStudentByIdWithoutConductor(UUID studentId) {
+    public Optional<StudentProjectionDto> findStudentByIdWithoutConductor(UUID studentId) {
         Optional<StudentProjection> studentProjection = this.studentRepo.findStudentByIdWithoutConductor(studentId);
         if (studentProjection.isEmpty()) {
             return Optional.empty();
         }
 
-        return studentProjection;
+        var newResponsible = new Responsible();
+        var newAddress = new Address();
+
+        BeanUtils.copyProperties(studentProjection.get().getResponsible(), newResponsible);
+        BeanUtils.copyProperties(studentProjection.get().getAddress(), newAddress);
+
+        return Optional.of(new StudentProjectionDto(studentProjection.get().getId(), studentProjection.get().getName(), studentProjection.get().getSchool(),
+                studentProjection.get().getGrade(), studentProjection.get().getTransportationType(), studentProjection.get().getShift(), studentProjection.get().getMonthlyPayment(), studentProjection.get().getMonthlyPaymentExpiration(),
+                newResponsible, newAddress));
     }
 
     @Override
