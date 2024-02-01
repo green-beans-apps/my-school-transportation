@@ -43,7 +43,8 @@ public class LoginController {
       var auth = this.authenticationManager.authenticate(userNamePassword);
       var conductorSchema = (ConductorSchema) auth.getPrincipal();
       var token = this.tokenService.generateToken(conductorSchema);
-      return ResponseEntity.ok(new LoginResponseDto(token, conductorSchema.getId()));
+      var conductorResponse = new ConductorResponse(conductorSchema.getId(), conductorSchema.getName(), conductorSchema.getEmail(), conductorSchema.getCpf());
+      return ResponseEntity.ok(new LoginResponseDto(token, conductorResponse));
     } catch (RuntimeException err) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body("error: Invalid username or password");
     }
@@ -58,6 +59,9 @@ public class LoginController {
     private String password;
   }
 
-  public record LoginResponseDto(String token, UUID conductorId) {
+  public record LoginResponseDto(String token, ConductorResponse conductor) {
+  }
+
+  public record ConductorResponse(UUID id, String name, String email, String cpf){
   }
 }
