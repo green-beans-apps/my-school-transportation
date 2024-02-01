@@ -1,9 +1,7 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
 import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
-import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.GetAllStudentsByConductorIdUseCaseImpl;
-import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +14,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("conductor")
+@RequestMapping("/student")
 public class GetAllStudentsByConductorIdController {
 
     @Autowired
     GetAllStudentsByConductorIdUseCaseImpl getAllStudentsByConductorIdUseCase;
 
-    @GetMapping("/{conductorId}/student")
+    @GetMapping("conductor/{conductorId}")
     public ResponseEntity<List<StudentProjectionDto>> getAllStudentsByConductorId(@PathVariable("conductorId") String conductorId)  {
         var students = getAllStudentsByConductorIdUseCase.execute(UUID.fromString(conductorId));
         return ResponseEntity.status(HttpStatus.OK).body(students);
