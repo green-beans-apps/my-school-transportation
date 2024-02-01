@@ -1,9 +1,11 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
+import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.GetStudentByIdUseCaseImpl;
+import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +24,8 @@ public class GetStudentByIdController {
     private GetStudentByIdUseCaseImpl getStudentByIdUseCase;
 
     @GetMapping("/{studentId}")
-    public ResponseEntity getStudentById(@PathVariable("studentId") UUID studentId) {
-        var newStudent = this.getStudentByIdUseCase.execute(studentId);
-        var studentResponseDto = new StudentResponseDto(newStudent.getId(), newStudent.getName(), newStudent.getSchool(), newStudent.getGrade(),
-                newStudent.getMonthlyPayment(), newStudent.getMonthlyPaymentExpiration(), newStudent.getConductor(), newStudent.getResponsible(),
-                newStudent.getAddress());
-        return ResponseEntity.status(HttpStatus.OK).body(studentResponseDto);
+    public ResponseEntity<StudentProjectionDto> getStudentById(@PathVariable("studentId") UUID studentId) {
+        var getStudent = this.getStudentByIdUseCase.execute(studentId);
+        return ResponseEntity.status(HttpStatus.OK).body(getStudent);
     }
-
-    public record StudentResponseDto(UUID id, String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration, Conductor conductor, Responsible responsible, Address address) { }
 }
