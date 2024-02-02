@@ -75,4 +75,9 @@ public class HandleExceptionController extends ResponseEntityExceptionHandler {
   private ResponseEntity<String> invalidTransportationTypeExceptionHandler(InvalidTransportationTypeException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
   }
+
+  @ExceptionHandler(InvalidShiftException.class)
+  private ResponseEntity<String> invalidShiftExceptionHandler(InvalidShiftException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+  }
 }
