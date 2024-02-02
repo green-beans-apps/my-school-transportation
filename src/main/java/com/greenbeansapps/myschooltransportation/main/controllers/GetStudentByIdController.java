@@ -1,11 +1,7 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
 import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
-import com.greenbeansapps.myschooltransportation.domain.entities.Address;
-import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
-import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.GetStudentByIdUseCaseImpl;
-import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
