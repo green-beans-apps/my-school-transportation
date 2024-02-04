@@ -7,14 +7,14 @@ import java.util.UUID;
 
 public class Payment {
     private UUID id;
-    private Date paymentDate;
+    private String paymentDate;
     private Months paymentMonth;
     private Student student;
 
     public Payment() {
     }
 
-    public Payment(UUID id, Date paymentDate, Months paymentMonth, Student student) {
+    public Payment(UUID id, String paymentDate, Months paymentMonth, Student student) {
         setId(id);
         setPaymentDate(paymentDate);
         setPaymentMonth(paymentMonth);
@@ -32,11 +32,11 @@ public class Payment {
         this.id = id;
     }
 
-    public Date getPaymentDate() {
+    public String getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         if (paymentDate == null) {
             throw new IllegalArgumentException("Payment date cannot be null");
         }

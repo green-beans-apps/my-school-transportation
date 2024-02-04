@@ -11,6 +11,8 @@ import com.greenbeansapps.myschooltransportation.implementation.protocols.reposi
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,7 +42,12 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
       throw new ExistingPaymentException();
     }
 
-    Payment newPayment = new Payment(UUID.randomUUID(), new Date(), month, student.get());
+    String pattern = "dd/MM/yyyy";
+    LocalDate currentDate = LocalDate.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+    String formattedDate = currentDate.format(formatter);
+
+    Payment newPayment = new Payment(UUID.randomUUID(), formattedDate, month, student.get());
     return this.paymentRepo.register(newPayment);
   }
 

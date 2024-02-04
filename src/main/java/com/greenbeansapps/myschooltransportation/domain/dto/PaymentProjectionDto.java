@@ -7,10 +7,10 @@
 
     public class PaymentProjectionDto {
         private UUID id;
-        private Date paymentDate;
+        private String paymentDate;
         private Months paymentMonth;
 
-        public PaymentProjectionDto(UUID id, Date paymentDate, Months paymentMonth) {
+        public PaymentProjectionDto(UUID id, String paymentDate, Months paymentMonth) {
             this.id = id;
             this.paymentDate = paymentDate;
             this.paymentMonth = paymentMonth;
@@ -24,11 +24,11 @@
             this.id = id;
         }
 
-        public Date getPaymentDate() {
+        public String getPaymentDate() {
             return paymentDate;
         }
 
-        public void setPaymentDate(Date paymentDate) {
+        public void setPaymentDate(String paymentDate) {
             this.paymentDate = paymentDate;
         }
 

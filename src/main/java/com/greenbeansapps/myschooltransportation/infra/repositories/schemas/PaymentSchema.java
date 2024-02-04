@@ -19,7 +19,7 @@ public class PaymentSchema implements Serializable {
     @Id
     private UUID id;
     @Column(nullable = false)
-    private Date paymentDate;
+    private String paymentDate;
     @Column(nullable = false)
     private Months paymentMonth;
 
@@ -37,11 +37,11 @@ public class PaymentSchema implements Serializable {
         this.id = id;
     }
 
-    public Date getPaymentDate() {
+    public String getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
     }
 

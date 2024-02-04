@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,7 +42,13 @@ class RegisterPaymentUseCaseImplTest {
   Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
   Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
           "04", "manha", mockConductor, mockResponsible, mockAddress);
-  Payment mockPayment = new Payment(UUID.fromString("2fdf83ab-c4d4-4a05-981e-81d566ccd168"), new Date(), Months.JANEIRO, mockStudent );
+
+  String pattern = "dd/MM/yyyy";
+  LocalDate currentDate = LocalDate.now();
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+  String formattedDate = currentDate.format(formatter);
+
+  Payment mockPayment = new Payment(UUID.fromString("2fdf83ab-c4d4-4a05-981e-81d566ccd168"), formattedDate, Months.JANEIRO, mockStudent );
 
   @Test
   @DisplayName("Nao deve ser possivel registrar pagamento de um estudante invalido")
@@ -87,23 +94,20 @@ class RegisterPaymentUseCaseImplTest {
 
     // comparando retorno
     assertEquals(mockPayment.getPaymentMonth(), paymentReturn.getPaymentMonth());
+
     assertEquals(
-            LocalDate.ofInstant(mockPayment.getPaymentDate().toInstant(), ZoneId.systemDefault()),
-            LocalDate.ofInstant(paymentReturn.getPaymentDate().toInstant(), ZoneId.systemDefault())
+            mockPayment.getPaymentDate(),
+            paymentReturn.getPaymentDate()
     );
-    assertEquals(mockPayment.getPaymentDate().toInstant().atZone(ZoneId.systemDefault()).getHour(), paymentReturn.getPaymentDate().toInstant().atZone(ZoneId.systemDefault()).getHour());
-    assertEquals(mockPayment.getPaymentDate().toInstant().atZone(ZoneId.systemDefault()).getMinute(), paymentReturn.getPaymentDate().toInstant().atZone(ZoneId.systemDefault()).getMinute());
     assertEquals(mockPayment.getStudent(), paymentReturn.getStudent());
 
     // comparando dados passados para o repositorio
     Payment paymentArgumentCaptured = paymentArgumentCaptor.getValue();
     assertEquals(mockPayment.getPaymentMonth(), paymentArgumentCaptured.getPaymentMonth());
     assertEquals(
-            LocalDate.ofInstant(mockPayment.getPaymentDate().toInstant(), ZoneId.systemDefault()),
-            LocalDate.ofInstant(paymentArgumentCaptured.getPaymentDate().toInstant(), ZoneId.systemDefault())
+            mockPayment.getPaymentDate(),
+            paymentArgumentCaptured.getPaymentDate()
     );
-    assertEquals(mockPayment.getPaymentDate().toInstant().atZone(ZoneId.systemDefault()).getHour(), paymentArgumentCaptured.getPaymentDate().toInstant().atZone(ZoneId.systemDefault()).getHour());
-    assertEquals(mockPayment.getPaymentDate().toInstant().atZone(ZoneId.systemDefault()).getMinute(), paymentArgumentCaptured.getPaymentDate().toInstant().atZone(ZoneId.systemDefault()).getMinute());
     assertEquals(mockPayment.getStudent(), paymentArgumentCaptured.getStudent());
   }
 
