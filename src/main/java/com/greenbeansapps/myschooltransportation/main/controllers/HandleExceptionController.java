@@ -80,4 +80,9 @@ public class HandleExceptionController extends ResponseEntityExceptionHandler {
   private ResponseEntity<String> invalidShiftExceptionHandler(InvalidShiftException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
   }
+
+  @ExceptionHandler(ConductorNotFoundException.class)
+  private ResponseEntity<String> conductorNotFoundExceptionHandler(ConductorNotFoundException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+  }
 }
