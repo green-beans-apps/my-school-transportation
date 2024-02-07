@@ -1,8 +1,10 @@
 package com.greenbeansapps.myschooltransportation.infra.repositories.impl;
 
+import com.greenbeansapps.myschooltransportation.domain.dto.ConductorProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IConductorRepositoryJPA;
+import com.greenbeansapps.myschooltransportation.infra.repositories.projection.ConductorProjection;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ConductorSchema;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,6 +56,26 @@ public class ConductorRepositoryJPA implements ConductorRepository {
         }
         return Optional.of(new Conductor(conductorSchema.get().getId(), conductorSchema.get().getName(), conductorSchema.get().getEmail(), conductorSchema.get().getCpf(), conductorSchema.get().getPassword()));
 
+    }
+
+    @Override
+    public Optional<ConductorProjectionDto> findConductorByIdWithoutPassword(UUID conductorId) {
+        Optional<ConductorProjection> conductorProjection = this.conductorRepo.findConductorByIdWithoutPassword(conductorId);
+        if (conductorProjection.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(new ConductorProjectionDto(conductorProjection.get().getId(), conductorProjection.get().getName(), conductorProjection.get().getEmail(), conductorProjection.get().getCpf()));
+    }
+
+    @Override
+    public Conductor updateConductor(Conductor conductor) {
+        Optional<ConductorSchema> conductorSchema = this.conductorRepo.findById(conductor.getId());
+
+        conductorSchema.get().setName(conductor.getName());
+        conductorSchema.get().setEmail(conductor.getEmail());
+
+        conductorRepo.save(conductorSchema.get());
+        return conductor;
     }
 
     public UserDetails findBycpfUserDetails(String cpf) {
