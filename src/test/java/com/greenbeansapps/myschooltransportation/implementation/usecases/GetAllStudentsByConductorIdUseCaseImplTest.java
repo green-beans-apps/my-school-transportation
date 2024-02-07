@@ -1,14 +1,17 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
+import com.greenbeansapps.myschooltransportation.domain.dto.PaymentProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.enums.Months;
 import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidConductorException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
+import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +36,9 @@ public class GetAllStudentsByConductorIdUseCaseImplTest {
     StudentRepository studentRepo;
     @Mock
     ConductorRepository conductorRepo;
+    @Mock
+    PaymentRepository paymentRepo;
+
     @InjectMocks
     GetAllStudentsByConductorIdUseCaseImpl getAllStudentsByConductorIdUseCase;
 
@@ -40,16 +46,19 @@ public class GetAllStudentsByConductorIdUseCaseImplTest {
     Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
     Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
     StudentProjectionDto mockFirstStudent = new StudentProjectionDto(UUID.fromString("296c5a89-5a29-4549-bb48-f57ff7f04619"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA, 140,
-            "04", mockResponsible, mockAddress);
-    StudentProjectionDto mockSecondStudent = new StudentProjectionDto(UUID.fromString("296c5a89-5a29-4549-bb48-f57ff7f04619"), "Ueslei Nogueira", "Colégio ETE Porto Digital", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA, 140,
-            "02", mockResponsible, mockAddress);
+            "18", mockResponsible, mockAddress);
+    StudentProjectionDto mockSecondStudent = new StudentProjectionDto(UUID.fromString("296c5a89-5a29-4549-bb48-f57ff7f04610"), "Ueslei Nogueira", "Colégio ETE Porto Digital", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA, 140,
+            "18", mockResponsible, mockAddress);
 
+    PaymentProjectionDto mockFirstPayment = new PaymentProjectionDto(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb510"), "18", Months.JANEIRO);
+    PaymentProjectionDto mockSecondPayment = new PaymentProjectionDto(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb511"), "18", Months.FEVEREIRO);
     @Test
     @DisplayName("Deve retornar todos os alunos vinculados ao id do condutor")
     void case1() {
         //Arrange
         Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
         Mockito.when(studentRepo.findAllByConductorId(mockConductor.getId())).thenReturn(List.of(mockFirstStudent, mockSecondStudent));
+        Mockito.when(paymentRepo.findAllPaymentByStudentId(mockFirstStudent.getId())).thenReturn(List.of(mockFirstPayment, mockSecondPayment));
 
         //Act
         var returnStudents = getAllStudentsByConductorIdUseCase.execute(mockConductor.getId());
