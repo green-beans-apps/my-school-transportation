@@ -6,6 +6,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.ExistingPaymentException;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthlyPaymentExpirationException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -36,24 +37,33 @@ class UpdateStudentUseCaseImplTest {
   Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
   Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
   Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
-          "04", "manha", mockConductor, mockResponsible, mockAddress);
+          4, "manha", mockConductor, mockResponsible, mockAddress);
 
   Student mockUpdatedStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo pessoa", "Colégio segura na mao de deus", "6° Ano", TransportationType.IDA_E_VOLTA.toString(), 190,
-          "09", "manha", mockConductor, mockResponsible, mockAddress);
+          18, "manha", mockConductor, mockResponsible, mockAddress);
 
   @Test
   @DisplayName("Nao deve ser possivel atualizar um estudante inexistente")
   void case1() {
     Mockito.when(studentRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-
     assertThrows(StudentNotFoundException.class, () -> {
-      updateStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getMonthlyPayment(), mockStudent.getMonthlyPaymentExpiration());
+      updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration());
+    });
+  }
+
+  @Test
+  @DisplayName("Nao deve ser possivel atualizar um estudante com uma data que nao esteja entre 1 e 28")
+  void case2() {
+    Mockito.when(studentRepository.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
+
+    assertThrows(InvalidMonthlyPaymentExpirationException.class, () -> {
+      updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getMonthlyPayment(), 29);
     });
   }
 
   @Test
   @DisplayName("deve ser possivel atualizar um estudante.")
-  void case2() {
+  void case3() {
     Mockito.when(studentRepository.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
 
     ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);

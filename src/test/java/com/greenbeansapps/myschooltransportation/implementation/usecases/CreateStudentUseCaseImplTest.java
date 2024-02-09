@@ -43,7 +43,7 @@ public class CreateStudentUseCaseImplTest {
     Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
     Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
     Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140,
-            "04","manha", mockConductor, mockResponsible, mockAddress);
+            4,"manha", mockConductor, mockResponsible, mockAddress);
 
     @Test
     @DisplayName("Nao deve ser possivel criar um estudante com o endereço invalido.")
@@ -126,6 +126,19 @@ public class CreateStudentUseCaseImplTest {
         assertThrows(InvalidTransportationTypeException.class, () -> {
             createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), "volt", mockStudent.getMonthlyPayment(),
                     mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("Nao deve ser possivel atualizar um estudante com uma data que nao esteja entre 1 e 28")
+    void case6() {
+        Mockito.when(responsibleRepo.findById(mockResponsible.getId())).thenReturn(Optional.of(mockResponsible));
+        Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
+        Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.of(mockAddress));
+
+        assertThrows(InvalidMonthlyPaymentExpirationException.class, () -> {
+            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), "volta", mockStudent.getMonthlyPayment(),
+                    29, mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
         });
     }
 }
