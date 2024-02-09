@@ -28,7 +28,7 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
   }
 
   @Override
-  public Payment execute(UUID studentId, String paymentMonth) {
+  public Payment execute(UUID paymentId, UUID studentId, String paymentMonth) {
     Optional<Student> student = this.studentRepo.findById(studentId);
     if(student.isEmpty()) {
       throw new StudentNotFoundException();
@@ -47,7 +47,7 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
     String formattedDate = currentDate.format(formatter);
 
-    Payment newPayment = new Payment(UUID.randomUUID(), formattedDate, month, student.get());
+    Payment newPayment = new Payment(paymentId, formattedDate, month, student.get());
     return this.paymentRepo.register(newPayment);
   }
 

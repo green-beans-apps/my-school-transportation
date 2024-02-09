@@ -6,5 +6,5 @@ import com.greenbeansapps.myschooltransportation.domain.enums.Months;
 import java.util.UUID;
 
 public interface RegisterPaymentUseCase {
-  public Payment execute(UUID studentId, String paymentMonth);
+  public Payment execute(UUID paymentId, UUID studentId, String paymentMonth);
 }
