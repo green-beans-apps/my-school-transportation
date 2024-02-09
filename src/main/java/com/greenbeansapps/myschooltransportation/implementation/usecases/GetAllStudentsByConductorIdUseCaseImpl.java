@@ -43,7 +43,9 @@ public class GetAllStudentsByConductorIdUseCaseImpl implements GetAllStudentsByC
         List<StudentProjectionDto>  studentProjectionDtoList = this.studentRepo.findAllByConductorId(conductorId);
         for (StudentProjectionDto studentProjectionDto : studentProjectionDtoList) {
             List<PaymentProjectionDto> paymentProjectionDtoList = this.paymentRepo.findAllPaymentByStudentId(studentProjectionDto.getId());
-
+            if(paymentProjectionDtoList == null) {
+                paymentProjectionDtoList = new ArrayList<>();
+            }
             studentProjectionWithPaymentProjectionDtoList.add(new StudentProjectionWithPaymentProjectionDto(studentProjectionDto.getId(), studentProjectionDto.getName(), studentProjectionDto.getSchool(),
                     studentProjectionDto.getGrade(), studentProjectionDto.getTransportationType(), studentProjectionDto.getShift(), studentProjectionDto.getMonthlyPayment(),
                     studentProjectionDto.getMonthlyPaymentExpiration(), studentProjectionDto.getResponsible(), studentProjectionDto.getAddress(), paymentProjectionDtoList));
