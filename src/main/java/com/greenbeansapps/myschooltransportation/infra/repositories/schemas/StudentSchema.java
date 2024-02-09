@@ -34,7 +34,7 @@ public class StudentSchema implements Serializable {
     @Column(nullable = false)
     private Integer monthlyPayment;
     @Column(nullable = false)
-    private String monthlyPaymentExpiration;
+    private Integer monthlyPaymentExpiration;
 
     @ManyToOne
     @JoinColumn(name = "conductor_id", nullable = false)
@@ -99,11 +99,11 @@ public class StudentSchema implements Serializable {
         this.monthlyPayment = monthlyPayment;
     }
 
-    public String getMonthlyPaymentExpiration() {
+    public Integer getMonthlyPaymentExpiration() {
         return monthlyPaymentExpiration;
     }
 
-    public void setMonthlyPaymentExpiration(String monthlyPaymentExpiration) {
+    public void setMonthlyPaymentExpiration(Integer monthlyPaymentExpiration) {
         this.monthlyPaymentExpiration = monthlyPaymentExpiration;
     }
 

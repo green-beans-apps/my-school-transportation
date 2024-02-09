@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.domain.entities;
 
 import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthlyPaymentExpirationException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidShiftException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidTransportationTypeException;
 
@@ -14,7 +15,7 @@ public class Student {
     private String grade;
     private TransportationType transportationType;
     private Integer monthlyPayment;
-    private String monthlyPaymentExpiration;
+    private Integer monthlyPaymentExpiration;
     private Conductor conductor;
     private Responsible responsible;
     private Address address;
@@ -23,7 +24,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, String shift, Conductor conductor, Responsible responsible, Address address) {
+    public Student(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, Integer monthlyPaymentExpiration, String shift, Conductor conductor, Responsible responsible, Address address) {
         setId(id);
         setName(name);
         setSchool(school);
@@ -112,13 +113,16 @@ public class Student {
         this.monthlyPayment = monthlyPayment;
     }
 
-    public String getMonthlyPaymentExpiration() {
+    public Integer getMonthlyPaymentExpiration() {
         return monthlyPaymentExpiration;
     }
 
-    public void setMonthlyPaymentExpiration(String monthlyPaymentExpiration) {
-        if (monthlyPaymentExpiration == null || monthlyPaymentExpiration.isEmpty()) {
+    public void setMonthlyPaymentExpiration(Integer monthlyPaymentExpiration) {
+        if (monthlyPaymentExpiration == null) {
             throw new IllegalArgumentException("Monthly payment expiration cannot be null or empty");
+        }
+        if (monthlyPaymentExpiration < 1 || monthlyPaymentExpiration > 28) {
+            throw new InvalidMonthlyPaymentExpirationException();
         }
         this.monthlyPaymentExpiration = monthlyPaymentExpiration;
     }

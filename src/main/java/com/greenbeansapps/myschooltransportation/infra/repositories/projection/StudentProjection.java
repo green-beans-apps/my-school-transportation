@@ -17,11 +17,11 @@ public class StudentProjection {
     private TransportationType transportationType;
     private Shift shift;
     private Integer monthlyPayment;
-    private String monthlyPaymentExpiration;
+    private Integer monthlyPaymentExpiration;
     private ResponsibleSchema responsible;
     private AddressSchema address;
 
-    public StudentProjection(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Integer monthlyPayment, String monthlyPaymentExpiration, ResponsibleSchema responsible, AddressSchema address) {
+    public StudentProjection(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Integer monthlyPayment, Integer monthlyPaymentExpiration, ResponsibleSchema responsible, AddressSchema address) {
         this.id = id;
         this.name = name;
         this.school = school;
@@ -90,11 +90,11 @@ public class StudentProjection {
         this.monthlyPayment = monthlyPayment;
     }
 
-    public String getMonthlyPaymentExpiration() {
+    public Integer getMonthlyPaymentExpiration() {
         return monthlyPaymentExpiration;
     }
 
-    public void setMonthlyPaymentExpiration(String monthlyPaymentExpiration) {
+    public void setMonthlyPaymentExpiration(Integer monthlyPaymentExpiration) {
         this.monthlyPaymentExpiration = monthlyPaymentExpiration;
     }
 
