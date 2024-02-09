@@ -9,5 +9,5 @@ import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType
 import java.util.UUID;
 
 public interface CreateStudentUseCase {
-    public Student execute(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, String monthlyPaymentExpiration, String shift, UUID conductorId, UUID responsibleId, UUID addressId);
+    public Student execute(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, Integer monthlyPaymentExpiration, String shift, UUID conductorId, UUID responsibleId, UUID addressId);
 }

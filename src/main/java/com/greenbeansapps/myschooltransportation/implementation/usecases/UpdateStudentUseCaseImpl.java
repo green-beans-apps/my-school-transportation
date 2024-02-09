@@ -1,6 +1,7 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthlyPaymentExpirationException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.UpdateStudentUseCase;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
@@ -18,7 +19,7 @@ public class UpdateStudentUseCaseImpl implements UpdateStudentUseCase {
     this.studentRepository = studentRepository;
   }
   @Override
-  public Student execute(UUID StudentId, String name, String school, String grade, Integer monthlyPayment, String monthlyPaymentExpiration) {
+  public Student execute(UUID StudentId, String name, String school, String grade, Integer monthlyPayment, Integer monthlyPaymentExpiration) {
 
     Optional<Student> student = studentRepository.findById(StudentId);
 
