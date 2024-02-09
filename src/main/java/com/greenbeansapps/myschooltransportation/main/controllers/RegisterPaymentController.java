@@ -31,9 +31,9 @@ public class RegisterPaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        this.registerPaymentUseCase.execute(registerPaymentDto.studentId, registerPaymentDto.month);
+        this.registerPaymentUseCase.execute(registerPaymentDto.paymentId, registerPaymentDto.studentId, registerPaymentDto.month);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public record RegisterPaymentDto(@NotNull UUID studentId, @NotBlank String month) {}
+    public record RegisterPaymentDto(UUID paymentId, @NotNull UUID studentId, @NotBlank String month) {}
 }
