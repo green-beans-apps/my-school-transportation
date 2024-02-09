@@ -85,4 +85,9 @@ public class HandleExceptionController extends ResponseEntityExceptionHandler {
   private ResponseEntity<String> conductorNotFoundExceptionHandler(ConductorNotFoundException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
   }
+
+  @ExceptionHandler(InvalidMonthlyPaymentExpirationException.class)
+    private ResponseEntity<String> invalidMonthlyPaymentExpirationException(InvalidMonthlyPaymentExpirationException exception) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
 }
