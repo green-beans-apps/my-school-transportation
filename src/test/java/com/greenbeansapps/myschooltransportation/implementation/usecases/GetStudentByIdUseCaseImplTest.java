@@ -46,7 +46,7 @@ public class GetStudentByIdUseCaseImplTest {
             )
     );
     StudentProjectionWithPaymentProjectionDto mockStudent = new StudentProjectionWithPaymentProjectionDto(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA,140,
-            "18", mockResponsible, mockAddress, paymentList);
+            18, mockResponsible, mockAddress, paymentList);
 
     @Test
     @DisplayName("Deve retornar um estudante por id")
