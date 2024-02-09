@@ -53,8 +53,8 @@ public class UpdateStudentController {
           String grade,
           @NotNull
           Integer monthlyPayment,
-          @NotBlank
-          String monthlyPaymentExpiration
+          @NotNull
+          Integer monthlyPaymentExpiration
   ) {}
 
   public record UpdateStudentResponseDto(
@@ -63,6 +63,6 @@ public class UpdateStudentController {
           String school,
           String grade,
           Integer monthlyPayment,
-          String monthlyPaymentExpiration
+          Integer monthlyPaymentExpiration
   ) {}
 }
