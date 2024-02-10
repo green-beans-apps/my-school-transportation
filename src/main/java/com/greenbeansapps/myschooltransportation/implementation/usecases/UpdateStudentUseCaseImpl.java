@@ -19,7 +19,7 @@ public class UpdateStudentUseCaseImpl implements UpdateStudentUseCase {
     this.studentRepository = studentRepository;
   }
   @Override
-  public Student execute(UUID StudentId, String name, String school, String grade, Integer monthlyPayment, Integer monthlyPaymentExpiration) {
+  public Student execute(UUID StudentId, String name, String school, String grade, String transportationType, Integer monthlyPayment, Integer monthlyPaymentExpiration, String shift) {
 
     Optional<Student> student = studentRepository.findById(StudentId);
 
@@ -30,8 +30,10 @@ public class UpdateStudentUseCaseImpl implements UpdateStudentUseCase {
     student.get().setName(name);
     student.get().setSchool(school);
     student.get().setGrade(grade);
+    student.get().setTransportationType(transportationType);
     student.get().setMonthlyPayment(monthlyPayment);
     student.get().setMonthlyPaymentExpiration(monthlyPaymentExpiration);
+    student.get().setShift(shift);
 
     return studentRepository.updateStudent(student.get());
   }

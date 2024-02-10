@@ -134,8 +134,10 @@ public class StudentRepositoryJPA implements StudentRepository {
         studentSchema.get().setName(student.getName());
         studentSchema.get().setSchool(student.getSchool());
         studentSchema.get().setGrade(student.getGrade());
+        studentSchema.get().setTransportationType(student.getTransportationType());
         studentSchema.get().setMonthlyPayment(student.getMonthlyPayment());
         studentSchema.get().setMonthlyPaymentExpiration(student.getMonthlyPaymentExpiration());
+        studentSchema.get().setShift(student.getShift());
 
         this.studentRepo.save(studentSchema.get());
 

@@ -36,8 +36,8 @@ public class UpdateStudentController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    var updateStudent = this.updateStudentUseCase.execute(UUID.fromString(updateStudentDto.studentId), updateStudentDto.name, updateStudentDto.school, updateStudentDto.grade, updateStudentDto.monthlyPayment, updateStudentDto.monthlyPaymentExpiration);
-    var responseUpdateStudent = new UpdateStudentResponseDto(updateStudent.getId(), updateStudent.getName(), updateStudent.getSchool(), updateStudent.getGrade(), updateStudent.getMonthlyPayment(), updateStudent.getMonthlyPaymentExpiration());
+    var updateStudent = this.updateStudentUseCase.execute(UUID.fromString(updateStudentDto.studentId), updateStudentDto.name, updateStudentDto.school, updateStudentDto.grade, updateStudentDto.transportationType, updateStudentDto.monthlyPayment, updateStudentDto.monthlyPaymentExpiration, updateStudentDto.shift);
+    var responseUpdateStudent = new UpdateStudentResponseDto(updateStudent.getId(), updateStudent.getName(), updateStudent.getSchool(), updateStudent.getGrade(), updateStudent.getTransportationType().toString(), updateStudent.getMonthlyPayment(), updateStudent.getMonthlyPaymentExpiration(), updateStudent.getShift().toString());
     return ResponseEntity.status(HttpStatus.OK).body(responseUpdateStudent);
   }
 
@@ -51,10 +51,14 @@ public class UpdateStudentController {
           String school,
           @NotBlank
           String grade,
+          @NotBlank
+          String transportationType,
           @NotNull
           Integer monthlyPayment,
           @NotNull
-          Integer monthlyPaymentExpiration
+          Integer monthlyPaymentExpiration,
+          @NotBlank
+          String shift
   ) {}
 
   public record UpdateStudentResponseDto(
@@ -62,7 +66,9 @@ public class UpdateStudentController {
           String name,
           String school,
           String grade,
+          String transportationType,
           Integer monthlyPayment,
-          Integer monthlyPaymentExpiration
+          Integer monthlyPaymentExpiration,
+          String shift
   ) {}
 }
