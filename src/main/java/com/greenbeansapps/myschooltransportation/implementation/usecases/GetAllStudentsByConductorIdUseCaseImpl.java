@@ -1,56 +1,57 @@
-package com.greenbeansapps.myschooltransportation.implementation.usecases;
+    package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
-import com.greenbeansapps.myschooltransportation.domain.dto.PaymentProjectionDto;
-import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
-import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionWithPaymentProjectionDto;
-import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
-import com.greenbeansapps.myschooltransportation.domain.entities.Student;
-import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidConductorException;
-import com.greenbeansapps.myschooltransportation.domain.usecases.GetAllStudentsByConductorIdUseCase;
-import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
-import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
-import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
-import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
-import org.springframework.stereotype.Service;
+    import com.greenbeansapps.myschooltransportation.domain.dto.PaymentProjectionDto;
+    import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
+    import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionWithPaymentProjectionDto;
+    import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
+    import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+    import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidConductorException;
+    import com.greenbeansapps.myschooltransportation.domain.usecases.GetAllStudentsByConductorIdUseCase;
+    import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
+    import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
+    import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
+    import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
+    import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+    import java.util.*;
 
-@Service
-public class GetAllStudentsByConductorIdUseCaseImpl implements GetAllStudentsByConductorIdUseCase {
+    @Service
+    public class GetAllStudentsByConductorIdUseCaseImpl implements GetAllStudentsByConductorIdUseCase {
 
-    private final StudentRepository studentRepo;
-    private final PaymentRepository paymentRepo;
-    private final ConductorRepository conductorRepo;
+        private final StudentRepository studentRepo;
+        private final PaymentRepository paymentRepo;
+        private final ConductorRepository conductorRepo;
 
 
-    public GetAllStudentsByConductorIdUseCaseImpl(StudentRepository studentRepo, PaymentRepository paymentRepo, ConductorRepository conductorRepo) {
-        this.studentRepo = studentRepo;
-        this.paymentRepo = paymentRepo;
-        this.conductorRepo = conductorRepo;
-    }
-
-    @Override
-    public List<StudentProjectionWithPaymentProjectionDto> execute(UUID conductorId) {
-        Optional<Conductor> conductor = this.conductorRepo.findById(conductorId);
-        if (conductor.isEmpty()) {
-            throw new InvalidConductorException();
+        public GetAllStudentsByConductorIdUseCaseImpl(StudentRepository studentRepo, PaymentRepository paymentRepo, ConductorRepository conductorRepo) {
+            this.studentRepo = studentRepo;
+            this.paymentRepo = paymentRepo;
+            this.conductorRepo = conductorRepo;
         }
-        List<StudentProjectionWithPaymentProjectionDto> studentProjectionWithPaymentProjectionDtoList = new ArrayList<>();
 
-        List<StudentProjectionDto>  studentProjectionDtoList = this.studentRepo.findAllByConductorId(conductorId);
-        for (StudentProjectionDto studentProjectionDto : studentProjectionDtoList) {
-            List<PaymentProjectionDto> paymentProjectionDtoList = this.paymentRepo.findAllPaymentByStudentId(studentProjectionDto.getId());
-            if(paymentProjectionDtoList == null) {
-                paymentProjectionDtoList = new ArrayList<>();
+        @Override
+        public List<StudentProjectionWithPaymentProjectionDto> execute(UUID conductorId) {
+            Optional<Conductor> conductor = this.conductorRepo.findById(conductorId);
+            if (conductor.isEmpty()) {
+                throw new InvalidConductorException();
             }
-            studentProjectionWithPaymentProjectionDtoList.add(new StudentProjectionWithPaymentProjectionDto(studentProjectionDto.getId(), studentProjectionDto.getName(), studentProjectionDto.getSchool(),
-                    studentProjectionDto.getGrade(), studentProjectionDto.getTransportationType(), studentProjectionDto.getShift(), studentProjectionDto.getMonthlyPayment(),
-                    studentProjectionDto.getMonthlyPaymentExpiration(), studentProjectionDto.getResponsible(), studentProjectionDto.getAddress(), paymentProjectionDtoList));
-        }
+            List<StudentProjectionWithPaymentProjectionDto> studentProjectionWithPaymentProjectionDtoList = new ArrayList<>();
 
-        return studentProjectionWithPaymentProjectionDtoList;
+            List<StudentProjectionDto>  studentProjectionDtoList = this.studentRepo.findAllByConductorId(conductorId);
+
+            // Ordenando studentProjectionDtoList por ordem alfabética
+            studentProjectionDtoList.sort(Comparator.comparing(StudentProjectionDto::getName));
+
+            for (StudentProjectionDto studentProjectionDto : studentProjectionDtoList) {
+                List<PaymentProjectionDto> paymentProjectionDtoList = this.paymentRepo.findAllPaymentByStudentId(studentProjectionDto.getId());
+                if(paymentProjectionDtoList == null) {
+                    paymentProjectionDtoList = new ArrayList<>();
+                }
+                studentProjectionWithPaymentProjectionDtoList.add(new StudentProjectionWithPaymentProjectionDto(studentProjectionDto.getId(), studentProjectionDto.getName(), studentProjectionDto.getSchool(),
+                        studentProjectionDto.getGrade(), studentProjectionDto.getTransportationType(), studentProjectionDto.getShift(), studentProjectionDto.getMonthlyPayment(),
+                        studentProjectionDto.getMonthlyPaymentExpiration(), studentProjectionDto.getResponsible(), studentProjectionDto.getAddress(), paymentProjectionDtoList));
+            }
+
+            return studentProjectionWithPaymentProjectionDtoList;
+        }
     }
-}
