@@ -36,7 +36,7 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
             throw new EmailAlreadyRegisteredException();
         }
 
-        String regexPassword = "^(?=.*[!@#$%^&*(),.?\":{}|<>])(?=.*[a-zA-Z0-9]).{6,}$";
+        String regexPassword = "^(?=.*[a-zA-Z0-9]).{6,}$";
         Pattern patternRegexPassword = Pattern.compile(regexPassword);
         Matcher matcherPassword = patternRegexPassword.matcher(password);
         if(!matcherPassword.matches()) {
