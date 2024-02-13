@@ -10,6 +10,8 @@ import java.util.UUID;
 
 public interface PaymentRepository {
   public Payment register(Payment payment);
+  public Optional<Payment> findPayment(UUID paymentId);
   public Optional<Payment> findPaymentPerMonth(UUID studentId, Months months);
   public List<PaymentProjectionDto> findAllPaymentByStudentId(UUID studentId);
+  public Boolean cancelPayment(UUID paymentId);
 }

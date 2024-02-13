@@ -10,6 +10,7 @@ import com.greenbeansapps.myschooltransportation.infra.repositories.projection.P
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.PaymentSchema;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.StudentSchema;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -40,6 +41,18 @@ public class PaymentRepositoryJPA implements PaymentRepository {
     }
 
     @Override
+    public Optional<Payment> findPayment(UUID paymentId) {
+        Optional<PaymentSchema> paymentSchema = this.paymentRepo.findById(paymentId);
+        if (paymentSchema.isEmpty()) {
+            return Optional.empty();
+        }
+        var newStudent = new Student();
+        BeanUtils.copyProperties(paymentSchema.get().getStudent(), newStudent);
+
+        return Optional.of(new Payment(paymentSchema.get().getId(), paymentSchema.get().getPaymentDate(), paymentSchema.get().getPaymentMonth(), newStudent));
+    }
+
+    @Override
     public Optional<Payment> findPaymentPerMonth(UUID studentId, Months months) {
         Optional<PaymentSchema> paymentSchema = this.paymentRepo.findPaymentPerMonth(studentId, months);
         if (paymentSchema.isEmpty()) {
@@ -64,5 +77,16 @@ public class PaymentRepositoryJPA implements PaymentRepository {
         }
 
         return paymentProjectionDtoList;
+    }
+
+    @Override
+    public Boolean cancelPayment(UUID paymentId) {
+        Optional<PaymentSchema> paymentSchema = this.paymentRepo.findById(paymentId);
+        if (paymentSchema.isEmpty()) {
+            return false;
+        }
+
+        paymentRepo.delete(paymentSchema.get());
+        return true;
     }
 }
