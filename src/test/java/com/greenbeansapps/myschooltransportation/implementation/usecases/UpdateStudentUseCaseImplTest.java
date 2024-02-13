@@ -47,7 +47,7 @@ class UpdateStudentUseCaseImplTest {
   void case1() {
     Mockito.when(studentRepository.findById(Mockito.any())).thenReturn(Optional.empty());
     assertThrows(StudentNotFoundException.class, () -> {
-      updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration());
+      updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration(), mockUpdatedStudent.getShift().toString());
     });
   }
 
@@ -57,7 +57,7 @@ class UpdateStudentUseCaseImplTest {
     Mockito.when(studentRepository.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
 
     assertThrows(InvalidMonthlyPaymentExpirationException.class, () -> {
-      updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getMonthlyPayment(), 29);
+      updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), 29, mockUpdatedStudent.getShift().toString());
     });
   }
 
@@ -69,7 +69,7 @@ class UpdateStudentUseCaseImplTest {
     ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
     Mockito.when(studentRepository.updateStudent(studentCaptor.capture())).thenReturn(mockUpdatedStudent);
 
-    var updatedStudent = updateStudentUseCase.execute(mockStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration());
+    var updatedStudent = updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration(), mockUpdatedStudent.getShift().toString());
 
     assertThat(updatedStudent)
             .usingRecursiveComparison()

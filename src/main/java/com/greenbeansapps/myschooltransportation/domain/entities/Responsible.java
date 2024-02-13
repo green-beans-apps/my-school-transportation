@@ -26,7 +26,7 @@ public class Responsible {
     }
 
     public void setId(UUID id) {
-        if(id == null) {
+        if (id == null) {
             this.id = UUID.randomUUID();
         } else {
             this.id = id;
@@ -38,7 +38,7 @@ public class Responsible {
     }
 
     public void setName(String name) {
-        if(name == null || name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name must not be null or empty");
         }
         if (name.length() < 3) {
@@ -52,13 +52,13 @@ public class Responsible {
     }
 
     public void setEmail(String email) {
-        if(email == null || email.isEmpty()) {
-            throw new IllegalArgumentException("Email must not be null or empty");
-        }
-        if (!EmailValidator.execute(email)) {
+        if (email == null || email.isEmpty()) {
+            this.email = email;
+        } else if (!EmailValidator.execute(email)) {
             throw new InvalidEmailException();
+        } else {
+            this.email = email;
         }
-        this.email = email;
     }
 
     public String getPhone() {

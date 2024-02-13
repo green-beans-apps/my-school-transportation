@@ -93,7 +93,7 @@ public class CreateStudentController {
   public record ResponsibleDataDto(
           UUID id,
           @NotBlank String responsibleName,
-          @NotBlank String email,
+          String email,
           @NotBlank String phone
   ) { }
 
