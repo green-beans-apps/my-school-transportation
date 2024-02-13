@@ -37,7 +37,8 @@
             }
             List<StudentProjectionWithPaymentProjectionDto> studentProjectionWithPaymentProjectionDtoList = new ArrayList<>();
 
-            List<StudentProjectionDto>  studentProjectionDtoList = this.studentRepo.findAllByConductorId(conductorId);
+            // Copia a lista retornada pelo repositório para uma lista mutável - atualização para execução do teste unitário
+            List<StudentProjectionDto> studentProjectionDtoList = new ArrayList<>(this.studentRepo.findAllByConductorId(conductorId));
 
             // Ordenando studentProjectionDtoList por ordem alfabética
             studentProjectionDtoList.sort(Comparator.comparing(StudentProjectionDto::getName));
