@@ -20,7 +20,7 @@ public class ResponsibleSchema implements Serializable {
     private UUID id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column()
     private String email;
     @Column(nullable = false)
     private String phone;
