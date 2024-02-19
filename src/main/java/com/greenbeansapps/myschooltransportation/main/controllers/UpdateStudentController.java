@@ -54,7 +54,7 @@ public class UpdateStudentController {
           @NotBlank
           String transportationType,
           @NotNull
-          Integer monthlyPayment,
+          Double monthlyPayment,
           @NotNull
           Integer monthlyPaymentExpiration,
           @NotBlank
@@ -67,7 +67,7 @@ public class UpdateStudentController {
           String school,
           String grade,
           String transportationType,
-          Integer monthlyPayment,
+          Double monthlyPayment,
           Integer monthlyPaymentExpiration,
           String shift
   ) {}

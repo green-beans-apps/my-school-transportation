@@ -83,7 +83,7 @@ public class CreateStudentController {
           @NotBlank String school,
           @NotBlank String grade,
           @NotBlank String transportationType,
-          @NotNull Integer monthlyPayment,
+          @NotNull Double monthlyPayment,
           @NotNull Integer monthlyPaymentExpiration,
           @NotBlank String shift,
           @ValidUUID
