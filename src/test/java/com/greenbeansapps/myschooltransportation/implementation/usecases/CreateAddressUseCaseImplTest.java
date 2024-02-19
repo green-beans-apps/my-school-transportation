@@ -23,7 +23,7 @@ class CreateAddressUseCaseImplTest {
   @Mock
   AddressRepository addressRepo;
 
-  Address mockAddress = new Address(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);
+  Address mockAddress = new Address(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", "123");
 
   @Test
   @DisplayName("Deve cadastrar um novo endereço com sucesso.")

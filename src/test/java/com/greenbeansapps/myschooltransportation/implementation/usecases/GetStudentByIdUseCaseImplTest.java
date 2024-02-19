@@ -37,7 +37,7 @@ public class GetStudentByIdUseCaseImplTest {
     @InjectMocks
     GetStudentByIdUseCaseImpl getStudentByIdUseCase;
 
-    Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", 123);;
+    Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", "123");;
     Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
     List<PaymentProjectionDto> paymentList = new ArrayList<>(
             List.of(
