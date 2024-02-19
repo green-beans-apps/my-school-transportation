@@ -72,9 +72,6 @@ public class Address {
     }
 
     public void setReferencePoint(String referencePoint) {
-        if (referencePoint == null || referencePoint.isEmpty()) {
-            throw new IllegalArgumentException("Reference point cannot be null or empty");
-        }
         this.referencePoint = referencePoint;
     }
 
