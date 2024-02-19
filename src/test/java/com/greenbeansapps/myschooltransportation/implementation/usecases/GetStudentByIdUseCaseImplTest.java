@@ -45,7 +45,7 @@ public class GetStudentByIdUseCaseImplTest {
                     new PaymentProjectionDto(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb511"), "18", Months.FEVEREIRO)
             )
     );
-    StudentProjectionWithPaymentProjectionDto mockStudent = new StudentProjectionWithPaymentProjectionDto(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA,140,
+    StudentProjectionWithPaymentProjectionDto mockStudent = new StudentProjectionWithPaymentProjectionDto(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA,140.90,
             18, mockResponsible, mockAddress, paymentList);
 
     @Test
