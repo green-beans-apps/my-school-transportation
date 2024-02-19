@@ -8,12 +8,12 @@ public class Address {
     private String district;
     private String street;
     private String referencePoint;
-    private Integer houseNumber;
+    private String houseNumber;
 
     public Address() {
     }
 
-    public Address(UUID id, String city, String district, String street, String referencePoint, Integer houseNumber) {
+    public Address(UUID id, String city, String district, String street, String referencePoint, String houseNumber) {
         setId(id);
         setCity(city);
         setDistrict(district);
@@ -78,14 +78,15 @@ public class Address {
         this.referencePoint = referencePoint;
     }
 
-    public Integer getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(Integer houseNumber) {
-        if (houseNumber == null) {
-            throw new IllegalArgumentException("House number cannot be null");
+    public void setHouseNumber(String houseNumber) {
+        if (houseNumber.trim().isEmpty()) {
+            this.houseNumber = "S/N";
+        } else {
+            this.houseNumber = houseNumber;
         }
-        this.houseNumber = houseNumber;
     }
 }
