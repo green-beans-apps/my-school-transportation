@@ -26,7 +26,7 @@ public class AddressSchema implements Serializable {
   private String district;
   @Column(nullable = false)
   private String street;
-  @Column(nullable = false)
+  @Column()
   private String referencePoint;
   @Column(nullable = false)
   private String houseNumber;
