@@ -23,7 +23,7 @@ public class UpdateAddressStudentUseCaseImpl implements UpdateAddressStudentUseC
     }
 
     @Override
-    public Address execute(UUID studentId, String city, String district, String street, String referencePoint, Integer houseNumber) {
+    public Address execute(UUID studentId, String city, String district, String street, String referencePoint, String houseNumber) {
         Optional<Student> getStudent = this.studentRepo.findById(studentId);
         if(getStudent.isEmpty()) {
             throw new StudentNotFoundException();

@@ -103,6 +103,6 @@ public class CreateStudentController {
           @NotBlank String district,
           @NotBlank String street,
           @NotBlank String referencePoint,
-          @NotNull Integer houseNumber
+          String houseNumber
   ) { }
 }

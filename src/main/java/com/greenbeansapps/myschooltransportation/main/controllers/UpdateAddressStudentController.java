@@ -43,6 +43,6 @@ public class UpdateAddressStudentController {
         return ResponseEntity.status(HttpStatus.OK).body(newAddress);
     }
 
-    public record UpdateAddressStudentDto(@NotNull UUID studentId, @NotBlank String city, @NotBlank String district, @NotBlank String street, @NotBlank String referencePoint, @NotNull Integer houseNumber) { }
-    public record UpdateAddressStudentResponseDto(UUID addressId, String city, String district, String street, String referencePoint, Integer houseNumber) { }
+    public record UpdateAddressStudentDto(@NotNull UUID studentId, @NotBlank String city, @NotBlank String district, @NotBlank String street, @NotBlank String referencePoint, String houseNumber) { }
+    public record UpdateAddressStudentResponseDto(UUID addressId, String city, String district, String street, String referencePoint, String houseNumber) { }
 }
