@@ -61,7 +61,7 @@ public class Student {
         if (name.length() < 3 ) {
             throw new IllegalArgumentException("The name must have more than 3 characters");
         }
-        this.name = name;
+        this.name = capitalizeWords(name);
     }
 
     public String getSchool() {
@@ -72,7 +72,7 @@ public class Student {
         if (school == null || school.isEmpty()) {
             throw new IllegalArgumentException("School cannot be null or empty");
         }
-        this.school = school;
+        this.school = capitalizeWords(school);
     }
 
     public String getGrade() {
@@ -176,5 +176,23 @@ public class Student {
         }  else {
             throw new InvalidShiftException();
         }
+    }
+
+    public static String capitalizeWords(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+
+        String[] words = input.split("\\s");
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                char firstChar = Character.toUpperCase(word.charAt(0));
+                result.append(firstChar).append(word.substring(1)).append(" ");
+            }
+        }
+
+        return result.toString().trim();
     }
 }
