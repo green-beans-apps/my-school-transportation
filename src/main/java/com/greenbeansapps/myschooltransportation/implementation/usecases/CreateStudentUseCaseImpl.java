@@ -34,7 +34,7 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
     }
 
     @Override
-    public Student execute(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, Integer monthlyPaymentExpiration, String shift, UUID conductorId, UUID responsibleId, UUID addressId) {
+    public Student execute(UUID id, String name, String school, String grade, String transportationType, Double monthlyPayment, Integer monthlyPaymentExpiration, String shift, UUID conductorId, UUID responsibleId, UUID addressId) {
 
         Optional<Responsible> responsible = this.responsibleRepo.findById(responsibleId);
         if (responsible.isEmpty()) {

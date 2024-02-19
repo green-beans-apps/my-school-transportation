@@ -19,7 +19,7 @@ public class UpdateStudentUseCaseImpl implements UpdateStudentUseCase {
     this.studentRepository = studentRepository;
   }
   @Override
-  public Student execute(UUID StudentId, String name, String school, String grade, String transportationType, Integer monthlyPayment, Integer monthlyPaymentExpiration, String shift) {
+  public Student execute(UUID StudentId, String name, String school, String grade, String transportationType, Double monthlyPayment, Integer monthlyPaymentExpiration, String shift) {
 
     Optional<Student> student = studentRepository.findById(StudentId);
 
