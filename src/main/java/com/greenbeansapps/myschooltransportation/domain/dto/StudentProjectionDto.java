@@ -16,12 +16,12 @@ public class StudentProjectionDto {
     private String grade;
     private TransportationType transportationType;
     private Shift shift;
-    private Integer monthlyPayment;
+    private Double monthlyPayment;
     private Integer monthlyPaymentExpiration;
     private Responsible responsible;
     private Address address;
 
-    public StudentProjectionDto(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Integer monthlyPayment, Integer monthlyPaymentExpiration, Responsible responsible, Address address) {
+    public StudentProjectionDto(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Double monthlyPayment, Integer monthlyPaymentExpiration, Responsible responsible, Address address) {
         this.id = id;
         this.name = name;
         this.school = school;
@@ -82,11 +82,11 @@ public class StudentProjectionDto {
         this.shift = shift;
     }
 
-    public Integer getMonthlyPayment() {
+    public Double getMonthlyPayment() {
         return monthlyPayment;
     }
 
-    public void setMonthlyPayment(Integer monthlyPayment) {
+    public void setMonthlyPayment(Double monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 

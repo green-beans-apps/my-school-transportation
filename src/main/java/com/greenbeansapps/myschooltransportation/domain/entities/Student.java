@@ -14,7 +14,7 @@ public class Student {
     private String school;
     private String grade;
     private TransportationType transportationType;
-    private Integer monthlyPayment;
+    private Double monthlyPayment;
     private Integer monthlyPaymentExpiration;
     private Conductor conductor;
     private Responsible responsible;
@@ -24,7 +24,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, Integer monthlyPaymentExpiration, String shift, Conductor conductor, Responsible responsible, Address address) {
+    public Student(UUID id, String name, String school, String grade, String transportationType, Double monthlyPayment, Integer monthlyPaymentExpiration, String shift, Conductor conductor, Responsible responsible, Address address) {
         setId(id);
         setName(name);
         setSchool(school);
@@ -102,15 +102,15 @@ public class Student {
         }
     }
 
-    public Integer getMonthlyPayment() {
+    public Double getMonthlyPayment() {
         return monthlyPayment;
     }
 
-    public void setMonthlyPayment(Integer monthlyPayment) {
+    public void setMonthlyPayment(Double monthlyPayment) {
         if (monthlyPayment == null) {
             throw new IllegalArgumentException("Monthly payment cannot be null");
         }
-        this.monthlyPayment = monthlyPayment;
+        this.monthlyPayment = Math.round(monthlyPayment * 100.0)/100.0;
     }
 
     public Integer getMonthlyPaymentExpiration() {

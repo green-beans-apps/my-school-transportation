@@ -11,7 +11,7 @@ import java.util.UUID;
 public class StudentProjectionWithPaymentProjectionDto extends StudentProjectionDto{
     private List<PaymentProjectionDto> payments;
 
-    public StudentProjectionWithPaymentProjectionDto(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Integer monthlyPayment, Integer monthlyPaymentExpiration, Responsible responsible, Address address, List<PaymentProjectionDto> payments) {
+    public StudentProjectionWithPaymentProjectionDto(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Double monthlyPayment, Integer monthlyPaymentExpiration, Responsible responsible, Address address, List<PaymentProjectionDto> payments) {
         super(id, name, school, grade, transportationType, shift, monthlyPayment, monthlyPaymentExpiration, responsible, address);
         this.payments = payments;
     }

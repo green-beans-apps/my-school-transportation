@@ -32,7 +32,7 @@ public class StudentSchema implements Serializable {
     @Column(nullable = false)
     private Shift shift;
     @Column(nullable = false)
-    private Integer monthlyPayment;
+    private Double monthlyPayment;
     @Column(nullable = false)
     private Integer monthlyPaymentExpiration;
 
@@ -91,11 +91,11 @@ public class StudentSchema implements Serializable {
         this.transportationType = transportationType;
     }
 
-    public Integer getMonthlyPayment() {
+    public Double getMonthlyPayment() {
         return monthlyPayment;
     }
 
-    public void setMonthlyPayment(Integer monthlyPayment) {
+    public void setMonthlyPayment(Double monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 
