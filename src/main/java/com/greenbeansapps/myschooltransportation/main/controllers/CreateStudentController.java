@@ -102,7 +102,7 @@ public class CreateStudentController {
           @NotBlank String city,
           @NotBlank String district,
           @NotBlank String street,
-          @NotBlank String referencePoint,
+          String referencePoint,
           String houseNumber
   ) { }
 }
