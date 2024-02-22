@@ -42,7 +42,7 @@ public class Address {
         if (city == null || city.isEmpty()) {
             throw new IllegalArgumentException("City cannot be null or empty");
         }
-        this.city = city;
+        this.city = capitalizeWords(city);
     }
 
     public String getDistrict() {
@@ -53,7 +53,7 @@ public class Address {
         if (district == null || district.isEmpty()) {
             throw new IllegalArgumentException("District cannot be null or empty");
         }
-        this.district = district;
+        this.district = capitalizeWords(district);
     }
 
     public String getStreet() {
@@ -64,7 +64,7 @@ public class Address {
         if (street == null || street.isEmpty()) {
             throw new IllegalArgumentException("Street cannot be null or empty");
         }
-        this.street = street;
+        this.street = capitalizeWords(street);
     }
 
     public String getReferencePoint() {
@@ -72,7 +72,10 @@ public class Address {
     }
 
     public void setReferencePoint(String referencePoint) {
-        this.referencePoint = referencePoint;
+        if (referencePoint == null || referencePoint.isEmpty()) {
+            throw new IllegalArgumentException("Reference point cannot be null or empty");
+        }
+        this.referencePoint = capitalizeWords(referencePoint);
     }
 
     public String getHouseNumber() {
@@ -85,5 +88,23 @@ public class Address {
         } else {
             this.houseNumber = houseNumber;
         }
+    }
+
+    public static String capitalizeWords(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+
+        String[] words = input.split("\\s");
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                char firstChar = Character.toUpperCase(word.charAt(0));
+                result.append(firstChar).append(word.substring(1)).append(" ");
+            }
+        }
+
+        return result.toString().trim();
     }
 }
