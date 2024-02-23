@@ -5,6 +5,7 @@ import com.greenbeansapps.myschooltransportation.domain.exceptions.CpfAlreadyReg
 import com.greenbeansapps.myschooltransportation.domain.exceptions.EmailAlreadyRegisteredException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.PasswordIsNotValidException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateConductorUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateConductorRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.helpers.CryptoHelper;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,10 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
     }
 
     @Override
-    public Conductor execute(UUID id, String name, String email, String password, String cpf) {
+    public Conductor execute(CreateConductorRequest data) {
 
-        Optional<Conductor> cpfIsRegistered = this.conductorRepo.findByCpf(cpf);
-        Optional<Conductor> emailIsRegistered = this.conductorRepo.findByEmail(email);
+        Optional<Conductor> cpfIsRegistered = this.conductorRepo.findByCpf(data.cpf());
+        Optional<Conductor> emailIsRegistered = this.conductorRepo.findByEmail(data.email());
         if(cpfIsRegistered.isPresent()) {
             throw new CpfAlreadyRegisteredException();
         }
@@ -38,12 +39,12 @@ public class CreateConductorUseCaseImpl implements CreateConductorUseCase {
 
         String regexPassword = "^(?=.*[a-zA-Z0-9]).{6,}$";
         Pattern patternRegexPassword = Pattern.compile(regexPassword);
-        Matcher matcherPassword = patternRegexPassword.matcher(password);
+        Matcher matcherPassword = patternRegexPassword.matcher(data.password());
         if(!matcherPassword.matches()) {
             throw new PasswordIsNotValidException();
         }
 
-        var newConductor = new Conductor(id, name, email, cpf, this.crypto.generateRash(password));
+        var newConductor = new Conductor(data.id(), data.name(), data.email(), data.cpf(), this.crypto.generateRash(data.password()));
         this.conductorRepo.create(newConductor);
         return newConductor;
     }
