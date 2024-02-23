@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateConductorRequest;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.CreateConductorUseCaseImpl;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
@@ -37,7 +38,7 @@ public class CreateConductorController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    this.createConductorUseCase.execute(data.id, data.getName(), data.getEmail(), data.getPassword(), data.getCpf());
+    this.createConductorUseCase.execute(new CreateConductorRequest(data.id, data.getName(), data.getEmail(), data.getPassword(), data.getCpf()));
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
   @Data
