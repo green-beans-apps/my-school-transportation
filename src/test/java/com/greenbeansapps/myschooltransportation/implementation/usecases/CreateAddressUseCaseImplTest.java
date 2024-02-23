@@ -1,6 +1,7 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Address;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateAddressRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +32,7 @@ class CreateAddressUseCaseImplTest {
     ArgumentCaptor<Address> addressCaptor = ArgumentCaptor.forClass(Address.class);
     Mockito.when(addressRepo.create(addressCaptor.capture())).thenReturn(mockAddress);
 
-    var newAddress = createAddressUseCase.execute(mockAddress.getId(),mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getReferencePoint(), mockAddress.getHouseNumber());
+    var newAddress = createAddressUseCase.execute( new CreateAddressRequest(mockAddress.getId(),mockAddress.getCity(), mockAddress.getDistrict(), mockAddress.getStreet(), mockAddress.getReferencePoint(), mockAddress.getHouseNumber()));
 
     //Checando o retorno do método
     assertThat(newAddress)
