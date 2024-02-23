@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateResponsibleUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateResponsibleRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ public class CreateResponsibleUseCaseImpl implements CreateResponsibleUseCase {
     }
 
     @Override
-    public Responsible execute(UUID id,String name, String email, String phone) {
-        Responsible newResponsible = new Responsible(id, name, email, phone);
+    public Responsible execute(CreateResponsibleRequest data) {
+        Responsible newResponsible = new Responsible(data.id(), data.name(), data.email(), data.phone());
         this.responsibleRepo.create(newResponsible);
         return newResponsible;
     }
