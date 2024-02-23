@@ -6,6 +6,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.*;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateStudentRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
@@ -54,8 +55,8 @@ public class CreateStudentUseCaseImplTest {
 
         // Act e Assert
         assertThrows(InvalidAddressException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
-                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+            createStudentUseCase.execute(new CreateStudentRequest(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId()));
         });
     }
 
@@ -67,8 +68,8 @@ public class CreateStudentUseCaseImplTest {
 
         // Act e Assert
         assertThrows(InvalidResponsibleException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
-                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+            createStudentUseCase.execute(new CreateStudentRequest(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId()));
         });
     }
 
@@ -82,8 +83,8 @@ public class CreateStudentUseCaseImplTest {
 
         // Act e Assert
         assertThrows(InvalidConductorException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
-                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+            createStudentUseCase.execute(new CreateStudentRequest(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId()));
         });
     }
 
@@ -99,8 +100,8 @@ public class CreateStudentUseCaseImplTest {
         Mockito.when(studentRepo.create(studentCaptor.capture())).thenReturn(mockStudent);
 
         // Act
-        var newStudent = createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
-                mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+        var newStudent = createStudentUseCase.execute(new CreateStudentRequest(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+                mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId()));
 
         // Assert
         // checando retornos
@@ -124,21 +125,21 @@ public class CreateStudentUseCaseImplTest {
         Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.of(mockAddress));
 
         assertThrows(InvalidTransportationTypeException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), "volt", mockStudent.getMonthlyPayment(),
-                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+            createStudentUseCase.execute(new CreateStudentRequest(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), "Invalid Transportation type", mockStudent.getMonthlyPayment(),
+                    mockStudent.getMonthlyPaymentExpiration(), mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId()));
         });
     }
 
     @Test
-    @DisplayName("Nao deve ser possivel atualizar um estudante com uma data que nao esteja entre 1 e 28")
+    @DisplayName("Nao deve ser possivel atualizar um estudante com uma data de vencimento da mensaliudade que nao esteja entre 1 e 28")
     void case6() {
         Mockito.when(responsibleRepo.findById(mockResponsible.getId())).thenReturn(Optional.of(mockResponsible));
         Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
         Mockito.when(addressRepo.findById(mockAddress.getId())).thenReturn(Optional.of(mockAddress));
 
         assertThrows(InvalidMonthlyPaymentExpirationException.class, () -> {
-            createStudentUseCase.execute(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), "volta", mockStudent.getMonthlyPayment(),
-                    29, mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId());
+            createStudentUseCase.execute(new CreateStudentRequest(mockStudent.getId(), mockStudent.getName(), mockStudent.getSchool(), mockStudent.getGrade(), mockStudent.getTransportationType().toString(), mockStudent.getMonthlyPayment(),
+                    55, mockStudent.getShift().toString(), mockConductor.getId(), mockResponsible.getId(), mockAddress.getId()));
         });
     }
 }
