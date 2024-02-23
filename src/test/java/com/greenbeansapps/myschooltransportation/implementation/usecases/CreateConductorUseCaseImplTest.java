@@ -1,6 +1,7 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateConductorRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.helpers.CryptoHelper;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import org.junit.jupiter.api.Assertions;
@@ -41,7 +42,7 @@ public class CreateConductorUseCaseImplTest {
         Mockito.when(conductorRepo.create(conductorCaptor.capture())).thenReturn(mockConductor);
         Mockito.when(cryptoHelper.generateRash(Mockito.anyString())).thenReturn(mockConductor.getPassword());
 
-        var newConductor = createConductorUseCase.execute(mockConductor.getId(),mockConductor.getName(), mockConductor.getEmail(), mockConductor.getPassword(), mockConductor.getCpf());
+        var newConductor = createConductorUseCase.execute(new CreateConductorRequest(mockConductor.getId(),mockConductor.getName(), mockConductor.getEmail(), mockConductor.getPassword(), mockConductor.getCpf()));
 
         assertThat(newConductor)
                 .usingRecursiveComparison()
