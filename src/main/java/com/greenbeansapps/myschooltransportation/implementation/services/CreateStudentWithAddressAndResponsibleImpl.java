@@ -7,6 +7,9 @@ import com.greenbeansapps.myschooltransportation.domain.services.CreateStudentWi
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateAddressUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateResponsibleUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateStudentUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateAddressRequest;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateResponsibleRequest;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateStudentRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -25,9 +28,9 @@ public class CreateStudentWithAddressAndResponsibleImpl implements CreateStudent
     }
 
     @Override
-    public Student execute(CreateStudentWithAddressAndResponsibleRequest request) {
-        Address newAddress = this.createAddressUseCase.execute(request.address().id(), request.address().city(), request.address().district(), request.address().street(), request.address().referencePoint(), request.address().houseNumber());
-        Responsible newResponsible = this.createResponsibleUseCase.execute(request.responsible().id(), request.responsible().responsibleName(), request.responsible().email(), request.responsible().phone());
-        return this.createStudentUseCase.execute(request.student().id(), request.student().studentName(), request.student().school(), request.student().grade(), request.student().transportationType(), request.student().monthlyPayment(), request.student().monthlyPaymentExpiration(), request.student().shift(), request.student().conductorId(), newResponsible.getId(), newAddress.getId());
+    public Student execute(CreateStudentRequest studentData, CreateAddressRequest addressData, CreateResponsibleRequest responsibleData) {
+        Address newAddress = this.createAddressUseCase.execute(new CreateAddressRequest(addressData.id(), addressData.city(), addressData.district(), addressData.street(), addressData.referencePoint(), addressData.houseNumber()));
+        Responsible newResponsible = this.createResponsibleUseCase.execute(new CreateResponsibleRequest( responsibleData.id(), responsibleData.name(), responsibleData.email(), responsibleData.phone()));
+        return this.createStudentUseCase.execute(new CreateStudentRequest(studentData.id(),studentData.name(), studentData.school(), studentData.grade(), studentData.transportationType(), studentData.monthlyPayment(), studentData.monthlyPaymentExpiration(), studentData.shift(), studentData.conductorId(), newResponsible.getId(), newAddress.getId()));
     }
 }
