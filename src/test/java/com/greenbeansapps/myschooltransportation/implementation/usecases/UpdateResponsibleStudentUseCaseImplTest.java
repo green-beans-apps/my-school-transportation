@@ -6,6 +6,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateResponsibleRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +48,7 @@ class UpdateResponsibleStudentUseCaseImplTest {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.empty());
 
     assertThrows(StudentNotFoundException.class, () -> {
-      updateResponsibleStudentUseCase.execute(UUID.randomUUID(), "john", "jonh@gmail.com",  "819762791782");
+      updateResponsibleStudentUseCase.execute(new UpdateResponsibleRequest(UUID.randomUUID(), "john", "jonh@gmail.com",  "819762791782"));
     });
   }
 
@@ -60,7 +61,7 @@ class UpdateResponsibleStudentUseCaseImplTest {
     ArgumentCaptor<Responsible> responsibleCaptor = ArgumentCaptor.forClass(Responsible.class);
     Mockito.when(responsibleRepo.updateResponsible(responsibleCaptor.capture())).thenReturn(mockResponsible);
 
-    var updatedResponsible = updateResponsibleStudentUseCase.execute(mockStudent.getId(), mockUpdatedResponsible.getName(), mockUpdatedResponsible.getEmail(), mockUpdatedResponsible.getPhone());
+    var updatedResponsible = updateResponsibleStudentUseCase.execute(new UpdateResponsibleRequest(mockStudent.getId(), mockUpdatedResponsible.getName(), mockUpdatedResponsible.getEmail(), mockUpdatedResponsible.getPhone()));
 
     assertThat(updatedResponsible)
             .usingRecursiveComparison()
