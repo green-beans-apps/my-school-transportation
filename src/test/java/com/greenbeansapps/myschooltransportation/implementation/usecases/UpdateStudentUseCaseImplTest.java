@@ -8,6 +8,7 @@ import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType
 import com.greenbeansapps.myschooltransportation.domain.exceptions.ExistingPaymentException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthlyPaymentExpirationException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateStudentRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ class UpdateStudentUseCaseImplTest {
   void case1() {
     Mockito.when(studentRepository.findById(Mockito.any())).thenReturn(Optional.empty());
     assertThrows(StudentNotFoundException.class, () -> {
-      updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration(), mockUpdatedStudent.getShift().toString());
+      updateStudentUseCase.execute(new UpdateStudentRequest(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration(), mockUpdatedStudent.getShift().toString()));
     });
   }
 
@@ -57,7 +58,7 @@ class UpdateStudentUseCaseImplTest {
     Mockito.when(studentRepository.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
 
     assertThrows(InvalidMonthlyPaymentExpirationException.class, () -> {
-      updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), 29, mockUpdatedStudent.getShift().toString());
+      updateStudentUseCase.execute(new UpdateStudentRequest(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), 29, mockUpdatedStudent.getShift().toString()));
     });
   }
 
@@ -69,7 +70,7 @@ class UpdateStudentUseCaseImplTest {
     ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
     Mockito.when(studentRepository.updateStudent(studentCaptor.capture())).thenReturn(mockUpdatedStudent);
 
-    var updatedStudent = updateStudentUseCase.execute(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration(), mockUpdatedStudent.getShift().toString());
+    var updatedStudent = updateStudentUseCase.execute(new UpdateStudentRequest(mockUpdatedStudent.getId(), mockUpdatedStudent.getName(), mockUpdatedStudent.getSchool(), mockUpdatedStudent.getGrade(), mockUpdatedStudent.getTransportationType().toString(), mockUpdatedStudent.getMonthlyPayment(), mockUpdatedStudent.getMonthlyPaymentExpiration(), mockUpdatedStudent.getShift().toString()));
 
     assertThat(updatedStudent)
             .usingRecursiveComparison()
