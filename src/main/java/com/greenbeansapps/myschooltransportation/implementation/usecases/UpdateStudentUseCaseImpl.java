@@ -4,6 +4,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthlyPaymentExpirationException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.UpdateStudentUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateStudentRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +20,21 @@ public class UpdateStudentUseCaseImpl implements UpdateStudentUseCase {
     this.studentRepository = studentRepository;
   }
   @Override
-  public Student execute(UUID StudentId, String name, String school, String grade, String transportationType, Double monthlyPayment, Integer monthlyPaymentExpiration, String shift) {
+  public Student execute(UpdateStudentRequest data) {
 
-    Optional<Student> student = studentRepository.findById(StudentId);
+    Optional<Student> student = studentRepository.findById(data.StudentId());
 
     if(student.isEmpty()) {
       throw new StudentNotFoundException();
     }
 
-    student.get().setName(name);
-    student.get().setSchool(school);
-    student.get().setGrade(grade);
-    student.get().setTransportationType(transportationType);
-    student.get().setMonthlyPayment(monthlyPayment);
-    student.get().setMonthlyPaymentExpiration(monthlyPaymentExpiration);
-    student.get().setShift(shift);
+    student.get().setName(data.name());
+    student.get().setSchool(data.school());
+    student.get().setGrade(data.grade());
+    student.get().setTransportationType(data.transportationType());
+    student.get().setMonthlyPayment(data.monthlyPayment());
+    student.get().setMonthlyPaymentExpiration(data.monthlyPaymentExpiration());
+    student.get().setShift(data.shift());
 
     return studentRepository.updateStudent(student.get());
   }
