@@ -5,6 +5,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidResponsibleException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.UpdateResponsibleStudentUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateResponsibleRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -24,17 +25,17 @@ public class UpdateResponsibleStudentUseCaseImpl implements UpdateResponsibleStu
     }
 
     @Override
-    public Responsible execute(UUID studentId, String name, String email, String phone) {
-        Optional<Student> getStudent = this.studentRepo.findById(studentId);
+    public Responsible execute(UpdateResponsibleRequest data ) {
+        Optional<Student> getStudent = this.studentRepo.findById(data.studentId());
         if(getStudent.isEmpty()) {
             throw new StudentNotFoundException();
         }
 
         Optional<Responsible> getResponsible = this.responsibleRepo.findById(getStudent.get().getResponsible().getId());
 
-        getResponsible.get().setName(name);
-        getResponsible.get().setEmail(email);
-        getResponsible.get().setPhone(phone);
+        getResponsible.get().setName(data.name());
+        getResponsible.get().setEmail(data.email());
+        getResponsible.get().setPhone(data.phone());
 
         return responsibleRepo.updateResponsible(getResponsible.get());
     }
