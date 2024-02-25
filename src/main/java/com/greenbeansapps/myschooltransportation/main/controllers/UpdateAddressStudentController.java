@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateAddressRequest;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.UpdateAddressStudentUseCaseImpl;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
@@ -34,8 +35,8 @@ public class UpdateAddressStudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        var updateAddress = this.updateAddressStudentUseCase.execute(updateAddressStudentDto.studentId, updateAddressStudentDto.city, updateAddressStudentDto.district,
-                updateAddressStudentDto.street, updateAddressStudentDto.referencePoint(), updateAddressStudentDto.houseNumber());
+        var updateAddress = this.updateAddressStudentUseCase.execute(new UpdateAddressRequest(updateAddressStudentDto.studentId, updateAddressStudentDto.city, updateAddressStudentDto.district,
+                updateAddressStudentDto.street, updateAddressStudentDto.referencePoint(), updateAddressStudentDto.houseNumber()));
 
         var newAddress = new UpdateAddressStudentResponseDto(updateAddress.getId(), updateAddress.getCity(), updateAddress.getDistrict(), updateAddress.getStreet(),
                 updateAddress.getReferencePoint(), updateAddress.getHouseNumber());
