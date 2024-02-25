@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.main.controllers;
 
 import com.greenbeansapps.myschooltransportation.domain.dto.ConductorProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateConductorRequest;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.UpdateConductorUseCaseImpl;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class UpdateConductorController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        var updateConductor = updateConductorUseCase.execute(updateConductorDto.conductorId, updateConductorDto.name, updateConductorDto.email);
+        var updateConductor = updateConductorUseCase.execute(new UpdateConductorRequest(updateConductorDto.conductorId, updateConductorDto.name, updateConductorDto.email));
         var newConductor = new ConductorProjectionDto(updateConductor.getId(), updateConductor.getName(), updateConductor.getEmail(), updateConductor.getCpf());
         return ResponseEntity.status(HttpStatus.OK).body(newConductor);
     }
