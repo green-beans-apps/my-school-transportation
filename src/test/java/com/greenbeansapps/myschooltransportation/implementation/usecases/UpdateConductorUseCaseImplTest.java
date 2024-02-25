@@ -5,6 +5,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.ConductorNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateConductorRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +43,7 @@ public class UpdateConductorUseCaseImplTest {
         ArgumentCaptor<Conductor> conductorCaptor = ArgumentCaptor.forClass(Conductor.class);
         Mockito.when(conductorRepo.updateConductor(conductorCaptor.capture())).thenReturn(mockUpdatedConductor);
 
-        var updatedConductor = updateConductorUseCase.execute(mockUpdatedConductor.getId(), mockUpdatedConductor.getName(), mockUpdatedConductor.getEmail());
+        var updatedConductor = updateConductorUseCase.execute(new UpdateConductorRequest(mockUpdatedConductor.getId(), mockUpdatedConductor.getName(), mockUpdatedConductor.getEmail()));
 
         assertThat(updatedConductor)
                 .usingRecursiveComparison()
@@ -60,7 +61,7 @@ public class UpdateConductorUseCaseImplTest {
         Mockito.when(conductorRepo.findById(mockConductor.getId())).thenReturn(Optional.empty());
 
         assertThrows(ConductorNotFoundException.class, () -> {
-            updateConductorUseCase.execute(mockUpdatedConductor.getId(), mockUpdatedConductor.getName(), mockUpdatedConductor.getEmail());
+            updateConductorUseCase.execute(new UpdateConductorRequest(mockUpdatedConductor.getId(), mockUpdatedConductor.getName(), mockUpdatedConductor.getEmail()));
         });
     }
 }
