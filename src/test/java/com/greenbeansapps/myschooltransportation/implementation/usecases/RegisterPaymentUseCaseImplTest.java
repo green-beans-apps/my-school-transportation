@@ -6,6 +6,7 @@ import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType
 import com.greenbeansapps.myschooltransportation.domain.exceptions.ExistingPaymentException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.RegisterPaymentRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.junit.jupiter.api.*;
@@ -56,7 +57,7 @@ class RegisterPaymentUseCaseImplTest {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.empty());
 
     assertThrows(StudentNotFoundException.class, () -> {
-      registerPaymentUseCase.execute(UUID.randomUUID(), mockStudent.getId(), "Janeiro");
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(UUID.randomUUID(), mockStudent.getId(), "Janeiro"));
     });
   }
 
@@ -67,7 +68,7 @@ class RegisterPaymentUseCaseImplTest {
     Mockito.when(paymentRepo.findPaymentPerMonth(mockStudent.getId(),mockPayment.getPaymentMonth())).thenReturn(Optional.of(mockPayment));
 
     assertThrows(ExistingPaymentException.class, () -> {
-      registerPaymentUseCase.execute(UUID.randomUUID(), mockStudent.getId(), "Janeiro");
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(UUID.randomUUID(), mockStudent.getId(), "Janeiro"));
     });
   }
 
@@ -77,7 +78,7 @@ class RegisterPaymentUseCaseImplTest {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
 
     assertThrows(InvalidMonthException.class, () -> {
-      registerPaymentUseCase.execute(UUID.randomUUID(), mockStudent.getId(), "Janeir");
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(UUID.randomUUID(), mockStudent.getId(), "Janeir"));
     });
   }
 
@@ -90,7 +91,7 @@ class RegisterPaymentUseCaseImplTest {
     Mockito.when(paymentRepo.findPaymentPerMonth(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
     Mockito.when(paymentRepo.register(paymentArgumentCaptor.capture())).thenReturn(mockPayment);
 
-    Payment paymentReturn = registerPaymentUseCase.execute(UUID.randomUUID(), mockStudent.getId(), "Janeiro");
+    Payment paymentReturn = registerPaymentUseCase.execute(new RegisterPaymentRequest(UUID.randomUUID(), mockStudent.getId(), "Janeiro"));
 
     // comparando retorno
     assertEquals(mockPayment.getPaymentMonth(), paymentReturn.getPaymentMonth());
