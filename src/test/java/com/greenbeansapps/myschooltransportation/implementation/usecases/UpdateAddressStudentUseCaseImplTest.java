@@ -6,6 +6,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateAddressRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +48,7 @@ class UpdateAddressStudentUseCaseImplTest {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.empty());
 
     assertThrows(StudentNotFoundException.class, () -> {
-      updateAddressStudentUseCase.execute(mockStudent.getId(), mockUpdatedAddress.getCity(), mockUpdatedAddress.getDistrict(), mockUpdatedAddress.getStreet(), mockUpdatedAddress.getReferencePoint(), mockUpdatedAddress.getHouseNumber());
+      updateAddressStudentUseCase.execute(new UpdateAddressRequest(mockStudent.getId(), mockUpdatedAddress.getCity(), mockUpdatedAddress.getDistrict(), mockUpdatedAddress.getStreet(), mockUpdatedAddress.getReferencePoint(), mockUpdatedAddress.getHouseNumber()));
     });
   }
 
@@ -60,7 +61,7 @@ class UpdateAddressStudentUseCaseImplTest {
     ArgumentCaptor<Address> addressCaptor = ArgumentCaptor.forClass(Address.class);
     Mockito.when(addressRepo.updateAddress(addressCaptor.capture())).thenReturn(mockUpdatedAddress);
 
-    var updatedAddress = updateAddressStudentUseCase.execute(mockStudent.getId(), mockUpdatedAddress.getCity(), mockUpdatedAddress.getDistrict(), mockUpdatedAddress.getStreet(), mockUpdatedAddress.getReferencePoint(), mockUpdatedAddress.getHouseNumber());
+    var updatedAddress = updateAddressStudentUseCase.execute(new UpdateAddressRequest(mockStudent.getId(), mockUpdatedAddress.getCity(), mockUpdatedAddress.getDistrict(), mockUpdatedAddress.getStreet(), mockUpdatedAddress.getReferencePoint(), mockUpdatedAddress.getHouseNumber()));
 
     assertThat(updatedAddress)
             .usingRecursiveComparison()
