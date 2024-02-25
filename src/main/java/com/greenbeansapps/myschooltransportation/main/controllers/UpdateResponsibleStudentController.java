@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateResponsibleRequest;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.UpdateResponsibleStudentUseCaseImpl;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
@@ -35,8 +36,8 @@ public class UpdateResponsibleStudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        var updateResponsible = this.updateResponsibleStudentUseCase.execute(updateResponsibleStudentDto.studentId, updateResponsibleStudentDto.name,
-                updateResponsibleStudentDto.email, updateResponsibleStudentDto.phone);
+        var updateResponsible = this.updateResponsibleStudentUseCase.execute(new UpdateResponsibleRequest(updateResponsibleStudentDto.studentId, updateResponsibleStudentDto.name,
+                updateResponsibleStudentDto.email, updateResponsibleStudentDto.phone));
         var newResponsible = new UpdateResponsibleStudentResponsiveDto(updateResponsible.getId(), updateResponsible.getName(), updateResponsible.getEmail(),
                 updateResponsible.getPhone());
         return ResponseEntity.status(HttpStatus.OK).body(newResponsible);
