@@ -1,13 +1,9 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
-import com.greenbeansapps.myschooltransportation.domain.dto.ConductorProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
-import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
-import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.ConductorNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateConductorRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
