@@ -1,18 +1,12 @@
 package com.greenbeansapps.myschooltransportation.infra.repositories.impl;
 
-import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
-import com.greenbeansapps.myschooltransportation.domain.entities.Address;
-import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
-import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
-import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.entities.*;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.StudentWithPayments;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IStudentRepositoryJPA;
 import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.AddressSchema;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ConductorSchema;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ResponsibleSchema;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.StudentSchema;
+import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
@@ -49,47 +43,6 @@ public class StudentRepositoryJPA implements StudentRepository {
 
         this.studentRepo.save(newStudent);
         return student;
-    }
-
-    @Override
-    public List<StudentProjectionDto> findAllByConductorId(UUID conductorId) {
-        List<StudentProjection> studentsProjection = this.studentRepo.findAllByConductorId(conductorId);
-        if (studentsProjection.isEmpty()) {
-            return null;
-        }
-
-        List<StudentProjectionDto> students = new ArrayList<>();
-        for (StudentProjection studentProjection : studentsProjection) {
-            var newResponsible = new Responsible();
-            var newAddress = new Address();
-
-            BeanUtils.copyProperties(studentProjection.getResponsible(), newResponsible);
-            BeanUtils.copyProperties(studentProjection.getAddress(), newAddress);
-
-            students.add(new StudentProjectionDto(studentProjection.getId(), studentProjection.getName(), studentProjection.getSchool(),
-                    studentProjection.getGrade(), studentProjection.getTransportationType(), studentProjection.getShift(), studentProjection.getMonthlyPayment(), studentProjection.getMonthlyPaymentExpiration(),
-                    newResponsible, newAddress));
-        }
-
-        return students;
-    }
-
-    @Override
-    public Optional<StudentProjectionDto> findStudentByIdWithoutConductor(UUID studentId) {
-        Optional<StudentProjection> studentProjection = this.studentRepo.findStudentByIdWithoutConductor(studentId);
-        if (studentProjection.isEmpty()) {
-            return Optional.empty();
-        }
-
-        var newResponsible = new Responsible();
-        var newAddress = new Address();
-
-        BeanUtils.copyProperties(studentProjection.get().getResponsible(), newResponsible);
-        BeanUtils.copyProperties(studentProjection.get().getAddress(), newAddress);
-
-        return Optional.of(new StudentProjectionDto(studentProjection.get().getId(), studentProjection.get().getName(), studentProjection.get().getSchool(),
-                studentProjection.get().getGrade(), studentProjection.get().getTransportationType(), studentProjection.get().getShift(), studentProjection.get().getMonthlyPayment(), studentProjection.get().getMonthlyPaymentExpiration(),
-                newResponsible, newAddress));
     }
 
     @Override
@@ -143,4 +96,46 @@ public class StudentRepositoryJPA implements StudentRepository {
 
         return student;
     }
+
+    @Override
+    public List<StudentWithPayments> findAllByConductorIdWithPayments(UUID conductorId) {
+        var studentsSchema = this.studentRepo.findAllByConductorIdWithPayments(conductorId);
+        List<StudentWithPayments> students = new ArrayList<StudentWithPayments>();
+        for ( StudentSchema  studentS : studentsSchema) {
+            var responsible = new Responsible();
+            var address = new Address();
+            BeanUtils.copyProperties(studentS.getResponsible(), responsible);
+            BeanUtils.copyProperties(studentS.getAddress(), address);
+
+            List<Payment> payments = new ArrayList<Payment>();
+            for (PaymentSchema paymentSchema : studentS.getPayments()) {
+                var newPayment = new Payment();
+                BeanUtils.copyProperties(paymentSchema, newPayment);
+                payments.add(newPayment);
+            }
+            students.add(new StudentWithPayments(studentS.getId(), studentS.getName(), studentS.getSchool(), studentS.getGrade(), studentS.getTransportationType(), studentS.getShift(), studentS.getMonthlyPayment(), studentS.getMonthlyPaymentExpiration(), responsible, address, payments));
+        }
+
+        return students;
+    }
+
+    @Override
+    public Optional<StudentWithPayments> getStudentWithPayments(UUID studentId) {
+        Optional<StudentSchema> studentSchema = this.studentRepo.getStudentWithPayments(studentId);
+        var responsible = new Responsible();
+        var address = new Address();
+        BeanUtils.copyProperties(studentSchema.get().getResponsible(), responsible);
+        BeanUtils.copyProperties(studentSchema.get().getAddress(), address);
+
+        List<Payment> payments = new ArrayList<Payment>();
+        for (PaymentSchema paymentSchema : studentSchema.get().getPayments()) {
+            var newPayment = new Payment();
+            BeanUtils.copyProperties(paymentSchema, newPayment);
+            payments.add(newPayment);
+        }
+
+        return Optional.of(new StudentWithPayments(studentSchema.get().getId(), studentSchema.get().getName(), studentSchema.get().getSchool(), studentSchema.get().getGrade(), studentSchema.get().getTransportationType(), studentSchema.get().getShift(), studentSchema.get().getMonthlyPayment(), studentSchema.get().getMonthlyPaymentExpiration(), responsible, address, payments));
+    }
+
+
 }
