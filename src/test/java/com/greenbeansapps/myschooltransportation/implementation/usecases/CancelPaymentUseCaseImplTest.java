@@ -1,13 +1,10 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
-import com.greenbeansapps.myschooltransportation.domain.dto.StudentProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.*;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
-import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.PaymentNotFoundException;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
