@@ -5,6 +5,7 @@ import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFou
 import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.StudentWithPayments;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IStudentRepositoryJPA;
+import com.greenbeansapps.myschooltransportation.infra.repositories.mappers.StudentMapper;
 import com.greenbeansapps.myschooltransportation.infra.repositories.projection.StudentProjection;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.*;
 import org.springframework.beans.BeanUtils;
@@ -26,21 +27,7 @@ public class StudentRepositoryJPA implements StudentRepository {
 
     @Override
     public Student create(Student student) {
-        var newStudent = new StudentSchema();
-        BeanUtils.copyProperties(student, newStudent);
-
-        var newConductor = new ConductorSchema();
-        BeanUtils.copyProperties(student.getConductor(), newConductor);
-        newStudent.setConductor(newConductor);
-
-        var newResponsible = new ResponsibleSchema();
-        BeanUtils.copyProperties(student.getResponsible(), newResponsible);
-        newStudent.setResponsible(newResponsible);
-
-        var newAddress = new AddressSchema();
-        BeanUtils.copyProperties(student.getAddress(), newAddress);
-        newStudent.setAddress(newAddress);
-
+        var newStudent = StudentMapper.mapDomainToJpa(student);
         this.studentRepo.save(newStudent);
         return student;
     }
@@ -51,18 +38,7 @@ public class StudentRepositoryJPA implements StudentRepository {
         if (studentSchema.isEmpty()) {
             return Optional.empty();
         }
-
-        var newConductor = new Conductor();
-        var newResponsible = new Responsible();
-        var newAddress = new Address();
-
-        BeanUtils.copyProperties(studentSchema.get().getConductor(), newConductor);
-        BeanUtils.copyProperties(studentSchema.get().getResponsible(), newResponsible);
-        BeanUtils.copyProperties(studentSchema.get().getAddress(), newAddress);
-
-        return Optional.of(new Student(studentSchema.get().getId(), studentSchema.get().getName(), studentSchema.get().getSchool(),
-                studentSchema.get().getGrade(), studentSchema.get().getTransportationType().toString(), studentSchema.get().getMonthlyPayment(), studentSchema.get().getMonthlyPaymentExpiration(), studentSchema.get().getShift().toString(),
-                newConductor, newResponsible, newAddress));
+        return Optional.of(StudentMapper.mapJpaToDomain(studentSchema.get()));
     }
 
     @Override
