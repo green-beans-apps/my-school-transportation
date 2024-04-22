@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateResponsibleRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.helpers.CryptoHelper;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
@@ -39,7 +40,7 @@ public class CreateResponsibleUseCaseImplTest {
 
         Mockito.when(responsibleRepo.create(responsibleCaptor.capture())).thenReturn(mockResponsible);
 
-        var newResponsible = createResponsibleUseCase.execute(mockResponsible.getId(),mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhone());
+        var newResponsible = createResponsibleUseCase.execute(new CreateResponsibleRequest(mockResponsible.getId(),mockResponsible.getName(), mockResponsible.getEmail(), mockResponsible.getPhone()));
 
         //chechando retorno do metodo
         assertThat(newResponsible)

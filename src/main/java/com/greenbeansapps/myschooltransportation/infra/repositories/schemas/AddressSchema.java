@@ -26,10 +26,10 @@ public class AddressSchema implements Serializable {
   private String district;
   @Column(nullable = false)
   private String street;
-  @Column(nullable = false)
+  @Column()
   private String referencePoint;
   @Column(nullable = false)
-  private Integer houseNumber;
+  private String houseNumber;
 
   public AddressSchema() {
   }
@@ -74,11 +74,11 @@ public class AddressSchema implements Serializable {
     this.referencePoint = referencePoint;
   }
 
-  public Integer getHouseNumber() {
+  public String getHouseNumber() {
     return houseNumber;
   }
 
-  public void setHouseNumber(Integer houseNumber) {
+  public void setHouseNumber(String houseNumber) {
     this.houseNumber = houseNumber;
   }
 }

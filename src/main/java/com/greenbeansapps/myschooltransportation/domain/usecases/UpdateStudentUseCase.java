@@ -1,9 +1,10 @@
 package com.greenbeansapps.myschooltransportation.domain.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateStudentRequest;
 
 import java.util.UUID;
 
 public interface UpdateStudentUseCase {
-  Student execute(UUID StudentId, String name, String school, String grade, String transportationType, Integer monthlyPayment, Integer monthlyPaymentExpiration, String shift);
+  Student execute(UpdateStudentRequest data);
 }

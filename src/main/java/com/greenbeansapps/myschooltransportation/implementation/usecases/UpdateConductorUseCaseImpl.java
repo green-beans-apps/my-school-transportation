@@ -3,6 +3,7 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.ConductorNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.UpdateConductorUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateConductorRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,15 @@ public class UpdateConductorUseCaseImpl implements UpdateConductorUseCase {
     }
 
     @Override
-    public Conductor execute(UUID conductorId, String name, String email) {
-        Optional<Conductor> conductor = conductorRepo.findById(conductorId);
+    public Conductor execute(UpdateConductorRequest data) {
+        Optional<Conductor> conductor = conductorRepo.findById(data.conductorId());
 
         if (conductor.isEmpty()) {
             throw new ConductorNotFoundException();
         }
 
-        conductor.get().setName(name);
-        conductor.get().setEmail(email);
+        conductor.get().setName(data.name());
+        conductor.get().setEmail(data.email());
 
         return conductorRepo.updateConductor(conductor.get());
     }

@@ -7,6 +7,7 @@ import com.greenbeansapps.myschooltransportation.domain.exceptions.ExistingPayme
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.RegisterPaymentUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.RegisterPaymentRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -28,16 +29,16 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
   }
 
   @Override
-  public Payment execute(UUID paymentId, UUID studentId, String paymentMonth) {
-    Optional<Student> student = this.studentRepo.findById(studentId);
+  public Payment execute(RegisterPaymentRequest data) {
+    Optional<Student> student = this.studentRepo.findById(data.studentId());
     if(student.isEmpty()) {
       throw new StudentNotFoundException();
     }
 
     //Verifica se o valor inserido é válido
-    Months month = validateMonth(paymentMonth);
+    Months month = validateMonth(data.paymentMonth());
 
-    Optional<Payment> paymentExists = this.paymentRepo.findPaymentPerMonth(studentId, month);
+    Optional<Payment> paymentExists = this.paymentRepo.findPaymentPerMonth(data.studentId(), month);
     if(paymentExists.isPresent()) {
       throw new ExistingPaymentException();
     }
@@ -47,7 +48,7 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
     String formattedDate = currentDate.format(formatter);
 
-    Payment newPayment = new Payment(paymentId, formattedDate, month, student.get());
+    Payment newPayment = new Payment(data.paymentId(), formattedDate, month, student.get());
     return this.paymentRepo.register(newPayment);
   }
 

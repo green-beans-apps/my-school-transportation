@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateAddressUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateAddressRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ public class CreateAddressUseCaseImpl implements CreateAddressUseCase{
     }
 
     @Override
-    public Address execute(UUID id, String city, String district, String street, String referencePoint, Integer houseNumber) {
-        var newAddress = new Address(id, city, district, street, referencePoint, houseNumber);
+    public Address execute(CreateAddressRequest data) {
+        var newAddress = new Address(data.id(), data.city(), data.district(), data.street(), data.referencePoint(), data.houseNumber());
         return this.addressRepo.create(newAddress);
     }
 }

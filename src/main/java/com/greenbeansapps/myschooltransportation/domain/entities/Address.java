@@ -8,12 +8,12 @@ public class Address {
     private String district;
     private String street;
     private String referencePoint;
-    private Integer houseNumber;
+    private String houseNumber;
 
     public Address() {
     }
 
-    public Address(UUID id, String city, String district, String street, String referencePoint, Integer houseNumber) {
+    public Address(UUID id, String city, String district, String street, String referencePoint, String houseNumber) {
         setId(id);
         setCity(city);
         setDistrict(district);
@@ -42,7 +42,7 @@ public class Address {
         if (city == null || city.isEmpty()) {
             throw new IllegalArgumentException("City cannot be null or empty");
         }
-        this.city = city;
+        this.city = capitalizeWords(city);
     }
 
     public String getDistrict() {
@@ -53,7 +53,7 @@ public class Address {
         if (district == null || district.isEmpty()) {
             throw new IllegalArgumentException("District cannot be null or empty");
         }
-        this.district = district;
+        this.district = capitalizeWords(district);
     }
 
     public String getStreet() {
@@ -64,7 +64,7 @@ public class Address {
         if (street == null || street.isEmpty()) {
             throw new IllegalArgumentException("Street cannot be null or empty");
         }
-        this.street = street;
+        this.street = capitalizeWords(street);
     }
 
     public String getReferencePoint() {
@@ -75,17 +75,36 @@ public class Address {
         if (referencePoint == null || referencePoint.isEmpty()) {
             throw new IllegalArgumentException("Reference point cannot be null or empty");
         }
-        this.referencePoint = referencePoint;
+        this.referencePoint = capitalizeWords(referencePoint);
     }
 
-    public Integer getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(Integer houseNumber) {
-        if (houseNumber == null) {
-            throw new IllegalArgumentException("House number cannot be null");
+    public void setHouseNumber(String houseNumber) {
+        if (houseNumber.trim().isEmpty()) {
+            this.houseNumber = "S/N";
+        } else {
+            this.houseNumber = houseNumber;
         }
-        this.houseNumber = houseNumber;
+    }
+
+    public static String capitalizeWords(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+
+        String[] words = input.split("\\s");
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                char firstChar = Character.toUpperCase(word.charAt(0));
+                result.append(firstChar).append(word.substring(1)).append(" ");
+            }
+        }
+
+        return result.toString().trim();
     }
 }

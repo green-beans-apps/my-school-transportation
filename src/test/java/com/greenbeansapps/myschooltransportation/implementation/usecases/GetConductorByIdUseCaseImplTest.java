@@ -1,7 +1,7 @@
 package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
-import com.greenbeansapps.myschooltransportation.domain.dto.ConductorProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.ConductorNotFoundException;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.GetConductorByIdResponse;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,14 +25,14 @@ public class GetConductorByIdUseCaseImplTest {
     @InjectMocks
     GetConductorByIdUseCaseImpl getConductorByIdUseCase;
 
-    ConductorProjectionDto mockConductor = new ConductorProjectionDto(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"), "Danilo P", "danilo@teste.com", "522.151.300-59");
+    GetConductorByIdResponse mockConductor = new GetConductorByIdResponse(UUID.fromString("c487b1aa-e239-4869-82d4-c38f33dd9ba2"), "Danilo P", "danilo@teste.com", "522.151.300-59");
 
     @Test
     @DisplayName("Deve retornar um condutor")
     void case1() {
-        Mockito.when(conductorRepo.findConductorByIdWithoutPassword(mockConductor.getId())).thenReturn(Optional.of(mockConductor));
+        Mockito.when(conductorRepo.findConductorByIdWithoutPassword(mockConductor.id())).thenReturn(Optional.of(mockConductor));
 
-        var returnConductor = getConductorByIdUseCase.execute(mockConductor.getId());
+        var returnConductor = getConductorByIdUseCase.execute(mockConductor.id());
 
         assertThat(returnConductor)
                 .usingRecursiveComparison()
@@ -42,10 +42,10 @@ public class GetConductorByIdUseCaseImplTest {
     @Test
     @DisplayName("Não deve ser possível retornar um condutor com id inválido")
     void case2() {
-        Mockito.when(conductorRepo.findConductorByIdWithoutPassword(mockConductor.getId())).thenReturn(Optional.empty());
+        Mockito.when(conductorRepo.findConductorByIdWithoutPassword(mockConductor.id())).thenReturn(Optional.empty());
 
         assertThrows(ConductorNotFoundException.class, () -> {
-            getConductorByIdUseCase.execute(mockConductor.getId());
+            getConductorByIdUseCase.execute(mockConductor.id());
         });
     }
 }

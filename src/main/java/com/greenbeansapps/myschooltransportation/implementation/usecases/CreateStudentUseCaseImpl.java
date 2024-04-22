@@ -10,6 +10,7 @@ import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidConduc
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidResponsibleException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidTransportationTypeException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateStudentUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateStudentRequest;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
@@ -34,24 +35,24 @@ public class CreateStudentUseCaseImpl implements CreateStudentUseCase {
     }
 
     @Override
-    public Student execute(UUID id, String name, String school, String grade, String transportationType, Integer monthlyPayment, Integer monthlyPaymentExpiration, String shift, UUID conductorId, UUID responsibleId, UUID addressId) {
+    public Student execute(CreateStudentRequest data) {
 
-        Optional<Responsible> responsible = this.responsibleRepo.findById(responsibleId);
+        Optional<Responsible> responsible = this.responsibleRepo.findById(data.responsibleId());
         if (responsible.isEmpty()) {
             throw new InvalidResponsibleException();
         }
 
-        Optional<Address> address = this.addressRepo.findById(addressId);
+        Optional<Address> address = this.addressRepo.findById(data.addressId());
         if (address.isEmpty()) {
             throw new InvalidAddressException();
         }
 
-        Optional<Conductor> conductor = this.conductorRepo.findById(conductorId);
+        Optional<Conductor> conductor = this.conductorRepo.findById(data.conductorId());
         if (conductor.isEmpty()) {
             throw new InvalidConductorException();
         }
 
-        var newStudent = new Student(id, name, school, grade, transportationType, monthlyPayment, monthlyPaymentExpiration, shift, conductor.get(), responsible.get(), address.get());
+        var newStudent = new Student(data.id(), data.name(), data.school(), data.grade(), data.transportationType(), data.monthlyPayment(), data.monthlyPaymentExpiration(), data.shift(), conductor.get(), responsible.get(), address.get());
         this.studentRepo.create(newStudent);
         return newStudent;
     }
