@@ -73,9 +73,10 @@ public class Address {
 
     public void setReferencePoint(String referencePoint) {
         if (referencePoint == null || referencePoint.isEmpty()) {
-            throw new IllegalArgumentException("Reference point cannot be null or empty");
+            this.referencePoint = "Sem Referência";
+        } else {
+            this.referencePoint = capitalizeWords(referencePoint);
         }
-        this.referencePoint = capitalizeWords(referencePoint);
     }
 
     public String getHouseNumber() {
