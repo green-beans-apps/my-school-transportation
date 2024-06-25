@@ -1,5 +1,7 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
+import com.greenbeansapps.myschooltransportation.domain.utils.CapitalizeWords;
+
 import java.util.UUID;
 
 public class Address {
@@ -42,7 +44,7 @@ public class Address {
         if (city == null || city.isEmpty()) {
             throw new IllegalArgumentException("City cannot be null or empty");
         }
-        this.city = capitalizeWords(city);
+        this.city = CapitalizeWords.execute(referencePoint);
     }
 
     public String getDistrict() {
@@ -53,7 +55,7 @@ public class Address {
         if (district == null || district.isEmpty()) {
             throw new IllegalArgumentException("District cannot be null or empty");
         }
-        this.district = capitalizeWords(district);
+        this.district = CapitalizeWords.execute(referencePoint);
     }
 
     public String getStreet() {
@@ -64,7 +66,7 @@ public class Address {
         if (street == null || street.isEmpty()) {
             throw new IllegalArgumentException("Street cannot be null or empty");
         }
-        this.street = capitalizeWords(street);
+        this.street = CapitalizeWords.execute(referencePoint);
     }
 
     public String getReferencePoint() {
@@ -75,7 +77,7 @@ public class Address {
         if (referencePoint == null || referencePoint.isEmpty()) {
             this.referencePoint = "Sem Referência";
         } else {
-            this.referencePoint = capitalizeWords(referencePoint);
+            this.referencePoint = CapitalizeWords.execute(referencePoint);
         }
     }
 
@@ -89,23 +91,5 @@ public class Address {
         } else {
             this.houseNumber = houseNumber;
         }
-    }
-
-    public static String capitalizeWords(String input) {
-        if (input == null || input.isEmpty()) {
-            return input;
-        }
-
-        String[] words = input.split("\\s");
-        StringBuilder result = new StringBuilder();
-
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                char firstChar = Character.toUpperCase(word.charAt(0));
-                result.append(firstChar).append(word.substring(1)).append(" ");
-            }
-        }
-
-        return result.toString().trim();
     }
 }

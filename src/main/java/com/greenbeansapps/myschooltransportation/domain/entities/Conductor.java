@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.domain.entities;
 
 import com.greenbeansapps.myschooltransportation.domain.exceptions.CpfIsNotValidException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidEmailException;
+import com.greenbeansapps.myschooltransportation.domain.utils.CapitalizeWords;
 import com.greenbeansapps.myschooltransportation.domain.utils.CpfValidator;
 import com.greenbeansapps.myschooltransportation.domain.utils.EmailValidator;
 
@@ -51,7 +52,7 @@ public class Conductor {
         if (name.length() < 3) {
             throw new IllegalArgumentException("the name must have more than 3 characters");
         }
-        this.name = capitalizeWords(name);
+        this.name = CapitalizeWords.execute(name);
     }
 
     public String getEmail() {
@@ -97,23 +98,5 @@ public class Conductor {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
         this.password = password;
-    }
-
-    public static String capitalizeWords(String input) {
-        if (input == null || input.isEmpty()) {
-            return input;
-        }
-
-        String[] words = input.split("\\s");
-        StringBuilder result = new StringBuilder();
-
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                char firstChar = Character.toUpperCase(word.charAt(0));
-                result.append(firstChar).append(word.substring(1)).append(" ");
-            }
-        }
-
-        return result.toString().trim();
     }
 }
