@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.UpdateAddressRequest;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.UpdateAddressStudentUseCaseImpl;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
@@ -34,8 +35,8 @@ public class UpdateAddressStudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        var updateAddress = this.updateAddressStudentUseCase.execute(updateAddressStudentDto.studentId, updateAddressStudentDto.city, updateAddressStudentDto.district,
-                updateAddressStudentDto.street, updateAddressStudentDto.referencePoint(), updateAddressStudentDto.houseNumber());
+        var updateAddress = this.updateAddressStudentUseCase.execute(new UpdateAddressRequest(updateAddressStudentDto.studentId, updateAddressStudentDto.city, updateAddressStudentDto.district,
+                updateAddressStudentDto.street, updateAddressStudentDto.referencePoint(), updateAddressStudentDto.houseNumber()));
 
         var newAddress = new UpdateAddressStudentResponseDto(updateAddress.getId(), updateAddress.getCity(), updateAddress.getDistrict(), updateAddress.getStreet(),
                 updateAddress.getReferencePoint(), updateAddress.getHouseNumber());
@@ -43,6 +44,6 @@ public class UpdateAddressStudentController {
         return ResponseEntity.status(HttpStatus.OK).body(newAddress);
     }
 
-    public record UpdateAddressStudentDto(@NotNull UUID studentId, @NotBlank String city, @NotBlank String district, @NotBlank String street, @NotBlank String referencePoint, @NotNull Integer houseNumber) { }
-    public record UpdateAddressStudentResponseDto(UUID addressId, String city, String district, String street, String referencePoint, Integer houseNumber) { }
+    public record UpdateAddressStudentDto(@NotNull UUID studentId, @NotBlank String city, @NotBlank String district, @NotBlank String street, String referencePoint, String houseNumber) { }
+    public record UpdateAddressStudentResponseDto(UUID addressId, String city, String district, String street, String referencePoint, String houseNumber) { }
 }

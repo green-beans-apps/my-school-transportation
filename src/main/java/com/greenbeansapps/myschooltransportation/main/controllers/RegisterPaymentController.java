@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.RegisterPaymentRequest;
 import com.greenbeansapps.myschooltransportation.implementation.usecases.RegisterPaymentUseCaseImpl;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ public class RegisterPaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        this.registerPaymentUseCase.execute(registerPaymentDto.paymentId, registerPaymentDto.studentId, registerPaymentDto.month);
+        this.registerPaymentUseCase.execute(new RegisterPaymentRequest(registerPaymentDto.paymentId, registerPaymentDto.studentId, registerPaymentDto.month));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

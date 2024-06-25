@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -32,7 +33,7 @@ public class StudentSchema implements Serializable {
     @Column(nullable = false)
     private Shift shift;
     @Column(nullable = false)
-    private Integer monthlyPayment;
+    private Double monthlyPayment;
     @Column(nullable = false)
     private Integer monthlyPaymentExpiration;
 
@@ -47,6 +48,9 @@ public class StudentSchema implements Serializable {
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private AddressSchema address;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PaymentSchema> payments;
 
     public StudentSchema() {
     }
@@ -91,11 +95,11 @@ public class StudentSchema implements Serializable {
         this.transportationType = transportationType;
     }
 
-    public Integer getMonthlyPayment() {
+    public Double getMonthlyPayment() {
         return monthlyPayment;
     }
 
-    public void setMonthlyPayment(Integer monthlyPayment) {
+    public void setMonthlyPayment(Double monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 
@@ -137,5 +141,13 @@ public class StudentSchema implements Serializable {
 
     public void setShift(Shift shift) {
         this.shift = shift;
+    }
+
+    public List<PaymentSchema> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<PaymentSchema> payments) {
+        this.payments = payments;
     }
 }

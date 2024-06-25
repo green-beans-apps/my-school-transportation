@@ -1,10 +1,9 @@
 package com.greenbeansapps.myschooltransportation.infra.repositories.impl;
 
-import com.greenbeansapps.myschooltransportation.domain.dto.ConductorProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
+import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.GetConductorByIdResponse;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IConductorRepositoryJPA;
-import com.greenbeansapps.myschooltransportation.infra.repositories.projection.ConductorProjection;
 import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ConductorSchema;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,12 +58,12 @@ public class ConductorRepositoryJPA implements ConductorRepository {
     }
 
     @Override
-    public Optional<ConductorProjectionDto> findConductorByIdWithoutPassword(UUID conductorId) {
-        Optional<ConductorProjection> conductorProjection = this.conductorRepo.findConductorByIdWithoutPassword(conductorId);
-        if (conductorProjection.isEmpty()) {
+    public Optional<GetConductorByIdResponse> findConductorByIdWithoutPassword(UUID conductorId) {
+        Optional<GetConductorByIdResponse> conductor = this.conductorRepo.findConductorByIdWithoutPassword(conductorId);
+        if (conductor.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new ConductorProjectionDto(conductorProjection.get().getId(), conductorProjection.get().getName(), conductorProjection.get().getEmail(), conductorProjection.get().getCpf()));
+        return conductor;
     }
 
     @Override

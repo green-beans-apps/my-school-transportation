@@ -1,6 +1,5 @@
 package com.greenbeansapps.myschooltransportation.infra.repositories.impl;
 
-import com.greenbeansapps.myschooltransportation.domain.dto.PaymentProjectionDto;
 import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
@@ -65,15 +64,15 @@ public class PaymentRepositoryJPA implements PaymentRepository {
     }
 
     @Override
-    public List<PaymentProjectionDto> findAllPaymentByStudentId(UUID studentId) {
+    public List<Payment> findAllPaymentByStudentId(UUID studentId) {
         List<PaymentProjection> paymentSchemas = this.paymentRepo.findAllPaymentByStudentId(studentId);
         if (paymentSchemas.isEmpty()) {
             return null;
         }
 
-        List<PaymentProjectionDto> paymentProjectionDtoList = new ArrayList<>();
+        List<Payment> paymentProjectionDtoList = new ArrayList<>();
         for (PaymentProjection paymentSchema : paymentSchemas) {
-            paymentProjectionDtoList.add(new PaymentProjectionDto(paymentSchema.getId(), paymentSchema.getPaymentDate(), paymentSchema.getPaymentMonth()));
+            paymentProjectionDtoList.add(new Payment(paymentSchema.getId(), paymentSchema.getPaymentDate(), paymentSchema.getPaymentMonth(), null));
         }
 
         return paymentProjectionDtoList;
