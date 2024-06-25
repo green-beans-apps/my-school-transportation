@@ -44,7 +44,7 @@ public class Address {
         if (city == null || city.isEmpty()) {
             throw new IllegalArgumentException("City cannot be null or empty");
         }
-        this.city = CapitalizeWords.execute(referencePoint);
+        this.city = CapitalizeWords.execute(city);
     }
 
     public String getDistrict() {
@@ -55,7 +55,7 @@ public class Address {
         if (district == null || district.isEmpty()) {
             throw new IllegalArgumentException("District cannot be null or empty");
         }
-        this.district = CapitalizeWords.execute(referencePoint);
+        this.district = CapitalizeWords.execute(district);
     }
 
     public String getStreet() {
@@ -66,7 +66,7 @@ public class Address {
         if (street == null || street.isEmpty()) {
             throw new IllegalArgumentException("Street cannot be null or empty");
         }
-        this.street = CapitalizeWords.execute(referencePoint);
+        this.street = CapitalizeWords.execute(street);
     }
 
     public String getReferencePoint() {
