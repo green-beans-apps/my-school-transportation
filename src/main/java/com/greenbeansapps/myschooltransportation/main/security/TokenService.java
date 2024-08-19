@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ConductorSchema;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class TokenService {
   private record payload(UUID id, String cpf) {
   }
 
-  public String generateToken(ConductorSchema conductor) {
+  public String generateToken(Conductor conductor) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(this.secret);
       String token =  JWT.create()

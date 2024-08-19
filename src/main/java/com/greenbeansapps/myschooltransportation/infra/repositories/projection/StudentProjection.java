@@ -4,9 +4,6 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.AddressSchema;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ResponsibleSchema;
-
 import java.util.UUID;
 
 public class StudentProjection {
@@ -18,10 +15,10 @@ public class StudentProjection {
     private Shift shift;
     private Double monthlyPayment;
     private Integer monthlyPaymentExpiration;
-    private ResponsibleSchema responsible;
-    private AddressSchema address;
+    private Responsible responsible;
+    private Address address;
 
-    public StudentProjection(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Double monthlyPayment, Integer monthlyPaymentExpiration, ResponsibleSchema responsible, AddressSchema address) {
+    public StudentProjection(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Double monthlyPayment, Integer monthlyPaymentExpiration, Responsible responsible, Address address) {
         this.id = id;
         this.name = name;
         this.school = school;
@@ -98,19 +95,19 @@ public class StudentProjection {
         this.monthlyPaymentExpiration = monthlyPaymentExpiration;
     }
 
-    public ResponsibleSchema getResponsible() {
+    public Responsible getResponsible() {
         return responsible;
     }
 
-    public void setResponsible(ResponsibleSchema responsible) {
+    public void setResponsible(Responsible responsible) {
         this.responsible = responsible;
     }
 
-    public AddressSchema getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(AddressSchema address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 }

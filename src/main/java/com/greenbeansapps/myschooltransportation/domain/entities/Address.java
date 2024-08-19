@@ -1,15 +1,27 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
 import com.greenbeansapps.myschooltransportation.domain.utils.CapitalizeWords;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.UUID;
 
+@Entity
+@Table(name= "address")
 public class Address {
+    @Id
     private UUID id;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String district;
+    @Column(nullable = false)
     private String street;
+    @Column()
     private String referencePoint;
+    @Column(nullable = false)
     private String houseNumber;
 
     public Address() {
@@ -92,4 +104,5 @@ public class Address {
             this.houseNumber = houseNumber;
         }
     }
+
 }

@@ -4,8 +4,6 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Address;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IResponsibleRepositoryJPA;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.AddressSchema;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ResponsibleSchema;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
@@ -23,59 +21,57 @@ public class ResponsibleRepositoryJPA implements ResponsibleRepository {
 
     @Override
     public Responsible create(Responsible responsible) {
-        var newResponsible = new ResponsibleSchema();
-        BeanUtils.copyProperties(responsible, newResponsible);
-        this.responsibleRepo.save(newResponsible);
+        this.responsibleRepo.save(responsible);
         return responsible;
     }
 
     @Override
     public Optional<Responsible> findById(UUID responsibleId) {
-        Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findById(responsibleId);
-        if (responsibleSchema.isEmpty()) {
+        Optional<Responsible> responsible = this.responsibleRepo.findById(responsibleId);
+        if (responsible.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getphone()));
+        return responsible;
     }
 
     @Override
     public Optional<Responsible> findByEmail(String email) {
-        Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findByEmail(email);
-        if (responsibleSchema.isEmpty()) {
+        Optional<Responsible> responsible = this.responsibleRepo.findByEmail(email);
+        if (responsible.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getphone()));
+        return responsible;
     }
 
     @Override
     public Optional<Responsible> findByphone(String phone) {
-        Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findByphone(phone);
-        if (responsibleSchema.isEmpty()) {
+        Optional<Responsible> responsible = this.responsibleRepo.findByphone(phone);
+        if (responsible.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new Responsible(responsibleSchema.get().getId(), responsibleSchema.get().getName(), responsibleSchema.get().getEmail(), responsibleSchema.get().getphone()));
+        return responsible;
     }
 
     @Override
     public Responsible updateResponsible(Responsible responsible) {
-        Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findById(responsible.getId());
+        Optional<Responsible> oldResponsible = this.responsibleRepo.findById(responsible.getId());
 
-        responsibleSchema.get().setName(responsible.getName());
-        responsibleSchema.get().setEmail(responsible.getEmail());
-        responsibleSchema.get().setphone(responsible.getPhone());
+        oldResponsible.get().setName(responsible.getName());
+        oldResponsible.get().setEmail(responsible.getEmail());
+        oldResponsible.get().setPhone(responsible.getPhone());
 
-        this.responsibleRepo.save(responsibleSchema.get());
+        this.responsibleRepo.save(oldResponsible.get());
         return responsible;
     }
 
     @Override
     public Boolean deleteResponsible(UUID responsibleId) {
-        Optional<ResponsibleSchema> responsibleSchema = this.responsibleRepo.findById(responsibleId);
-        if (responsibleSchema.isEmpty()) {
+        Optional<Responsible> responsible = this.responsibleRepo.findById(responsibleId);
+        if (responsible.isEmpty()) {
             return false;
         }
 
-        responsibleRepo.delete(responsibleSchema.get());
+        responsibleRepo.delete(responsible.get());
         return true;
     }
 }

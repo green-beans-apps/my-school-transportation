@@ -5,9 +5,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
 import com.greenbeansapps.myschooltransportation.domain.entities.Responsible;
 import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.AddressSchema;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.PaymentSchema;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ResponsibleSchema;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -22,12 +20,12 @@ public class StudentWithPaymentProjection {
   private Shift shift;
   private Double monthlyPayment;
   private Integer monthlyPaymentExpiration;
-  private ResponsibleSchema responsible;
-  private AddressSchema address;
+  private Responsible responsible;
+  private Address address;
 
-  private List<PaymentSchema> payments;
+  private List<Payment> payments;
 
-  public StudentWithPaymentProjection(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Double monthlyPayment, Integer monthlyPaymentExpiration, ResponsibleSchema responsible, AddressSchema address, List<PaymentSchema> payments) {
+  public StudentWithPaymentProjection(UUID id, String name, String school, String grade, TransportationType transportationType, Shift shift, Double monthlyPayment, Integer monthlyPaymentExpiration, Responsible responsible, Address address, List<Payment> payments) {
     this.id = id;
     this.name = name;
     this.school = school;
@@ -105,27 +103,27 @@ public class StudentWithPaymentProjection {
     this.monthlyPaymentExpiration = monthlyPaymentExpiration;
   }
 
-  public ResponsibleSchema getResponsible() {
+  public Responsible getResponsible() {
     return responsible;
   }
 
-  public void setResponsible(ResponsibleSchema responsible) {
+  public void setResponsible(Responsible responsible) {
     this.responsible = responsible;
   }
 
-  public AddressSchema getAddress() {
+  public Address getAddress() {
     return address;
   }
 
-  public void setAddress(AddressSchema address) {
+  public void setAddress(Address address) {
     this.address = address;
   }
 
-  public List<PaymentSchema> getPayments() {
+  public List<Payment> getPayments() {
     return payments;
   }
 
-  public void setPayments(List<PaymentSchema> payments) {
+  public void setPayments(List<Payment> payments) {
     this.payments = payments;
   }
 }

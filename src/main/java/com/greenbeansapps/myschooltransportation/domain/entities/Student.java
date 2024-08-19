@@ -6,21 +6,50 @@ import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthl
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidShiftException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidTransportationTypeException;
 import com.greenbeansapps.myschooltransportation.domain.utils.CapitalizeWords;
+import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
-public class Student {
+@Entity
+@Table(name = "student")
+public class Student implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
     private UUID id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String school;
+    @Column(nullable = false)
     private String grade;
+    @Column(nullable = false)
     private TransportationType transportationType;
-    private Double monthlyPayment;
-    private Integer monthlyPaymentExpiration;
-    private Conductor conductor;
-    private Responsible responsible;
-    private Address address;
+    @Column(nullable = false)
     private Shift shift;
+    @Column(nullable = false)
+    private Double monthlyPayment;
+    @Column(nullable = false)
+    private Integer monthlyPaymentExpiration;
+
+    @ManyToOne
+    @JoinColumn(name = "conductor_id", nullable = false)
+    private Conductor conductor;
+
+    @ManyToOne
+    @JoinColumn(name = "responsible_id", nullable = false)
+    private Responsible responsible;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id", nullable = false)
+    private Address address;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Payment> payments;
 
     public Student() {
     }
@@ -177,5 +206,21 @@ public class Student {
         }  else {
             throw new InvalidShiftException();
         }
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
+    }
+
+    public void setTransportationType(TransportationType transportationType) {
+        this.transportationType = transportationType;
     }
 }

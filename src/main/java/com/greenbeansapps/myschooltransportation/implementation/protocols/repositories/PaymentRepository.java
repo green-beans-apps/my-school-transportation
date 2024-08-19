@@ -2,8 +2,6 @@ package com.greenbeansapps.myschooltransportation.implementation.protocols.repos
 
 import com.greenbeansapps.myschooltransportation.domain.entities.Payment;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.PaymentSchema;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

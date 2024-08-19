@@ -3,13 +3,29 @@ package com.greenbeansapps.myschooltransportation.domain.entities;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidEmailException;
 import com.greenbeansapps.myschooltransportation.domain.utils.CapitalizeWords;
 import com.greenbeansapps.myschooltransportation.domain.utils.EmailValidator;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Responsible {
+@Entity
+@Table(name = "responsible")
+public class Responsible implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
     private UUID id;
+    @Column(nullable = false)
     private String name;
+    @Column()
     private String email;
+    @Column(nullable = false)
     private String phone;
 
     public Responsible() {
@@ -79,4 +95,6 @@ public class Responsible {
 
         this.phone = phone;
     }
+
+
 }

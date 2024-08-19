@@ -6,8 +6,6 @@ import com.greenbeansapps.myschooltransportation.domain.enums.Months;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IPaymentRepositoryJPA;
 import com.greenbeansapps.myschooltransportation.infra.repositories.projection.PaymentProjection;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.PaymentSchema;
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.StudentSchema;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
@@ -28,39 +26,27 @@ public class PaymentRepositoryJPA implements PaymentRepository {
 
     @Override
     public Payment register(Payment payment) {
-        var newPayment = new PaymentSchema();
-        BeanUtils.copyProperties(payment, newPayment);
-
-        var newStudent = new StudentSchema();
-        BeanUtils.copyProperties(payment.getStudent(), newStudent);
-        newPayment.setStudent(newStudent);
-
-        this.paymentRepo.save(newPayment);
+        this.paymentRepo.save(payment);
         return payment;
     }
 
     @Override
     public Optional<Payment> findPayment(UUID paymentId) {
-        Optional<PaymentSchema> paymentSchema = this.paymentRepo.findById(paymentId);
-        if (paymentSchema.isEmpty()) {
+        Optional<Payment> payment = this.paymentRepo.findById(paymentId);
+        if (payment.isEmpty()) {
             return Optional.empty();
         }
-        var newStudent = new Student();
-        BeanUtils.copyProperties(paymentSchema.get().getStudent(), newStudent);
-
-        return Optional.of(new Payment(paymentSchema.get().getId(), paymentSchema.get().getPaymentDate(), paymentSchema.get().getPaymentMonth(), newStudent));
+        return payment;
     }
 
     @Override
     public Optional<Payment> findPaymentPerMonth(UUID studentId, Months months) {
-        Optional<PaymentSchema> paymentSchema = this.paymentRepo.findPaymentPerMonth(studentId, months);
-        if (paymentSchema.isEmpty()) {
+        Optional<Payment> payment = this.paymentRepo.findPaymentPerMonth(studentId, months);
+        if (payment.isEmpty()) {
             return Optional.empty();
         }
-        var newStudent = new Student();
-        BeanUtils.copyProperties(paymentSchema.get().getStudent(), newStudent);
 
-        return Optional.of(new Payment(paymentSchema.get().getId(), paymentSchema.get().getPaymentDate(), paymentSchema.get().getPaymentMonth(), newStudent));
+        return payment;
     }
 
     @Override
@@ -80,12 +66,12 @@ public class PaymentRepositoryJPA implements PaymentRepository {
 
     @Override
     public Boolean cancelPayment(UUID paymentId) {
-        Optional<PaymentSchema> paymentSchema = this.paymentRepo.findById(paymentId);
-        if (paymentSchema.isEmpty()) {
+        Optional<Payment> payment = this.paymentRepo.findById(paymentId);
+        if (payment.isEmpty()) {
             return false;
         }
 
-        paymentRepo.delete(paymentSchema.get());
+        paymentRepo.delete(payment.get());
         return true;
     }
 }

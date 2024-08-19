@@ -1,6 +1,6 @@
 package com.greenbeansapps.myschooltransportation.main.controllers;
 
-import com.greenbeansapps.myschooltransportation.infra.repositories.schemas.ConductorSchema;
+import com.greenbeansapps.myschooltransportation.domain.entities.Conductor;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import com.greenbeansapps.myschooltransportation.main.security.TokenService;
 import jakarta.validation.Valid;
@@ -41,9 +41,9 @@ public class LoginController {
     try {
       var userNamePassword = new UsernamePasswordAuthenticationToken(data.getLogin(), data.getPassword());
       var auth = this.authenticationManager.authenticate(userNamePassword);
-      var conductorSchema = (ConductorSchema) auth.getPrincipal();
-      var token = this.tokenService.generateToken(conductorSchema);
-      var conductorResponse = new ConductorResponse(conductorSchema.getId(), conductorSchema.getName(), conductorSchema.getEmail(), conductorSchema.getCpf());
+      var conductor = (Conductor) auth.getPrincipal();
+      var token = this.tokenService.generateToken(conductor);
+      var conductorResponse = new ConductorResponse(conductor.getId(), conductor.getName(), conductor.getEmail(), conductor.getCpf());
       return ResponseEntity.ok(new LoginResponseDto(token, conductorResponse));
     } catch (RuntimeException err) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body("error: Invalid username or password");
