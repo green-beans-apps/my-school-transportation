@@ -18,9 +18,12 @@ public class Payment implements Serializable {
     @Id
     private UUID id;
     @Column(nullable = false)
-    private String paymentDate;
+    private Date paymentDate;
     @Column(nullable = false)
     private Months paymentMonth;
+    @Column(nullable = false)
+    private Integer paymentYear;
+
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
@@ -29,7 +32,7 @@ public class Payment implements Serializable {
     public Payment() {
     }
 
-    public Payment(UUID id, String paymentDate, Months paymentMonth, Student student) {
+    public Payment(UUID id, Date paymentDate, Months paymentMonth, Student student) {
         setId(id);
         setPaymentDate(paymentDate);
         setPaymentMonth(paymentMonth);
@@ -48,11 +51,11 @@ public class Payment implements Serializable {
         }
     }
 
-    public String getPaymentDate() {
+    public Date getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(String paymentDate) {
+    public void setPaymentDate(Date paymentDate) {
         if (paymentDate == null) {
             throw new IllegalArgumentException("Payment date cannot be null");
         }
@@ -89,5 +92,13 @@ public class Payment implements Serializable {
             throw new IllegalArgumentException("Student cannot be null");
         }
         this.student = student;
+    }
+
+    public Integer getPaymentYear() {
+        return paymentYear;
+    }
+
+    public void setPaymentYear(Integer paymentYear) {
+        this.paymentYear = paymentYear;
     }
 }

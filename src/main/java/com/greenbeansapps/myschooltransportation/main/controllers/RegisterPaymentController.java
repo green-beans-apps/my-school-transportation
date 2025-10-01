@@ -24,6 +24,7 @@ public class RegisterPaymentController {
 
     @PostMapping()
     public ResponseEntity registerPayment(@RequestBody @Valid RegisterPaymentDto registerPaymentDto, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             ErrorResponse errorResponse = new ErrorResponse();
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -32,9 +33,9 @@ public class RegisterPaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        this.registerPaymentUseCase.execute(new RegisterPaymentRequest(registerPaymentDto.paymentId, registerPaymentDto.studentId, registerPaymentDto.month));
+        this.registerPaymentUseCase.execute(new RegisterPaymentRequest(registerPaymentDto.paymentId, registerPaymentDto.studentId, registerPaymentDto.paymentMonth, registerPaymentDto.paymentYear));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public record RegisterPaymentDto(UUID paymentId, @NotNull UUID studentId, @NotBlank String month) {}
+    public record RegisterPaymentDto(UUID paymentId, @NotNull UUID studentId, @NotBlank String paymentMonth, @NotBlank Integer paymentYear) {}
 }

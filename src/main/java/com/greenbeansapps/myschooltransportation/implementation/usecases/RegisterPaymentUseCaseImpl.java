@@ -35,20 +35,15 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
       throw new StudentNotFoundException();
     }
 
-    //Verifica se o valor inserido é válido
-    Months month = validateMonth(data.paymentMonth());
+      //Verifica se o valor inserido é válido
+      Months month = validateMonth(data.paymentMonth());
 
     Optional<Payment> paymentExists = this.paymentRepo.findPaymentPerMonth(data.studentId(), month);
     if(paymentExists.isPresent()) {
       throw new ExistingPaymentException();
     }
 
-    String pattern = "dd/MM/yyyy";
-    LocalDate currentDate = LocalDate.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-    String formattedDate = currentDate.format(formatter);
-
-    Payment newPayment = new Payment(data.paymentId(), formattedDate, month, student.get());
+    Payment newPayment = new Payment(data.paymentId(), new Date(), month, student.get());
     return this.paymentRepo.register(newPayment);
   }
 
