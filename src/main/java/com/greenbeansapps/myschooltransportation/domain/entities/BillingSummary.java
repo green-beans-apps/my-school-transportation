@@ -56,4 +56,68 @@ public class BillingSummary implements Serializable {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getReferenceMonth() {
+        return referenceMonth;
+    }
+
+    public void setReferenceMonth(String referenceMonth) {
+        this.referenceMonth = referenceMonth;
+    }
+
+    public String getReferenceYear() {
+        return referenceYear;
+    }
+
+    public void setReferenceYear(String referenceYear) {
+        this.referenceYear = referenceYear;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public ChargeType getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(ChargeType chargeType) {
+        this.chargeType = chargeType;
+    }
 }

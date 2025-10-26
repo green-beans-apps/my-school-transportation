@@ -39,7 +39,7 @@ public class LoginController {
     }
 
     try {
-      var userNamePassword = new UsernamePasswordAuthenticationToken(data.getLogin(), data.getPassword());
+      var userNamePassword = new UsernamePasswordAuthenticationToken(data.login, data.password);
       var auth = this.authenticationManager.authenticate(userNamePassword);
       var conductor = (Conductor) auth.getPrincipal();
       var token = this.tokenService.generateToken(conductor);

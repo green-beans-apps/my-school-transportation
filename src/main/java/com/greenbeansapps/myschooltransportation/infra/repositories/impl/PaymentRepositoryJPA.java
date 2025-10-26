@@ -51,17 +51,7 @@ public class PaymentRepositoryJPA implements PaymentRepository {
 
     @Override
     public List<Payment> findAllPaymentByStudentId(UUID studentId) {
-        List<PaymentProjection> paymentSchemas = this.paymentRepo.findAllPaymentByStudentId(studentId);
-        if (paymentSchemas.isEmpty()) {
-            return null;
-        }
-
-        List<Payment> paymentProjectionDtoList = new ArrayList<>();
-        for (PaymentProjection paymentSchema : paymentSchemas) {
-            paymentProjectionDtoList.add(new Payment(paymentSchema.getId(), paymentSchema.getPaymentDate(), paymentSchema.getPaymentMonth(), null));
-        }
-
-        return paymentProjectionDtoList;
+        return  this.paymentRepo.findAllPaymentByStudentId(studentId);
     }
 
     @Override

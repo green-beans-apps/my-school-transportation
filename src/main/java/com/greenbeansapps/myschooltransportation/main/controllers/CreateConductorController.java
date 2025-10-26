@@ -38,7 +38,7 @@ public class CreateConductorController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    this.createConductorUseCase.execute(new CreateConductorRequest(data.id, data.getName(), data.getEmail(), data.getPassword(), data.getCpf()));
+    this.createConductorUseCase.execute(new CreateConductorRequest(data.id, data.name, data.email, data.password, data.cpf));
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
   @Data

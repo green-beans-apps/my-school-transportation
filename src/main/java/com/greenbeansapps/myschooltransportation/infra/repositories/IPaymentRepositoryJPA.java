@@ -17,7 +17,13 @@ public interface IPaymentRepositoryJPA extends JpaRepository<Payment, UUID> {
     Optional<Payment> findPaymentPerMonth(UUID studentId, Months paymentMonth);
 
 
-    @Query("SELECT new com.greenbeansapps.myschooltransportation.infra.repositories.projection.PaymentProjection(p.id, p.paymentDate, p.paymentMonth) " +
+    @Query("SELECT p " +
             "FROM Payment p WHERE p.student.id = :studentId")
-    public List<PaymentProjection> findAllPaymentByStudentId(UUID studentId);
+    public List<Payment> findAllPaymentByStudentId(UUID studentId);
+
+    @Query("SELECT p " +
+            "FROM Payment p WHERE p.student.id = :studentId")
+    public List<Payment>
+    findAllPaymentsForSummary(UUID studentId);
+
 }

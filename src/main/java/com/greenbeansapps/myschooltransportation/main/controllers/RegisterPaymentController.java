@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
@@ -33,9 +34,10 @@ public class RegisterPaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        this.registerPaymentUseCase.execute(new RegisterPaymentRequest(registerPaymentDto.paymentId, registerPaymentDto.studentId, registerPaymentDto.paymentMonth, registerPaymentDto.paymentYear));
+        this.registerPaymentUseCase.execute(new RegisterPaymentRequest(registerPaymentDto.studentId, registerPaymentDto.paymentMonth, registerPaymentDto.paymentYear, registerPaymentDto.paymentAmount, registerPaymentDto.monthlyFeeId));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public record RegisterPaymentDto(UUID paymentId, @NotNull UUID studentId, @NotBlank String paymentMonth, @NotBlank Integer paymentYear) {}
+    public record RegisterPaymentDto(@NotNull UUID studentId, @NotBlank String paymentMonth, @NotNull Integer paymentYear, @NotNull
+                                     BigDecimal paymentAmount, @NotNull UUID monthlyFeeId) {}
 }

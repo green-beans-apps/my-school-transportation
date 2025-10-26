@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class Payment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(nullable = false)
     private Date paymentDate;
@@ -23,7 +25,12 @@ public class Payment implements Serializable {
     private Months paymentMonth;
     @Column(nullable = false)
     private Integer paymentYear;
+    @Column(nullable = false)
+    private BigDecimal amount;
 
+    @OneToOne
+    @JoinColumn(name = "monthly_fee", nullable = false)
+    private MonthlyFee monthlyFee;
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
@@ -32,11 +39,13 @@ public class Payment implements Serializable {
     public Payment() {
     }
 
-    public Payment(UUID id, Date paymentDate, Months paymentMonth, Student student) {
-        setId(id);
-        setPaymentDate(paymentDate);
-        setPaymentMonth(paymentMonth);
-        setStudent(student);
+    public Payment(UUID id, Date paymentDate, Months paymentMonth, Integer paymentYear, BigDecimal amount, Student student) {
+        this.id = id;
+        this.paymentDate = paymentDate;
+        this.paymentMonth = paymentMonth;
+        this.paymentYear = paymentYear;
+        this.student = student;
+        this.amount = amount;
     }
 
     public UUID getId() {
@@ -100,5 +109,21 @@ public class Payment implements Serializable {
 
     public void setPaymentYear(Integer paymentYear) {
         this.paymentYear = paymentYear;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public MonthlyFee getMonthlyFee() {
+        return monthlyFee;
+    }
+
+    public void setMonthlyFee(MonthlyFee monthlyFee) {
+        this.monthlyFee = monthlyFee;
     }
 }
