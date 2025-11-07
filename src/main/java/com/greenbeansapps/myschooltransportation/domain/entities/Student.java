@@ -10,6 +10,9 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +38,10 @@ public class Student implements Serializable {
     private Double monthlyPayment;
     @Column(nullable = false)
     private Integer monthlyPaymentExpiration;
+    @Column(nullable = false)
+    private BigDecimal contractTerminationValue;
+    @Column(nullable = false)
+    private LocalDate registrationDate;
 
     @ManyToOne
     @JoinColumn(name = "conductor_id", nullable = false)
@@ -66,6 +73,7 @@ public class Student implements Serializable {
         setResponsible(responsible);
         setAddress(address);
         setShift(shift);
+        setRegistrationDate(LocalDate.now());
     }
 
     public UUID getId() {
@@ -222,5 +230,21 @@ public class Student implements Serializable {
 
     public void setTransportationType(TransportationType transportationType) {
         this.transportationType = transportationType;
+    }
+
+    public BigDecimal getContractTerminationValue() {
+        return contractTerminationValue;
+    }
+
+    public void setContractTerminationValue(BigDecimal contractTerminationValue) {
+        this.contractTerminationValue = contractTerminationValue;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
     }
 }

@@ -95,4 +95,9 @@ public class HandleExceptionController extends ResponseEntityExceptionHandler {
     private ResponseEntity<String> paymentNotFoundException(PaymentNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
+
+    @ExceptionHandler(KernelNotfoundException.class)
+    private ResponseEntity<String> kernelNotfoundException(KernelNotfoundException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
 }
