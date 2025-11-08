@@ -2,8 +2,8 @@ package com.greenbeansapps.myschooltransportation.main.controllers;
 
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthException;
-import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.EnableSummaryGenerationRequest;
-import com.greenbeansapps.myschooltransportation.implementation.usecases.EnableSummaryGenerationUseCaseImpl;
+import com.greenbeansapps.myschooltransportation.domain.services.SummaryGenerationOrchestratorService;
+import com.greenbeansapps.myschooltransportation.main.constraints.ValidUUID;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -18,15 +18,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/SummaryGeneration")
 public class EnableSummaryGenerationController {
 
     @Autowired
-    private EnableSummaryGenerationUseCaseImpl enableSummaryGenerationUseCaseImpl;
+    private SummaryGenerationOrchestratorService orchestrator;
 
     @PostMapping()
     public ResponseEntity EnableSummaryGeneration(@RequestBody @Valid EnableSummaryGenerationDto summaryGenerationDto, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             ErrorResponse errorResponse = new ErrorResponse();
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -37,10 +40,13 @@ public class EnableSummaryGenerationController {
 
         Months month = validateMonth(summaryGenerationDto.referenceMonth);
 
-        enableSummaryGenerationUseCaseImpl.execute(new EnableSummaryGenerationRequest(month, summaryGenerationDto.referenceYear));
-        return ResponseEntity.status(HttpStatus.OK).build();
+        orchestrator.startAsync(month, summaryGenerationDto.referenceYear, summaryGenerationDto.conductorId);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-    public record EnableSummaryGenerationDto(@NotBlank String referenceMonth, @NotNull Integer referenceYear) {}
+
+    public record EnableSummaryGenerationDto(
+            @NotBlank String referenceMonth, @NotNull Integer referenceYear, @ValidUUID  UUID conductorId) {}
 
     private Months validateMonth(String paymentMonth) {
         try {

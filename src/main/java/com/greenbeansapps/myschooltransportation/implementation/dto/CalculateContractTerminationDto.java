@@ -1,7 +1,5 @@
 package com.greenbeansapps.myschooltransportation.implementation.dto;
 
-import java.util.List;
-
 public class CalculateContractTerminationDto {
 
     private float[] monthlyValues;

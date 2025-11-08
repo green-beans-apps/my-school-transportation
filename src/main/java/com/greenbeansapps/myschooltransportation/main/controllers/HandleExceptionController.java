@@ -100,4 +100,9 @@ public class HandleExceptionController extends ResponseEntityExceptionHandler {
     private ResponseEntity<String> kernelNotfoundException(KernelNotfoundException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
+
+    @ExceptionHandler(ParametersConductorNotFoundException.class)
+    private ResponseEntity<String> parametersConductorNotFoundException(ParametersConductorNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
 }

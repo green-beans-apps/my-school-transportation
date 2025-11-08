@@ -1,8 +1,11 @@
 package com.greenbeansapps.myschooltransportation.infra.opencl;
 
 import org.jocl.*;
+import org.springframework.stereotype.Service;
+
 import static org.jocl.CL.*;
 
+@Service
 public class CalculateContractTermination {
 
     public float[] calculateContractTermination(float[] monthlyFees, int[] remainingMonths, float[] alreadyPaid, float percent) {

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public interface IMonthlyFeeRepositoryJPA extends JpaRepository<MonthlyFee, UUID> {
 
-    @Query("SELECT mf FROM MonthlyFee mf WHERE mf.referenceMonth = :month AND mf.referenceYear = :year")
-    public List<MonthlyFee> findAllMonthlyFeesByReference(Months month, Integer year);
+    @Query("SELECT mf FROM MonthlyFee mf JOIN mf.student s JOIN s.conductor c WHERE mf.referenceMonth = :month AND mf.referenceYear = :year AND c.id = :conductorId")
+    public List<MonthlyFee> findAllMonthlyFeesByReference(Months month, Integer year, UUID conductorId);
+
 }

@@ -2,6 +2,7 @@ package com.greenbeansapps.myschooltransportation.implementation.usecases;
 
 import com.greenbeansapps.myschooltransportation.domain.entities.BillingSummary;
 import com.greenbeansapps.myschooltransportation.domain.entities.MonthlyFee;
+import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.ChargeType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.KernelNotfoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.EnableSummaryGeneration;
@@ -32,12 +33,18 @@ public class EnableSummaryGenerationUseCaseImpl implements EnableSummaryGenerati
     private IBillingSummaryRepositoryJPA billingSummaryRepo;
 
     @Override
-    public void execute(EnableSummaryGenerationRequest enableSummaryGenerationRequest) {
+    public List<Student> execute(EnableSummaryGenerationRequest enableSummaryGenerationRequest) {
 
         //Gerando resumo do faturamento
-        List<MonthlyFee> monthlyFeeList = monthlyFeeRepository.findAllMonthlyFeesByReference(enableSummaryGenerationRequest.referenceMonth(), enableSummaryGenerationRequest.referenceYear());
+        List<MonthlyFee> monthlyFeeList = monthlyFeeRepository.findAllMonthlyFeesByReference(enableSummaryGenerationRequest.referenceMonth(),
+                enableSummaryGenerationRequest.referenceYear(), enableSummaryGenerationRequest.conductorId());
 
         ExecutorService executor = Executors.newFixedThreadPool(4);
+
+        List<Student> affectedStudents = monthlyFeeList.stream()
+                .map(MonthlyFee::getStudent)
+                .distinct()
+                .toList();
 
         for (MonthlyFee monthlyFee:monthlyFeeList) {
             executor.submit(() -> {
@@ -53,29 +60,7 @@ public class EnableSummaryGenerationUseCaseImpl implements EnableSummaryGenerati
         }
 
         executor.shutdown();
-    }
 
-    @PostConstruct
-    public void testarKernelAoSubir() {
-
-        int tamanho = 99999999;
-
-        float[] mensalidades = new float[tamanho];
-        int[] meses = new int[tamanho];
-        float[] valorJaPago = new float[tamanho];
-        float percent = 0.10f;
-
-        for (int i = 0; i < tamanho; i++) {
-            mensalidades[i] = (i % 12 + 1) * 50f; // valores variando (50, 100, 150...)]
-            meses[i] = (i % 6) + 1; // varia de 1 a 6
-            valorJaPago[i] = 120f + (i % 51); // 120 a 170
-        }
-
-        try {
-            CalculateContractTermination calc = new CalculateContractTermination();
-            float[] resultado = calc.calculateContractTermination(mensalidades, meses, valorJaPago, percent);
-        } catch (Exception e) {
-            throw new KernelNotfoundException();
-        }
+        return affectedStudents;
     }
 }

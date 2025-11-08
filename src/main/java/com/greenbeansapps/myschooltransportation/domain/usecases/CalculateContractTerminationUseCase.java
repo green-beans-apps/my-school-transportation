@@ -6,5 +6,5 @@ import com.greenbeansapps.myschooltransportation.implementation.dto.CalculateCon
 import java.util.List;
 
 public interface CalculateContractTerminationUseCase {
-    CalculateContractTerminationDto execute(List<Student> students);
+    void execute(List<Student> students);
 }
