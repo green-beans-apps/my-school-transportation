@@ -35,7 +35,24 @@ public class EnableSummaryGenerationUseCaseImpl implements EnableSummaryGenerati
     @Override
     public List<Student> execute(EnableSummaryGenerationRequest enableSummaryGenerationRequest) {
 
-        //Gerando resumo do faturamento
+        deleteBillingSummaryPerReferenceByConductor(enableSummaryGenerationRequest);
+
+        List<Student> affectedStudents = generateBillingSummaryPerReferenceByConductor(enableSummaryGenerationRequest);
+
+        return affectedStudents;
+
+    }
+
+    private void deleteBillingSummaryPerReferenceByConductor(EnableSummaryGenerationRequest enableSummaryGenerationRequest) {
+
+        List<BillingSummary> billingSummariesByConductor = billingSummaryRepo.findAllBillingSummaryByReference(enableSummaryGenerationRequest.referenceMonth().name(),
+                enableSummaryGenerationRequest.referenceYear(), enableSummaryGenerationRequest.conductorId());
+
+        billingSummaryRepo.deleteAll(billingSummariesByConductor);
+    }
+
+    private List<Student> generateBillingSummaryPerReferenceByConductor(EnableSummaryGenerationRequest enableSummaryGenerationRequest) {
+
         List<MonthlyFee> monthlyFeeList = monthlyFeeRepository.findAllMonthlyFeesByReference(enableSummaryGenerationRequest.referenceMonth(),
                 enableSummaryGenerationRequest.referenceYear(), enableSummaryGenerationRequest.conductorId());
 
@@ -48,7 +65,7 @@ public class EnableSummaryGenerationUseCaseImpl implements EnableSummaryGenerati
 
         for (MonthlyFee monthlyFee:monthlyFeeList) {
             executor.submit(() -> {
-//                System.out.println("Executando tarefa " + monthlyFee.getId() + " na " + Thread.currentThread().getName());
+//              System.out.println("Executando tarefa " + monthlyFee.getId() + " na " + Thread.currentThread().getName());
                 BillingSummary billingSummary = new BillingSummary();
                 billingSummary.setStudent(monthlyFee.getStudent());
                 billingSummary.setReferenceMonth(monthlyFee.getReferenceMonth().name());
