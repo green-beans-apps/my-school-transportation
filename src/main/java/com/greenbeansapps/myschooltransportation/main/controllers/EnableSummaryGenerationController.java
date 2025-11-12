@@ -3,7 +3,6 @@ package com.greenbeansapps.myschooltransportation.main.controllers;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthException;
 import com.greenbeansapps.myschooltransportation.domain.services.SummaryGenerationOrchestratorService;
-import com.greenbeansapps.myschooltransportation.main.constraints.ValidUUID;
 import com.greenbeansapps.myschooltransportation.main.controllers.erros.ErrorResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -46,7 +45,7 @@ public class EnableSummaryGenerationController {
     }
 
     public record EnableSummaryGenerationDto(
-            @NotBlank String referenceMonth, @NotNull Integer referenceYear, @ValidUUID  UUID conductorId) {}
+            @NotBlank String referenceMonth, @NotNull Integer referenceYear, @NotNull  UUID conductorId) {}
 
     private Months validateMonth(String paymentMonth) {
         try {

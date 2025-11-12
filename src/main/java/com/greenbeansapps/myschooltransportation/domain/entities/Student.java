@@ -74,6 +74,7 @@ public class Student implements Serializable {
         setAddress(address);
         setShift(shift);
         setRegistrationDate(LocalDate.now());
+        setContractTerminationValue(BigDecimal.ZERO);
     }
 
     public UUID getId() {

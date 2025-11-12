@@ -24,11 +24,12 @@ public class ParametersConductor implements Serializable {
     @Column(nullable = false)
     private Float percentContractTermination;
 
-    public ParametersConductor(Conductor conductor, Float percentContractTermination) {
-        this.conductor = conductor;
-        this.percentContractTermination = Objects.isNull(percentContractTermination)
-                        ? PERCENT_CONTRACT_TERMINATION_DEFAULT : percentContractTermination;
+    public ParametersConductor() {
+    }
 
+    public ParametersConductor(Conductor conductor, Float percentContractTermination) {
+        setConductor(conductor);
+        setPercentContractTermination(percentContractTermination);
     }
 
     public Conductor getConductor() {
@@ -44,6 +45,15 @@ public class ParametersConductor implements Serializable {
     }
 
     public void setPercentContractTermination(Float percentContractTermination) {
+
+        if (Objects.isNull(percentContractTermination)) {
+            this.percentContractTermination = PERCENT_CONTRACT_TERMINATION_DEFAULT;
+        }
+
+        if (percentContractTermination < 0 || percentContractTermination > 1) {
+            throw new IllegalArgumentException("percentContractTermination deve estar entre 0 e 1");
+        }
+
         this.percentContractTermination = percentContractTermination;
     }
 }
