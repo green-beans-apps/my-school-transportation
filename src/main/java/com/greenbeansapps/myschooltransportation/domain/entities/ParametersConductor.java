@@ -48,6 +48,7 @@ public class ParametersConductor implements Serializable {
 
         if (Objects.isNull(percentContractTermination)) {
             this.percentContractTermination = PERCENT_CONTRACT_TERMINATION_DEFAULT;
+            return;
         }
 
         if (percentContractTermination < 0 || percentContractTermination > 1) {

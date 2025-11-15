@@ -79,7 +79,7 @@ public class StudentRepositoryJPA implements StudentRepository {
             BeanUtils.copyProperties(studentS.getResponsible(), responsible);
             BeanUtils.copyProperties(studentS.getAddress(), address);
 
-            students.add(new StudentWithPayments(studentS.getId(), studentS.getName(), studentS.getSchool(), studentS.getGrade(), studentS.getTransportationType(), studentS.getShift(), studentS.getMonthlyPayment(), studentS.getMonthlyPaymentExpiration(), responsible, address, studentS.getPayments()));
+            students.add(new StudentWithPayments(studentS.getId(), studentS.getName(), studentS.getSchool(), studentS.getGrade(), studentS.getTransportationType(), studentS.getShift(), studentS.getMonthlyPayment(), studentS.getMonthlyPaymentExpiration(), studentS.getContractTerminationValue(), studentS.getRegistrationDate(), responsible, address, studentS.getPayments()));
         }
 
         return students;
@@ -89,7 +89,7 @@ public class StudentRepositoryJPA implements StudentRepository {
     public Optional<StudentWithPayments> getStudentWithPayments(UUID studentId) {
         Optional<Student> student = this.studentRepo.getStudentWithPayments(studentId);
 
-        return Optional.of(new StudentWithPayments(student.get().getId(), student.get().getName(), student.get().getSchool(), student.get().getGrade(), student.get().getTransportationType(), student.get().getShift(), student.get().getMonthlyPayment(), student.get().getMonthlyPaymentExpiration(), student.get().getResponsible(), student.get().getAddress(), student.get().getPayments()));
+        return Optional.of(new StudentWithPayments(student.get().getId(), student.get().getName(), student.get().getSchool(), student.get().getGrade(), student.get().getTransportationType(), student.get().getShift(), student.get().getMonthlyPayment(), student.get().getMonthlyPaymentExpiration(), student.get().getContractTerminationValue(), student.get().getRegistrationDate(),student.get().getResponsible(), student.get().getAddress(), student.get().getPayments()));
     }
 
 

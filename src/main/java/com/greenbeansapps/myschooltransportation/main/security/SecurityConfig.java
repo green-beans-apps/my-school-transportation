@@ -30,7 +30,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/conductor").permitAll()
                     .requestMatchers(HttpMethod.GET, "/health").permitAll()
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
