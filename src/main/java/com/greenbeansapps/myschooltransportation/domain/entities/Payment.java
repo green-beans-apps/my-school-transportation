@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.greenbeansapps.myschooltransportation.domain.enums.Months;
 import jakarta.persistence.*;
 
@@ -20,6 +21,7 @@ public class Payment implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
     private Date paymentDate;
     @Column(nullable = false)
     private Months paymentMonth;

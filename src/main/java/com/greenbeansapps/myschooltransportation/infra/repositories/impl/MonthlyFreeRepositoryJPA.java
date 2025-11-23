@@ -65,4 +65,9 @@ public class MonthlyFreeRepositoryJPA implements MonthlyFeeRepository {
     public List<MonthlyFee> findAllMonthlyFeesByReference(Months month, Integer year, UUID conductorId) {
         return monthlyFeeRepo.findAllMonthlyFeesByReference(month, year, conductorId);
     }
+
+    @Override
+    public MonthlyFee findMonthlyFeeByReferenceAndStudent(Months month, Integer year, UUID studentId) {
+        return monthlyFeeRepo.findMonthlyFeeByReferenceAndStudent(month, year, studentId);
+    }
 }

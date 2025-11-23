@@ -13,4 +13,5 @@ public interface MonthlyFeeRepository {
     public Boolean deleteMonthlyFee(UUID monthlyFeeId);
     public MonthlyFee updateMonthlyFee(MonthlyFee monthlyFee);
     public List<MonthlyFee> findAllMonthlyFeesByReference(Months month, Integer year, UUID conductorId);
+    public MonthlyFee findMonthlyFeeByReferenceAndStudent(Months month, Integer year, UUID studentId);
 }

@@ -7,6 +7,7 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.services.CreateStudentWithAddressAndResponsible;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateAddressUseCase;
+import com.greenbeansapps.myschooltransportation.domain.usecases.CreateMonthlyFeesUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateResponsibleUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateStudentUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateAddressRequest;
@@ -34,6 +35,8 @@ class CreateStudentWithAddressAndResponsibleImplTest {
     private CreateResponsibleUseCase createResponsibleUseCase;
     @Mock
     private CreateStudentUseCase createStudentUseCase;
+    @Mock
+    private CreateMonthlyFeesUseCase createMonthlyFeesUseCase;
 
     @InjectMocks
     CreateStudentWithAddressAndResponsibleImpl createStudentWithAddressAndResponsible;

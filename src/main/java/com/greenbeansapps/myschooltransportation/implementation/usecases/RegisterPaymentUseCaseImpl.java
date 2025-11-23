@@ -12,7 +12,6 @@ import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.RegisterPa
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.MonthlyFeeRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -37,17 +36,23 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
       throw new StudentNotFoundException();
     }
 
+    Optional<Payment> payment = this.paymentRepo.findPayment(data.paymentId());
+    if (payment.isPresent()) {
+      throw new ExistingPaymentException();
+    }
+
     //Verifica se o valor inserido é válido
     Months month = validateMonth(data.paymentMonth());
 
-    MonthlyFee monthlyFee = monthlyFeeRepo.findById(data.monthlyFeeId()).orElseThrow(ExistingPaymentException::new);
+    MonthlyFee monthlyFee = monthlyFeeRepo.findMonthlyFeeByReferenceAndStudent(month, data.paymentYear(), data.studentId());
 
     Payment newPayment = new Payment();
+    newPayment.setId(data.paymentId());
     newPayment.setPaymentDate(new Date());
-    newPayment.setPaymentMonth(month);
-    newPayment.setPaymentYear(data.paymentYear());
-    newPayment.setAmount(data.paymentAmount());
-    newPayment.setStudent(student.get());
+    newPayment.setPaymentMonth(monthlyFee.getReferenceMonth());
+    newPayment.setPaymentYear(Integer.parseInt(monthlyFee.getReferenceYear()));
+    newPayment.setAmount(monthlyFee.getAmount());
+    newPayment.setStudent(monthlyFee.getStudent());
     newPayment.setMonthlyFee(monthlyFee);
     return this.paymentRepo.register(newPayment);
   }

@@ -1,5 +1,6 @@
 package com.greenbeansapps.myschooltransportation.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.greenbeansapps.myschooltransportation.domain.enums.Shift;
 import com.greenbeansapps.myschooltransportation.domain.enums.TransportationType;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthlyPaymentExpirationException;
@@ -56,6 +57,7 @@ public class Student implements Serializable {
     private Address address;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"student", "monthlyFee"})
     private List<Payment> payments;
 
     public Student() {

@@ -58,7 +58,7 @@ class RegisterPaymentUseCaseImplTest {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.empty());
 
     assertThrows(StudentNotFoundException.class, () -> {
-      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear()), mockMonthlyFee.getAmount(), mockMonthlyFee.getId()));
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), mockPayment.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear())));
     });
   }
 
@@ -66,9 +66,10 @@ class RegisterPaymentUseCaseImplTest {
   @DisplayName("Nao deve ser possivel registrar pagamento duas vezes em um mesmo mes.")
   void case2() {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
+    Mockito.when(paymentRepo.findPayment(mockPayment.getId())).thenReturn(Optional.of(mockPayment));
 
     assertThrows(ExistingPaymentException.class, () -> {
-      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear()), mockMonthlyFee.getAmount(), mockMonthlyFee.getId()));
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), mockPayment.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear())));
     });
   }
 
@@ -78,7 +79,7 @@ class RegisterPaymentUseCaseImplTest {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
 
     assertThrows(InvalidMonthException.class, () -> {
-      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), "MES INVALIDO", Integer.parseInt(mockMonthlyFee.getReferenceYear()), mockMonthlyFee.getAmount(), mockMonthlyFee.getId()));
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), mockPayment.getId(), "MES INVALIDO", Integer.parseInt(mockMonthlyFee.getReferenceYear())));
     });
   }
 
@@ -89,10 +90,11 @@ class RegisterPaymentUseCaseImplTest {
 
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
     Mockito.when(paymentRepo.register(paymentArgumentCaptor.capture())).thenReturn(mockPayment);
-    Mockito.when(monthlyFeeRepo.findById(mockMonthlyFee.getId())).thenReturn(Optional.of(mockMonthlyFee));
+    Mockito.when(monthlyFeeRepo.findMonthlyFeeByReferenceAndStudent(mockPayment.getPaymentMonth(), mockPayment.getPaymentYear(), mockPayment.getStudent().getId())).thenReturn(mockMonthlyFee);
+
 
     Payment paymentReturn = registerPaymentUseCase.execute(
-            new RegisterPaymentRequest(mockStudent.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear()), mockMonthlyFee.getAmount(), mockMonthlyFee.getId()));
+            new RegisterPaymentRequest(mockStudent.getId(), mockPayment.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear())));
 
     // comparando retorno
     assertEquals(mockPayment.getPaymentMonth(), paymentReturn.getPaymentMonth());

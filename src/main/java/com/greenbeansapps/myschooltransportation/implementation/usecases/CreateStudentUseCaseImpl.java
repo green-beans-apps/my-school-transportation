@@ -11,10 +11,7 @@ import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidRespon
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidTransportationTypeException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.CreateStudentUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.CreateStudentRequest;
-import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.AddressRepository;
-import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ConductorRepository;
-import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.ResponsibleRepository;
-import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
+import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

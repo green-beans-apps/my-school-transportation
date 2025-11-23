@@ -14,6 +14,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 @RestController
@@ -34,10 +36,15 @@ public class RegisterPaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        this.registerPaymentUseCase.execute(new RegisterPaymentRequest(registerPaymentDto.studentId, registerPaymentDto.paymentMonth, registerPaymentDto.paymentYear, registerPaymentDto.paymentAmount, registerPaymentDto.monthlyFeeId));
+        Integer paymentYear = LocalDate.now().getYear();
+
+        this.registerPaymentUseCase.execute(new RegisterPaymentRequest(registerPaymentDto.studentId, registerPaymentDto.paymentId, registerPaymentDto.month, paymentYear));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public record RegisterPaymentDto(@NotNull UUID studentId, @NotBlank String paymentMonth, @NotNull Integer paymentYear, @NotNull
-                                     BigDecimal paymentAmount, @NotNull UUID monthlyFeeId) {}
+    public record RegisterPaymentDto(
+            @NotNull UUID studentId,
+            @NotBlank String month,
+            @NotNull UUID paymentId
+    ) {}
 }
