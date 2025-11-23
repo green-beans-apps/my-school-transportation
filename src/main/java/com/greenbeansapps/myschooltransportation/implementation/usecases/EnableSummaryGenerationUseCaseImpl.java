@@ -4,15 +4,10 @@ import com.greenbeansapps.myschooltransportation.domain.entities.BillingSummary;
 import com.greenbeansapps.myschooltransportation.domain.entities.MonthlyFee;
 import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.enums.ChargeType;
-import com.greenbeansapps.myschooltransportation.domain.exceptions.KernelNotfoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.EnableSummaryGeneration;
 import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.EnableSummaryGenerationRequest;
-import com.greenbeansapps.myschooltransportation.infra.opencl.CalculateContractTermination;
+import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.MonthlyFeeRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IBillingSummaryRepositoryJPA;
-import com.greenbeansapps.myschooltransportation.infra.repositories.IMonthlyFeeRepositoryJPA;
-import com.greenbeansapps.myschooltransportation.infra.repositories.IPaymentRepositoryJPA;
-import jakarta.annotation.PostConstruct;
-import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +19,7 @@ import java.util.concurrent.Executors;
 public class EnableSummaryGenerationUseCaseImpl implements EnableSummaryGeneration {
 
     @Autowired
-    private IPaymentRepositoryJPA paymentRepo;
-
-    @Autowired
-    private IMonthlyFeeRepositoryJPA monthlyFeeRepository;
+    private MonthlyFeeRepository monthlyFeeRepository;
 
     @Autowired
     private IBillingSummaryRepositoryJPA billingSummaryRepo;

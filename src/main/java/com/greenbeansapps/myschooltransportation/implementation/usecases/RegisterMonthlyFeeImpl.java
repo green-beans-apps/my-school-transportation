@@ -5,18 +5,16 @@ import com.greenbeansapps.myschooltransportation.domain.entities.Student;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.RegisterMonthlyFee;
 import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.RegisterMonthlyFeeRequest;
-import com.greenbeansapps.myschooltransportation.infra.repositories.IMonthlyFeeRepositoryJPA;
+import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.MonthlyFeeRepository;
 import com.greenbeansapps.myschooltransportation.infra.repositories.IStudentRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class RegisterMonthlyFeeImpl implements RegisterMonthlyFee {
 
     @Autowired
-    private IMonthlyFeeRepositoryJPA monthlyFeeRepository;
+    private MonthlyFeeRepository monthlyFeeRepository;
 
     @Autowired
     private IStudentRepositoryJPA studentRepository;
@@ -33,6 +31,6 @@ public class RegisterMonthlyFeeImpl implements RegisterMonthlyFee {
         monthlyFee.setReferenceYear(data.referenceYear());
         monthlyFee.setAmount(data.amount());
 
-        monthlyFeeRepository.save(monthlyFee);
+        monthlyFeeRepository.create(monthlyFee);
     }
 }

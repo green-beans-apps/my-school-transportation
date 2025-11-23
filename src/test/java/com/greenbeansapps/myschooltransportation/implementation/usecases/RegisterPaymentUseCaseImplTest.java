@@ -7,6 +7,7 @@ import com.greenbeansapps.myschooltransportation.domain.exceptions.ExistingPayme
 import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthException;
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.RegisterPaymentRequest;
+import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.MonthlyFeeRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
 import org.junit.jupiter.api.*;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +35,8 @@ class RegisterPaymentUseCaseImplTest {
   private  PaymentRepository paymentRepo;
   @Mock
   private StudentRepository studentRepo;
+  @Mock
+  private MonthlyFeeRepository monthlyFeeRepo;
 
 
   @InjectMocks
@@ -44,12 +48,9 @@ class RegisterPaymentUseCaseImplTest {
   Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140.90,
           4, "manha", mockConductor, mockResponsible, mockAddress);
 
-  String pattern = "dd/MM/yyyy";
-  LocalDate currentDate = LocalDate.now();
-  DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-  String formattedDate = currentDate.format(formatter);
+  Payment mockPayment = new Payment(UUID.fromString("2fdf83ab-c4d4-4a05-981e-81d566ccd168"), new Date(), Months.JANEIRO, 2025, BigDecimal.valueOf(mockStudent.getMonthlyPayment()), mockStudent);
 
-  Payment mockPayment = new Payment(UUID.fromString("2fdf83ab-c4d4-4a05-981e-81d566ccd168"), formattedDate, Months.JANEIRO, mockStudent );
+  MonthlyFee mockMonthlyFee = new MonthlyFee(UUID.randomUUID(), mockStudent, Months.JANEIRO, String.valueOf(2025), BigDecimal.valueOf(mockStudent.getMonthlyPayment()));
 
   @Test
   @DisplayName("Nao deve ser possivel registrar pagamento de um estudante invalido")
@@ -57,7 +58,7 @@ class RegisterPaymentUseCaseImplTest {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.empty());
 
     assertThrows(StudentNotFoundException.class, () -> {
-      registerPaymentUseCase.execute(new RegisterPaymentRequest(UUID.randomUUID(), mockStudent.getId(), "Janeiro"));
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear()), mockMonthlyFee.getAmount(), mockMonthlyFee.getId()));
     });
   }
 
@@ -65,20 +66,19 @@ class RegisterPaymentUseCaseImplTest {
   @DisplayName("Nao deve ser possivel registrar pagamento duas vezes em um mesmo mes.")
   void case2() {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
-    Mockito.when(paymentRepo.findPaymentPerMonth(mockStudent.getId(),mockPayment.getPaymentMonth())).thenReturn(Optional.of(mockPayment));
 
     assertThrows(ExistingPaymentException.class, () -> {
-      registerPaymentUseCase.execute(new RegisterPaymentRequest(UUID.randomUUID(), mockStudent.getId(), "Janeiro"));
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear()), mockMonthlyFee.getAmount(), mockMonthlyFee.getId()));
     });
   }
 
   @Test
-  @DisplayName("Nao deve ser possivel registrar um pagamento com o mes invalido")
+  @DisplayName("Nao deve ser possivel registrar um pagamento com o mês invalido")
   void case3() {
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
 
     assertThrows(InvalidMonthException.class, () -> {
-      registerPaymentUseCase.execute(new RegisterPaymentRequest(UUID.randomUUID(), mockStudent.getId(), "Janeir"));
+      registerPaymentUseCase.execute(new RegisterPaymentRequest(mockStudent.getId(), "MES INVALIDO", Integer.parseInt(mockMonthlyFee.getReferenceYear()), mockMonthlyFee.getAmount(), mockMonthlyFee.getId()));
     });
   }
 
@@ -88,10 +88,11 @@ class RegisterPaymentUseCaseImplTest {
     ArgumentCaptor<Payment> paymentArgumentCaptor = ArgumentCaptor.forClass(Payment.class);
 
     Mockito.when(studentRepo.findById(Mockito.any())).thenReturn(Optional.of(mockStudent));
-    Mockito.when(paymentRepo.findPaymentPerMonth(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
     Mockito.when(paymentRepo.register(paymentArgumentCaptor.capture())).thenReturn(mockPayment);
+    Mockito.when(monthlyFeeRepo.findById(mockMonthlyFee.getId())).thenReturn(Optional.of(mockMonthlyFee));
 
-    Payment paymentReturn = registerPaymentUseCase.execute(new RegisterPaymentRequest(UUID.randomUUID(), mockStudent.getId(), "Janeiro"));
+    Payment paymentReturn = registerPaymentUseCase.execute(
+            new RegisterPaymentRequest(mockStudent.getId(), mockMonthlyFee.getReferenceMonth().toString(), Integer.parseInt(mockMonthlyFee.getReferenceYear()), mockMonthlyFee.getAmount(), mockMonthlyFee.getId()));
 
     // comparando retorno
     assertEquals(mockPayment.getPaymentMonth(), paymentReturn.getPaymentMonth());
@@ -105,10 +106,6 @@ class RegisterPaymentUseCaseImplTest {
     // comparando dados passados para o repositorio
     Payment paymentArgumentCaptured = paymentArgumentCaptor.getValue();
     assertEquals(mockPayment.getPaymentMonth(), paymentArgumentCaptured.getPaymentMonth());
-    assertEquals(
-            mockPayment.getPaymentDate(),
-            paymentArgumentCaptured.getPaymentDate()
-    );
     assertEquals(mockPayment.getStudent(), paymentArgumentCaptured.getStudent());
   }
 

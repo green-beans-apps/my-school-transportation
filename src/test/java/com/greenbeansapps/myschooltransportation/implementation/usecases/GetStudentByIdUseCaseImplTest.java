@@ -19,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -38,12 +40,12 @@ public class GetStudentByIdUseCaseImplTest {
     Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
     List<Payment> paymentList = new ArrayList<>(
             List.of(
-                    new Payment(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb510"), "18", Months.JANEIRO, new Student()),
-                    new Payment(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb511"), "18", Months.FEVEREIRO, new Student())
+                    new Payment(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb510"), new Date(), Months.JANEIRO, 2025, BigDecimal.valueOf(100), new Student()),
+                    new Payment(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb511"), new Date(), Months.FEVEREIRO, 2025, BigDecimal.valueOf(100), new Student())
             )
     );
     StudentWithPayments mockStudent = new StudentWithPayments(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA,140.90,
-            18, mockResponsible, mockAddress, paymentList);
+            18, BigDecimal.ZERO, LocalDate.now(), mockResponsible, mockAddress, paymentList);
 
     @Test
     @DisplayName("Deve retornar um estudante por id")

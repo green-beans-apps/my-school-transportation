@@ -9,28 +9,25 @@ import com.greenbeansapps.myschooltransportation.domain.exceptions.InvalidMonthE
 import com.greenbeansapps.myschooltransportation.domain.exceptions.StudentNotFoundException;
 import com.greenbeansapps.myschooltransportation.domain.usecases.RegisterPaymentUseCase;
 import com.greenbeansapps.myschooltransportation.domain.usecases.dtos.RegisterPaymentRequest;
+import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.MonthlyFeeRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.PaymentRepository;
 import com.greenbeansapps.myschooltransportation.implementation.protocols.repositories.StudentRepository;
-import com.greenbeansapps.myschooltransportation.infra.repositories.IMonthlyFeeRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
   private final PaymentRepository paymentRepo;
   private final StudentRepository studentRepo;
-  @Autowired
-  private IMonthlyFeeRepositoryJPA monthlyFeeRepo;
+  private MonthlyFeeRepository monthlyFeeRepo;
 
-  public RegisterPaymentUseCaseImpl(PaymentRepository paymentRepo, StudentRepository studentRepo) {
+  public RegisterPaymentUseCaseImpl(PaymentRepository paymentRepo, StudentRepository studentRepo, MonthlyFeeRepository monthlyFeeRepo) {
     this.paymentRepo = paymentRepo;
     this.studentRepo = studentRepo;
+    this.monthlyFeeRepo = monthlyFeeRepo;
   }
 
   @Override
@@ -40,10 +37,10 @@ public class RegisterPaymentUseCaseImpl implements RegisterPaymentUseCase {
       throw new StudentNotFoundException();
     }
 
-      //Verifica se o valor inserido é válido
-      Months month = validateMonth(data.paymentMonth());
+    //Verifica se o valor inserido é válido
+    Months month = validateMonth(data.paymentMonth());
 
-    MonthlyFee monthlyFee = monthlyFeeRepo.findById(data.monthlyFeeId()).orElseThrow(RuntimeException::new);
+    MonthlyFee monthlyFee = monthlyFeeRepo.findById(data.monthlyFeeId()).orElseThrow(ExistingPaymentException::new);
 
     Payment newPayment = new Payment();
     newPayment.setPaymentDate(new Date());

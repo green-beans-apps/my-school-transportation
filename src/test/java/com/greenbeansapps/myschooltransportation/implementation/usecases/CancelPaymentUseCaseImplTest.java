@@ -13,8 +13,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,11 +38,7 @@ public class CancelPaymentUseCaseImplTest {
     Student mockStudent = new Student(UUID.fromString("28305d91-9d9f-4311-b2ec-f6a12f1bcd4e"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA.toString(), 140.90,
             4, "manha", mockConductor, mockResponsible, mockAddress);
 
-    String pattern = "dd/MM/yyyy";
-    LocalDate currentDate = LocalDate.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-    String formattedDate = currentDate.format(formatter);
-    Payment mockPayment = new Payment(UUID.fromString("2fdf83ab-c4d4-4a05-981e-81d566ccd168"), formattedDate, Months.JANEIRO, mockStudent);
+    Payment mockPayment = new Payment(UUID.fromString("2fdf83ab-c4d4-4a05-981e-81d566ccd168"), new Date(), Months.JANEIRO, 2025, BigDecimal.valueOf(mockStudent.getMonthlyPayment()), mockStudent);
 
     @Test
     @DisplayName("Nao deve ser possivel cancelar um pagamento inexistente")

@@ -17,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -36,8 +38,8 @@ public class GetAllStudentsByConductorIdUseCaseImplTest {
     GetAllStudentsByConductorIdUseCaseImpl getAllStudentsByConductorIdUseCase;
 
     List<Payment> payments = new ArrayList<>(Arrays.asList(
-            new Payment(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb510"), "18", Months.JANEIRO, new Student()),
-            new Payment(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb511"), "18", Months.FEVEREIRO, new Student())
+            new Payment(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb510"), new Date(), Months.JANEIRO, 2025, BigDecimal.valueOf(100), new Student()),
+            new Payment(UUID.fromString("99b7d061-1ad2-46de-aad5-9da1376fb511"), new Date(), Months.FEVEREIRO, 2025, BigDecimal.valueOf(100), new Student())
     ));
 
 
@@ -45,9 +47,9 @@ public class GetAllStudentsByConductorIdUseCaseImplTest {
     Address mockAddress = new Address(UUID.fromString( "99b7d061-1ad2-46de-aad5-9da1376fb572"),"Olinda", "Pernambuco", "Rua São José", "Próximo ao mercado X", "123");;
     Responsible mockResponsible = new Responsible(UUID.fromString("c43b3422-f72a-4c1f-9b99-59b3261e5e3d"), "Maurício Ferraz", "mauricioferraz@teste.com", "(81)97314-8001");
     StudentWithPayments mockFirstStudent = new StudentWithPayments(UUID.fromString("296c5a89-5a29-4549-bb48-f57ff7f04619"), "Danilo Pereira Pessoa", "Colégio de São José", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA, 140.90,
-            18, mockResponsible, mockAddress, payments);
+            18, BigDecimal.ZERO, LocalDate.now(), mockResponsible, mockAddress, payments);
     StudentWithPayments mockSecondStudent = new StudentWithPayments(UUID.fromString("296c5a89-5a29-4549-bb48-f57ff7f04610"), "Ueslei Nogueira", "Colégio ETE Porto Digital", "3° Ano (Médio)", TransportationType.IDA_E_VOLTA, Shift.MANHA, 140.90,
-            18, mockResponsible, mockAddress, payments);
+            18, BigDecimal.ZERO, LocalDate.now(), mockResponsible, mockAddress, payments);
 
     @Test
     @DisplayName("Deve retornar todos os alunos vinculados ao id do condutor")
